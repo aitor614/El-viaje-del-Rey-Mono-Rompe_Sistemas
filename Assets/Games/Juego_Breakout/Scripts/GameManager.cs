@@ -9,14 +9,40 @@ public class GameManager : MonoBehaviour
 
     private Player player;
 
+    public Temp tempScript;
+
+    public float leftTime = 30f;
+
+
+
+    void FinishTime()
+    {
+        if (leftTime > 0)
+        {
+            leftTime -= Time.deltaTime;
+            if (leftTime < 0)
+                leftTime = 0;
+
+            tempScript.refreshText(leftTime); // Mostramos el tiempo
+        }
+
+        if (leftTime == 0)
+        {
+            GameOver();
+        }
+
+    }
+
     public void looseHealth()
     {
         lives--;
 
+
+
         if (lives <= 0)
         {
-            SceneManager.LoadScene("GameOver");
-         
+            GameOver();
+
         }
         else
         {
@@ -31,4 +57,15 @@ public class GameManager : MonoBehaviour
         ball.ResetBall();
         player.ResetPlayer();
     }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
+    }
+
+    void Update()
+    {
+        FinishTime();
+    }
+
 }

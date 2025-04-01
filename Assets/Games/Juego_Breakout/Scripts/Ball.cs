@@ -40,7 +40,7 @@ public class Ball : MonoBehaviour
         rigidBody2D.angularVelocity = 0;
 
         float randomX = Random.Range(-1f, 1f);
-        Vector2 direction = new Vector2(randomX, 1).normalized;
+        Vector2 direction = new Vector2(randomX, 1); //
 
         rigidBody2D.linearVelocity = direction * speed * Time.fixedDeltaTime;
     }
