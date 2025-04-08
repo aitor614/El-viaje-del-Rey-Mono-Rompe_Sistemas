@@ -5,7 +5,7 @@ public class GameOverScene : MonoBehaviour
 {
     public void ResetGame()
     {
-        SceneManager.LoadScene("Juego2DGolpeBaston");
+        SceneManager.LoadScene("MenuPrincipal");
 
 
     }
