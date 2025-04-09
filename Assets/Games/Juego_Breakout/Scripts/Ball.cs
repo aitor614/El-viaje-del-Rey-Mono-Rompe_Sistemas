@@ -3,7 +3,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
 
-    public Rigidbody2D rigidBody2D;
+    private Rigidbody2D rigidBody2D;
 
     public float speed = 300;
 
@@ -11,27 +11,33 @@ public class Ball : MonoBehaviour
 
     private Vector2 startPosition;
 
-    private GameManager gameManager;
+    private ControlBreakout control;
 
+    private void Awake()
+    {
+        rigidBody2D = GetComponent<Rigidbody2D>();
+        startPosition = transform.position;
+    }
 
     void Start()
     {
-        
-        gameManager = FindFirstObjectByType<GameManager>();
-
-        startPosition = transform.position;
+        control = FindFirstObjectByType<ControlBreakout>();
         ResetBall();
+    }
 
+    public void Inicializar(ControlBreakout controlBreakout)
+    {
+        control = controlBreakout;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("DeadZone"))
         {
-            gameManager.looseHealth();
-
+            control.LooseHealth();
         }
     }
+
     public void ResetBall()
     {
         transform.position = startPosition;
@@ -40,9 +46,9 @@ public class Ball : MonoBehaviour
         rigidBody2D.angularVelocity = 0;
 
         float randomX = Random.Range(-1f, 1f);
-        Vector2 direction = new Vector2(randomX, 1); //
+        Vector2 direction = new Vector2(randomX, 1).normalized;
 
-        rigidBody2D.linearVelocity = direction * speed * Time.fixedDeltaTime;
+        rigidBody2D.linearVelocity = speed * Time.fixedDeltaTime * direction;
     }
 
 }

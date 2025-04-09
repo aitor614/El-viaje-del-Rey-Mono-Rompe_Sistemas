@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ball
   - DeadZone
+  - Wall
   layers:
   - Default
   - TransparentFX

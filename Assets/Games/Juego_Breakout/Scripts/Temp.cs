@@ -4,8 +4,7 @@ public class Temp : MonoBehaviour
 {
     public TextMeshProUGUI texto;
     
-
-    public void refreshText(float time)
+    public void RefreshText(float time)
     {
         texto.text = time.ToString("f0");
     }

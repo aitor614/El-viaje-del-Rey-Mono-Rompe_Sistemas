@@ -1,0 +1,3 @@
+repository "Rey-Mono_RompeSistemas/Rey-Mono_RompeSistemas@6872736248165@cloud"
+  path "/"
+    smartbranch "/main"

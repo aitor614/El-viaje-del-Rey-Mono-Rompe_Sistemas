@@ -9,12 +9,18 @@ public class Player : MonoBehaviour
     public float moveSpeed = 25;
 
     private Vector2 direction;
-
     private Vector2 startPosition;
+    
+    private ControlBreakout control;
 
     private void Start()
     {
         startPosition = transform.position;
+    }
+
+    public void Inicializar(ControlBreakout controlBreakout)
+    {
+        control = controlBreakout;
     }
 
 
