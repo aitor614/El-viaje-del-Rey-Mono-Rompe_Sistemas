@@ -221,6 +221,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 599823863161388955}
     m_Modifications:
+    - target: {fileID: 2809542867151053162, guid: d02af19dd949c8f429bc486e09a69208, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.7
+      objectReference: {fileID: 0}
     - target: {fileID: 3247145074663498912, guid: d02af19dd949c8f429bc486e09a69208, type: 3}
       propertyPath: m_Name
       value: PlayButton

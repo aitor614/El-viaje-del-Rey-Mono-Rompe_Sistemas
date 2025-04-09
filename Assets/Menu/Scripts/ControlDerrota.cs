@@ -14,7 +14,8 @@ public class ControlDerrota : MonoBehaviour
 
     public void Click_BtnReset()
     {
-
+        ControlMenuPrincipal control = ControlMenuPrincipal.InstanciaControl;
+        control.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Reiniciar);
     }
 
     public void Click_BtnMenu()

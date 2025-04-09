@@ -16,13 +16,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         startPosition = transform.position;
+        control = ControlBreakout.InstanciaControl;
     }
-
-    public void Inicializar(ControlBreakout controlBreakout)
-    {
-        control = controlBreakout;
-    }
-
 
     private void Update()
     {

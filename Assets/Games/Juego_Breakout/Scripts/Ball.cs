@@ -21,13 +21,8 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        control = FindFirstObjectByType<ControlBreakout>();
+        control = ControlBreakout.InstanciaControl;
         ResetBall();
-    }
-
-    public void Inicializar(ControlBreakout controlBreakout)
-    {
-        control = controlBreakout;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

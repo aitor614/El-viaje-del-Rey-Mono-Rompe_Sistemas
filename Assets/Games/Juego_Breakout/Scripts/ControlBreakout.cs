@@ -4,35 +4,37 @@ using UnityEngine.SceneManagement;
 
 public class ControlBreakout : MonoBehaviour
 {
+    public static ControlBreakout InstanciaControl { get; private set; }
+    private ControlMenuPrincipal controlMenuPrincipal;
+
     public int lives = 3;
 
     public Transform puntoRespawn;
     public Ball ball;
     private Player player;
+    private Brick[] bricks;
     public Temp tempScript;
     public TextMeshProUGUI TxtScore;
 
     public float leftTime = 30f;
     public int puntuacion = 0;
 
-    private ControlMenuPrincipal controlMenuPrincipal;
-
+    // Funcion para inicializar el singleton (instancia de ControlBreakout)
+    void Awake()
+    {
+        InstanciaControl = this;
+    }
 
     void Start()
     {
-        controlMenuPrincipal = FindFirstObjectByType<ControlMenuPrincipal>();
+        controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
         // Asigna ballScript si ya existe en escena
         ball = FindFirstObjectByType<Ball>();
-        ball.Inicializar(this);
         player = FindFirstObjectByType<Player>();
-        player.Inicializar(this);
-        Brick[] bricks = FindObjectsByType<Brick>(FindObjectsSortMode.None);
-        foreach (Brick brick in bricks)
-        {
-            brick.Inicializar(this);
-        }
+        bricks = FindObjectsByType<Brick>(FindObjectsSortMode.None);
+
     }
 
     void Update()
@@ -45,6 +47,15 @@ public class ControlBreakout : MonoBehaviour
             controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Menu);
         }
 
+    }
+
+    public void Pausar()
+    {
+        var controlPausa = FindAnyObjectByType<ControlPausa>();
+        if (controlPausa != null)
+        {
+            controlPausa.Pausar();
+        }
     }
 
     void FinishTime()
@@ -60,7 +71,7 @@ public class ControlBreakout : MonoBehaviour
 
         if (leftTime == 0)
         {
-            if(puntuacion > 50)
+            if (puntuacion > 50)
             {
                 controlMenuPrincipal.SumarPuntos(puntuacion);
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);

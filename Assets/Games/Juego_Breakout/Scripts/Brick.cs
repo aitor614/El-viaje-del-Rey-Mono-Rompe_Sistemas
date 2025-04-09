@@ -4,17 +4,18 @@ public class Brick : MonoBehaviour
 {
     private ControlBreakout control;
 
-    public void Inicializar(ControlBreakout controlBreakout)
+    // Start is called before the first frame update
+    private void Start()
     {
-        control = controlBreakout;
+        control = ControlBreakout.InstanciaControl;
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
             Destroy(gameObject);
-            control.SumarPuntuacion(10); // Incrementa la puntuación en 10 al destruir un ladrillo
+            // Incrementa la puntuación en 10 al destruir un ladrillo
+            control.SumarPuntuacion(10); 
         }
 
 

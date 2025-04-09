@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ControlMenuPrincipal : MonoBehaviour
 {
@@ -10,13 +11,22 @@ public class ControlMenuPrincipal : MonoBehaviour
     public enum ModoJuego { Individual, Continuo }
     public ModoJuego modoActual;
 
-    public enum ResultadoMinijuego { Exito, Derrota, Reiniciar, Menu }
+    public enum ResultadoMinijuego { Exito, Derrota, Reiniciar, Menu, Salir }
     public ResultadoMinijuego resultadoMinijuego;
 
     private string escenaActual = "";
 
     public int indiceActual = 0;
     public int puntuacionTotal = 0;
+
+    public Button BtnSalirJuego;
+    public Button BtnPlayViaje;
+    public Button BtnPlayInfierno;
+    public Button BtnPlayHuida;
+    public Button BtnPlayBaston;
+    public Button BtnPlayEspiritus;
+    public Button BtnPlayCelestial;
+
 
     // Lista de escenas de minijuegos
     private readonly List<string> escenasMinijuegos = new()
@@ -28,10 +38,60 @@ public class ControlMenuPrincipal : MonoBehaviour
         "JuegoVRBatallaCelestial"
     };
 
+    // Inicializar el script
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
         resultadoMinijuego = ResultadoMinijuego.Menu;
+
+        // Asignar funciones a los botones
+        BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
+        BtnPlayViaje.onClick.AddListener(Click_JuegoInfierno);
+        BtnPlayInfierno.onClick.AddListener(Click_JuegoInfierno);
+        BtnPlayHuida.onClick.AddListener(Click_JuegoHuida);
+        BtnPlayBaston.onClick.AddListener(Click_JuegoBaston);
+        BtnPlayEspiritus.onClick.AddListener(Click_JuegoEspiritus);
+        BtnPlayCelestial.onClick.AddListener(Click_JuegoVR);
+
+    }
+
+    // Cuando el objeto se activa
+    void OnEnable()
+    {
+        // Suscribirse al evento de carga de escena
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // Cuando el objeto se desactiva
+    void OnDisable()
+    {
+        // Desuscribirse del evento de carga de escena
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // Cuando se carga una escena
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MenuPrincipal")
+        {
+            // Asignar los botones al script
+            BtnSalirJuego = GameObject.Find("BtnSalirJuego") != null ? GameObject.Find("BtnSalirJuego").GetComponent<Button>() : null;
+            BtnPlayViaje = GameObject.Find("BtnPlayViaje") != null ? GameObject.Find("BtnPlayViaje").GetComponent<Button>() : null;
+            BtnPlayInfierno = GameObject.Find("BtnPlayInfierno") != null ? GameObject.Find("BtnPlayInfierno").GetComponent<Button>() : null;
+            BtnPlayHuida = GameObject.Find("BtnPlayHuida") != null ? GameObject.Find("BtnPlayHuida").GetComponent<Button>() : null;
+            BtnPlayBaston = GameObject.Find("BtnPlayBaston") != null ? GameObject.Find("BtnPlayBaston").GetComponent<Button>() : null;
+            BtnPlayEspiritus = GameObject.Find("BtnPlayEspiritus") != null ? GameObject.Find("BtnPlayEspiritus").GetComponent<Button>() : null;
+            BtnPlayCelestial = GameObject.Find("BtnPlayCelestial") != null ? GameObject.Find("BtnPlayCelestial").GetComponent<Button>() : null;
+
+            // Asignar funciones a los botones
+            if (BtnSalirJuego != null) BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
+            if (BtnPlayViaje != null) BtnPlayViaje.onClick.AddListener(Click_JuegoInfierno);
+            if (BtnPlayInfierno != null) BtnPlayInfierno.onClick.AddListener(Click_JuegoInfierno);
+            if (BtnPlayHuida != null) BtnPlayHuida.onClick.AddListener(Click_JuegoHuida);
+            if (BtnPlayBaston != null) BtnPlayBaston.onClick.AddListener(Click_JuegoBaston);
+            if (BtnPlayEspiritus != null) BtnPlayEspiritus.onClick.AddListener(Click_JuegoEspiritus);
+            if (BtnPlayCelestial != null) BtnPlayCelestial.onClick.AddListener(Click_JuegoVR);
+        }
     }
 
     // Funcion para inicializar el singleton (instancia de ControlMenuPrincipal)
@@ -47,6 +107,15 @@ public class ControlMenuPrincipal : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Update()
+    {
+        // Si el jugador presiona la tecla Escape sale del juego
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ProcesarResultado(ResultadoMinijuego.Salir);
+        }
+    }
+
     // Funcion para cargar la escena del minijuego
     public void JugarMinijuego(string nombreEscena)
     {
@@ -57,43 +126,44 @@ public class ControlMenuPrincipal : MonoBehaviour
 
     public void Click_JuegoInfierno()
     {
-        // Cargar la escena del juego completo
+        // Cargar la escena del minijuego de Escape del Infierno
         JugarMinijuego("Juego2DEscapeInfierno");
     }
 
     public void Click_JuegoHuida()
     {
-        // Cargar la escena del juego completo
+        // Cargar la escena del minijuego de Huida Celestial
         JugarMinijuego("Juego2DHuidaCelestial");
     }
 
     public void Click_JuegoBaston()
     {
-        // Cargar la escena del juego completo
+        // Cargar la escena del minijuego de Golpe Bastón
         JugarMinijuego("Juego2DGolpeBaston");
     }
 
     public void Click_JuegoEspiritus()
     {
-        // Cargar la escena del juego completo
+        // Cargar la escena del minijuego de Espíritus Desencarnados
         JugarMinijuego("JuegoAREspiritusDesencarnados");
     }
 
     public void Click_JuegoVR()
     {
-        // Cargar la escena del juego completo
+        // Cargar la escena del minijuego de Batalla Celestial
         JugarMinijuego("JuegoVRBatallaCelestial");
     }
 
     public void Click_SalirJuego()
     {
-        // Salir del juego
-        Application.Quit();
+        // Procesar el resultado del minijuego como Salir
+        ProcesarResultado(ResultadoMinijuego.Salir);
     }
 
     // Funcion para jugar todos los minijuegos en modo continuo
     public void Click_JugarTodos()
     {
+        // Guardar el modo de juego como continuo
         modoActual = ModoJuego.Continuo;
         indiceActual = 0;
         puntuacionTotal = 0;
@@ -131,22 +201,30 @@ public class ControlMenuPrincipal : MonoBehaviour
         if (resultado == ResultadoMinijuego.Exito)
         {
             // Cargar la escena de éxito
+            escenaActual = "YouWin";
             SceneManager.LoadScene("YouWin");
         }
         else if (resultado == ResultadoMinijuego.Derrota)
         {
             // Cargar la escena de Game Over
+            escenaActual = "GameOver";
             SceneManager.LoadScene("GameOver");
         }
         else if (resultado == ResultadoMinijuego.Reiniciar)
         {
             // Reiniciar el minijuego actual
-            SceneManager.LoadScene(escenaActual);
+            JugarMinijuego(escenaActual);
         }
         else if (resultado == ResultadoMinijuego.Menu)
         {
             // Volver al menú principal
+            escenaActual = "MenuPrincipal";
             SceneManager.LoadScene("MenuPrincipal");
+        }
+        else if (resultado == ResultadoMinijuego.Salir)
+        {
+            // Salir del juego
+            Application.Quit();
         }
     }
 
