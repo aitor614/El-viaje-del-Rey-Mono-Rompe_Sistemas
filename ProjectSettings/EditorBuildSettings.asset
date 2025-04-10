@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Menus/MenuPausa.unity
     guid: 84acfda7fad4f4242b59c30417b09379
   - enabled: 1
-    path: Assets/Scenes/Juegos/JuegoAREspiritusEncarnados.unity
+    path: Assets/Scenes/Juegos/JuegoAREspiritusDesencarnados.unity
     guid: 0c5fa6c4e3a57e94095f287e0384a6aa
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: cbe0f705ada4b894fab9628cbb09d3f8, type: 2}
