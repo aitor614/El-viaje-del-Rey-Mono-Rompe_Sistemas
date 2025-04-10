@@ -480,6 +480,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1561364362}
   - {fileID: 1758491595}
   - {fileID: 833734134}
   - {fileID: 908678262}
@@ -2741,7 +2742,6 @@ Transform:
   - {fileID: 2010886664}
   - {fileID: 1003761691}
   - {fileID: 2056355932}
-  - {fileID: 1561364362}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1216194879
@@ -3258,15 +3258,15 @@ Transform:
   m_GameObject: {fileID: 1561364361}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.4651356, y: -1.0204314, z: 1.0900002}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -698.2346, y: -110.20659, z: -422.27997}
+  m_LocalScale: {x: 108, y: 108, z: 108}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 363880150}
   - {fileID: 738943426}
   - {fileID: 1975326513}
   - {fileID: 1760644872}
-  m_Father: {fileID: 1199461654}
+  m_Father: {fileID: 188431091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1598676471
 PrefabInstance:
@@ -4828,6 +4828,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1199461654}
     m_Modifications:
+    - target: {fileID: 4383980045488805363, guid: 568797b2b6adfc1458dd051cc3ea86d7, type: 3}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4705289992607263946, guid: 568797b2b6adfc1458dd051cc3ea86d7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.13
@@ -4884,6 +4888,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball
       objectReference: {fileID: 0}
+    - target: {fileID: 7985315196955136209, guid: 568797b2b6adfc1458dd051cc3ea86d7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: a542be665279f52428c32f5b2e503433, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4967,6 +4975,18 @@ PrefabInstance:
     - target: {fileID: 2904416307960898511, guid: fc44590b0582e2447bddbdbd04fe9777, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6587161548509757319, guid: fc44590b0582e2447bddbdbd04fe9777, type: 3}
+      propertyPath: moveSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6587161548509757319, guid: fc44590b0582e2447bddbdbd04fe9777, type: 3}
+      propertyPath: inputActions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: dbabc04d12e924543a94e09841ded756, type: 3}
+    - target: {fileID: 6587161548509757319, guid: fc44590b0582e2447bddbdbd04fe9777, type: 3}
+      propertyPath: moverAccion.m_Name
+      value: Mover Accion
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -113,10 +114,12 @@ public class ControlMenuPrincipal : MonoBehaviour
     private void Update()
     {
         // Si el jugador presiona la tecla Escape sale del juego
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
+            // Procesar el resultado del minijuego como Salir
             ProcesarResultado(ResultadoMinijuego.Salir);
         }
+
     }
 
     // Funcion para cargar la escena del minijuego

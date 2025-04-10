@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      emblema_chino_0: 845366195459176554
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

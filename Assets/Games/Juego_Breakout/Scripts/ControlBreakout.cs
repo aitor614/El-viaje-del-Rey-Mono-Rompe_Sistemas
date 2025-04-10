@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -46,7 +47,7 @@ public class ControlBreakout : MonoBehaviour
         RestarTiempo();
         TxtScore.text = "SCORE: " + puntuacion.ToString();
         // Si el jugador presiona la tecla Escape, se muestra el menú principal
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Menu);
         }
