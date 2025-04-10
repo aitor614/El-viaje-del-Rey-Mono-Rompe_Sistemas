@@ -7,6 +7,14 @@ public class ControlPausa : MonoBehaviour
 
     private bool menuCargado = false;
 
+    // Función para inicializar el script
+    private void Awake()
+    {
+        // Inicializar el singleton (instancia de ControlPausa)
+        InstanciaControl = this;
+    }
+
+    // Función para cargar el menú de pausa
     public void Pausar()
     {
         if (!menuCargado)
@@ -17,6 +25,7 @@ public class ControlPausa : MonoBehaviour
         }
     }
 
+    // Función para reanudar el juego pausado
     public void Reanudar()
     {
         Time.timeScale = 1f;
@@ -24,14 +33,18 @@ public class ControlPausa : MonoBehaviour
         menuCargado = false;
     }
 
+    // Función para reiniciar el juego pausado
     public void Reiniciar()
     {
+        PlayerPrefs.SetInt("PuntuacionPartida", 0);
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    // Función para salir del juego pausado
     public void MenuPrincipal()
     {
+        PlayerPrefs.SetInt("PuntuacionPartida", 0);
         Time.timeScale = 1f;
         SceneManager.LoadScene("MenuPrincipal");
     }

@@ -27,9 +27,24 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Si la bola colisiona contra cualquier objeto, tiende a bajar
+        if (collision.gameObject.CompareTag("Brick"))
+        {
+            rigidBody2D.linearVelocity = new Vector2(rigidBody2D.linearVelocityX, -Mathf.Abs(rigidBody2D.linearVelocityY));
+        }
+
+        // Si la bola colisiona con el jugador, tiende a subir
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            rigidBody2D.linearVelocity = new Vector2(rigidBody2D.linearVelocityX, +Mathf.Abs(rigidBody2D.linearVelocityY));
+
+        }
+
+
+        // Si la bola cae en la zona de muerte, se pierde una vida
         if (collision.gameObject.CompareTag("DeadZone"))
         {
-            control.LooseHealth();
+            control.PerderVida();
         }
     }
 

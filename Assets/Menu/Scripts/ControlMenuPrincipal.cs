@@ -7,7 +7,6 @@ public class ControlMenuPrincipal : MonoBehaviour
 {
     public static ControlMenuPrincipal InstanciaControl { get; private set; }
 
-    public static int puntuacion;
     public enum ModoJuego { Individual, Continuo }
     public ModoJuego modoActual;
 
@@ -17,7 +16,6 @@ public class ControlMenuPrincipal : MonoBehaviour
     private string escenaActual = "";
 
     public int indiceActual = 0;
-    public int puntuacionTotal = 0;
 
     public Button BtnSalirJuego;
     public Button BtnPlayViaje;
@@ -53,6 +51,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         BtnPlayEspiritus.onClick.AddListener(Click_JuegoEspiritus);
         BtnPlayCelestial.onClick.AddListener(Click_JuegoVR);
 
+        ReiniciarPuntuaciones();
     }
 
     // Cuando el objeto se activa
@@ -94,19 +93,23 @@ public class ControlMenuPrincipal : MonoBehaviour
         }
     }
 
-    // Funcion para inicializar el singleton (instancia de ControlMenuPrincipal)
+    // Inicializar el script
     void Awake()
     {
+        // Comprobar si ya existe una instancia de ControlMenuPrincipal
         if (InstanciaControl != null && InstanciaControl != this)
         {
             Destroy(gameObject);
             return;
         }
 
+        // Asignar la instancia de ControlMenuPrincipal
         InstanciaControl = this;
+        // No destruir el objeto al cargar una nueva escena
         DontDestroyOnLoad(gameObject);
     }
 
+    // Función para ejecutar en cada frame
     private void Update()
     {
         // Si el jugador presiona la tecla Escape sale del juego
@@ -126,30 +129,35 @@ public class ControlMenuPrincipal : MonoBehaviour
 
     public void Click_JuegoInfierno()
     {
+        ReiniciarPuntuaciones();
         // Cargar la escena del minijuego de Escape del Infierno
         JugarMinijuego("Juego2DEscapeInfierno");
     }
 
     public void Click_JuegoHuida()
     {
+        ReiniciarPuntuaciones();
         // Cargar la escena del minijuego de Huida Celestial
         JugarMinijuego("Juego2DHuidaCelestial");
     }
 
     public void Click_JuegoBaston()
     {
+        ReiniciarPuntuaciones();
         // Cargar la escena del minijuego de Golpe Bastón
         JugarMinijuego("Juego2DGolpeBaston");
     }
 
     public void Click_JuegoEspiritus()
     {
+        ReiniciarPuntuaciones();
         // Cargar la escena del minijuego de Espíritus Desencarnados
         JugarMinijuego("JuegoAREspiritusDesencarnados");
     }
 
     public void Click_JuegoVR()
     {
+        ReiniciarPuntuaciones();
         // Cargar la escena del minijuego de Batalla Celestial
         JugarMinijuego("JuegoVRBatallaCelestial");
     }
@@ -166,7 +174,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         // Guardar el modo de juego como continuo
         modoActual = ModoJuego.Continuo;
         indiceActual = 0;
-        puntuacionTotal = 0;
+        ReiniciarPuntuaciones();
         SceneManager.LoadScene(escenasMinijuegos[indiceActual]);
     }
 
@@ -187,12 +195,6 @@ public class ControlMenuPrincipal : MonoBehaviour
         }
     }
 
-    // Funcion para sumar puntos desde los minijuegos
-    public void SumarPuntos(int puntos)
-    {
-        puntuacionTotal += puntos;
-    }
-
     // Funcion para procesar el resultado del minijuego
     public void ProcesarResultado(ResultadoMinijuego resultado)
     {
@@ -201,13 +203,11 @@ public class ControlMenuPrincipal : MonoBehaviour
         if (resultado == ResultadoMinijuego.Exito)
         {
             // Cargar la escena de éxito
-            escenaActual = "YouWin";
             SceneManager.LoadScene("YouWin");
         }
         else if (resultado == ResultadoMinijuego.Derrota)
         {
             // Cargar la escena de Game Over
-            escenaActual = "GameOver";
             SceneManager.LoadScene("GameOver");
         }
         else if (resultado == ResultadoMinijuego.Reiniciar)
@@ -226,6 +226,14 @@ public class ControlMenuPrincipal : MonoBehaviour
             // Salir del juego
             Application.Quit();
         }
+    }
+
+    private void ReiniciarPuntuaciones()
+    {
+        // Reiniciar las puntuaciones
+        PlayerPrefs.SetInt("Puntuacion", 0);
+        PlayerPrefs.SetInt("PuntuacionPartida", 0);
+        PlayerPrefs.Save();
     }
 
 }

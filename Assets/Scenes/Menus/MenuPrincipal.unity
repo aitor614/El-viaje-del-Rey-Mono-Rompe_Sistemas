@@ -847,16 +847,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6659913812004072651, guid: cb97acc2820df4a4bb49888a944f11b2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1920237580}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb97acc2820df4a4bb49888a944f11b2, type: 3}
---- !u!1 &1245245672 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6659913812004072651, guid: cb97acc2820df4a4bb49888a944f11b2, type: 3}
-  m_PrefabInstance: {fileID: 1245245671}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1366490420
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,18 +1607,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 599823863161388955, guid: cb97acc2820df4a4bb49888a944f11b2, type: 3}
   m_PrefabInstance: {fileID: 1245245671}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1920237580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1245245672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 960ca16f6bc8da04491a92cbc905039f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1973763292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1778,6 +1758,13 @@ MonoBehaviour:
   resultadoMinijuego: 3
   indiceActual: 0
   puntuacionTotal: 0
+  BtnSalirJuego: {fileID: 0}
+  BtnPlayViaje: {fileID: 0}
+  BtnPlayInfierno: {fileID: 0}
+  BtnPlayHuida: {fileID: 0}
+  BtnPlayBaston: {fileID: 0}
+  BtnPlayEspiritus: {fileID: 0}
+  BtnPlayCelestial: {fileID: 0}
 --- !u!1 &2086055091
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,17 +4,17 @@ using UnityEngine;
 public class ControlEscenaFinal : MonoBehaviour
 {
     public TextMeshProUGUI TxtScore;
+    private ControlMenuPrincipal controlMenu;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        int puntos = ControlMenuPrincipal.InstanciaControl.puntuacionTotal;
-        TxtScore.text = "SCORE " + puntos;
+        controlMenu = ControlMenuPrincipal.InstanciaControl;
+        TxtScore.text = "SCORE " + PlayerPrefs.GetInt("Puntuacion");
     }
 
     public void Click_BtnContinuar()
     {
-        ExitoDerrota exitoDerrota = FindFirstObjectByType<ExitoDerrota>();
-        exitoDerrota.Continuar();
+        controlMenu.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Menu);
     }
 }

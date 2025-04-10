@@ -1,30 +1,34 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class ControlBreakout : MonoBehaviour
 {
     public static ControlBreakout InstanciaControl { get; private set; }
     private ControlMenuPrincipal controlMenuPrincipal;
+    private ControlPausa controlPausa;
 
-    public int lives = 3;
+    public int vidas = 3;
 
-    public Transform puntoRespawn;
     public Ball ball;
-    private Player player;
-    private Brick[] bricks;
+    public Player player;
+    public Brick[] bricks;
     public Temp tempScript;
+    public Emblema[] emblemas;
     public TextMeshProUGUI TxtScore;
 
-    public float leftTime = 30f;
+    public float tiempoRestante = 30f;
     public int puntuacion = 0;
 
-    // Funcion para inicializar el singleton (instancia de ControlBreakout)
+    // Funcion para inicializar el script
     void Awake()
     {
+        // Inicializar el singleton (instancia de ControlBreakout)
         InstanciaControl = this;
     }
 
+    // Función para ejecutar al inicio
     void Start()
     {
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
@@ -34,12 +38,12 @@ public class ControlBreakout : MonoBehaviour
         ball = FindFirstObjectByType<Ball>();
         player = FindFirstObjectByType<Player>();
         bricks = FindObjectsByType<Brick>(FindObjectsSortMode.None);
-
     }
 
+    // Función para ejecutar en cada frame
     void Update()
     {
-        FinishTime();
+        RestarTiempo();
         TxtScore.text = "SCORE: " + puntuacion.ToString();
         // Si el jugador presiona la tecla Escape, se muestra el menú principal
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -47,69 +51,92 @@ public class ControlBreakout : MonoBehaviour
             controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Menu);
         }
 
+        // Si se han roto todos los bloques, se gana el juego
+        if (bricks.Length == 0)
+        {
+            GuardarPuntos();
+            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+        }
+
     }
 
+    // Función para pausar el juego
     public void Pausar()
     {
-        var controlPausa = FindAnyObjectByType<ControlPausa>();
+        controlPausa = ControlPausa.InstanciaControl;
         if (controlPausa != null)
         {
             controlPausa.Pausar();
         }
     }
 
-    void FinishTime()
+    // Función para controlar el tiempo
+    void RestarTiempo()
     {
-        if (leftTime > 0)
+        // Si el tiempo es mayor a 0, se resta el tiempo
+        if (tiempoRestante > 0)
         {
-            leftTime -= Time.deltaTime;
-            if (leftTime < 0)
-                leftTime = 0;
-
-            tempScript.RefreshText(leftTime); // Mostramos el tiempo
+            tiempoRestante -= Time.deltaTime;
+            if (tiempoRestante < 0)
+                tiempoRestante = 0;
+            // Mostramos el tiempo restante en el UI
+            tempScript.RefreshText(tiempoRestante); // Mostramos el tiempo
         }
 
-        if (leftTime == 0)
+        if (tiempoRestante == 0)
         {
+            // Si la la puntuación es mayor a 50, se gana el juego
             if (puntuacion > 50)
             {
-                controlMenuPrincipal.SumarPuntos(puntuacion);
+                GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
             }
+            // Si es menor o igual a 50, se pierde el juego
             else
             {
-                controlMenuPrincipal.SumarPuntos(puntuacion);
+                GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
             }
         }
 
     }
 
-    public void LooseHealth()
+    // Función para el control de vidas
+    public void PerderVida()
     {
-        lives--;
-
-        if (lives <= 0)
+        vidas--;
+        emblemas[vidas].Destruir();
+        // Si el jugador pierde todas las vidas, el juego termina con derrota
+        if (vidas <= 0)
         {
             ball.gameObject.SetActive(false);
-            controlMenuPrincipal.SumarPuntos(puntuacion);
+            GuardarPuntos();
             controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
         }
+        // Si el jugador aún tiene vidas, se reinician los objetos
         else
         {
             ResetObjetos();
         }
     }
 
+    // Función para sumar puntos
     public void SumarPuntuacion(int puntos)
     {
         puntuacion += puntos;
     }
 
+    // Función para reiniciar objetos de juego
     public void ResetObjetos()
     {
         ball.ResetBall();
         player.ResetPlayer();
     }
 
+    private void GuardarPuntos()
+    {
+        PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
+        PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") + puntuacion);
+        PlayerPrefs.Save();
+    }
 }
