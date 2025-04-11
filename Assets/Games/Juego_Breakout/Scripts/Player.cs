@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
 
     private Vector2 startPosition;
 
+    public AudioClip hitSound;
+
     private void Start()
     {
         startPosition = transform.position;
@@ -44,6 +46,14 @@ public class Player : MonoBehaviour
         transform.position = startPosition;
 
         rigiBody2D.linearVelocity = Vector2.zero;
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);
+        }
     }
 
 

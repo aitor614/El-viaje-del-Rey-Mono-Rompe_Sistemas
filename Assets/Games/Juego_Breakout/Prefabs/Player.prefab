@@ -177,3 +177,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigiBody2D: {fileID: 5678847272960754060}
   moveSpeed: 25
+  hitSound: {fileID: 8300000, guid: 8bfb3297ff8a3a842bbea66ef778199a, type: 3}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7938990539240863287}
   - component: {fileID: 4041346643053310261}
   - component: {fileID: 8022341012571810970}
-  - component: {fileID: 8813317732387250473}
+  - component: {fileID: -1238261116034693109}
   m_Layer: 0
   m_Name: Brick
   m_TagString: Untagged
@@ -135,7 +135,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8813317732387250473
+--- !u!114 &-1238261116034693109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,3 +147,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d261d81775e07b743bf951b2781592e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroySound: {fileID: 8300000, guid: a089617e76a266c44934b53a5b4e93ec, type: 3}
