@@ -4,11 +4,11 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Ball
-  - DeadZone
-  - Wall
   - Emblema
   - Brick
+  - Wall
+  - DeadZone
+  - Ball
   layers:
   - Default
   - TransparentFX
@@ -16,6 +16,7 @@ TagManager:
   - 
   - Water
   - UI
+  - Botones
   - 
   - 
   - 
@@ -39,8 +40,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - XR Simulation
   - 
   m_SortingLayers:
   - name: Default

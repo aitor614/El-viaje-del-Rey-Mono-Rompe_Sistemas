@@ -5,7 +5,7 @@ public class Ball : MonoBehaviour
 
     private Rigidbody2D rigidBody2D;
 
-    public float speed = 300;
+    public float speed;
 
     private Vector2 velocity;
 
@@ -16,15 +16,14 @@ public class Ball : MonoBehaviour
     private void Awake()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
-        startPosition = transform.position;
     }
 
     void Start()
     {
         control = ControlBreakout.InstanciaControl;
+        startPosition = transform.position;
         ResetBall();
     }
-
 
     private void Update()
     {
@@ -36,7 +35,7 @@ public class Ball : MonoBehaviour
         Vector2 velocity = rigidBody2D.linearVelocity;
 
         float velocidadActual = velocity.magnitude;
-        float velocidadMinima = 10f; 
+        float velocidadMinima = speed; 
 
         if (velocidadActual < velocidadMinima)
         {

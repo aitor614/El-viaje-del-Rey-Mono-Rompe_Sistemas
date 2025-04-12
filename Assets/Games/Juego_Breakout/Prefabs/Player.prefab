@@ -176,4 +176,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigiBody2D: {fileID: 5678847272960754060}
+  inputActions: {fileID: 0}
+  moverAccion:
+    m_Name: Mover Accion
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: dad65240-5bbd-4c5e-a20c-75e829b0bb51
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   moveSpeed: 25

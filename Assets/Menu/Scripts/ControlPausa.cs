@@ -23,6 +23,7 @@ public class ControlPausa : MonoBehaviour
             SceneManager.LoadScene("MenuPausa", LoadSceneMode.Additive);
             menuCargado = true;
         }
+        Debug.Log("Pausa");
     }
 
     // Función para reanudar el juego pausado

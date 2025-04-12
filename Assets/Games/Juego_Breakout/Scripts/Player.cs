@@ -16,8 +16,6 @@ public class Player : MonoBehaviour
     private Vector2 startPosition;
 
     private Vector3 targetPosition;
-    private bool hasTarget = false;
-
     private ControlBreakout control;
 
     private void Start()
