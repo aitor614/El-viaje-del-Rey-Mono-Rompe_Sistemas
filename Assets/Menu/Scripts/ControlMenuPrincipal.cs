@@ -74,6 +74,7 @@ public class ControlMenuPrincipal : MonoBehaviour
     {
         if (scene.name == "MenuPrincipal")
         {
+            Screen.orientation = ScreenOrientation.Portrait;
             // Asignar los botones al script
             BtnSalirJuego = GameObject.Find("BtnSalirJuego") != null ? GameObject.Find("BtnSalirJuego").GetComponent<Button>() : null;
             BtnPlayViaje = GameObject.Find("BtnPlayViaje") != null ? GameObject.Find("BtnPlayViaje").GetComponent<Button>() : null;

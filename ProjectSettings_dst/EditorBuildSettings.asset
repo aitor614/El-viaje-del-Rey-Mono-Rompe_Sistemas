@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menus/MenuPrincipal.unity
+    guid: b0e017369d9ea5041a82e5d4b3404ea3
+  - enabled: 1
+    path: Assets/Scenes/Juegos/Juego2DGolpeBaston.unity
+    guid: 7da38e71496b34149b5f40f968b66784
+  - enabled: 1
+    path: Assets/Scenes/Transiciones/GameOver.unity
+    guid: cec19a7cd3cd1664aa3080f4e6d039d4
+  - enabled: 1
+    path: Assets/Scenes/Transiciones/YouWin.unity
+    guid: 202d2da720618054f859c29baf67e2ff
+  - enabled: 1
+    path: Assets/Scenes/Transiciones/EscenaFInal.unity
+    guid: 28f55cf9973577b4fbb5a8dcd89b05bb
+  - enabled: 1
+    path: Assets/Scenes/Menus/MenuPausa.unity
+    guid: 84acfda7fad4f4242b59c30417b09379
+  - enabled: 1
+    path: Assets/Scenes/Juegos/JuegoAREspiritusDesencarnados.unity
+    guid: 0c5fa6c4e3a57e94095f287e0384a6aa
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: cbe0f705ada4b894fab9628cbb09d3f8, type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 83441d4cda9b4434abacc2c58969a0f2, type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 8adececb9ff84674d816d3961f742f6b, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 7a48652a70cdec94bae21b45cc1e6c68, type: 2}
+  m_UseUCBPForAssetBundles: 0

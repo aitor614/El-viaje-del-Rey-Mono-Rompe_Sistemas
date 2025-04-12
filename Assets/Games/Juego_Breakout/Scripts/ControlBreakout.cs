@@ -8,7 +8,6 @@ public class ControlBreakout : MonoBehaviour
 {
     public static ControlBreakout InstanciaControl { get; private set; }
     private ControlMenuPrincipal controlMenuPrincipal;
-    private ControlPausa controlPausa;
 
     public int vidas = 3;
 
@@ -34,11 +33,6 @@ public class ControlBreakout : MonoBehaviour
     {
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
-
-        // Asigna ballScript si ya existe en escena
-        ball = FindFirstObjectByType<Ball>();
-        player = FindFirstObjectByType<Player>();
-        bricks = FindObjectsByType<Brick>(FindObjectsSortMode.None);
     }
 
     // Función para ejecutar en cada frame
@@ -59,16 +53,6 @@ public class ControlBreakout : MonoBehaviour
             controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
         }
 
-    }
-
-    // Función para pausar el juego
-    public void Pausar()
-    {
-        controlPausa = ControlPausa.InstanciaControl;
-        if (controlPausa != null)
-        {
-            controlPausa.Pausar();
-        }
     }
 
     // Función para controlar el tiempo
