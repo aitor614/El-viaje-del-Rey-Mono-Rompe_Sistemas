@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     private Vector3 targetPosition;
     private ControlBreakout control;
 
+    public AudioClip destroySound;
+
     private void Start()
     {
         startPosition = transform.position;
@@ -73,6 +75,7 @@ public class Player : MonoBehaviour
         // Si el jugador colisiona con la bola no le afecta
         if (collision.gameObject.CompareTag("Ball"))
         {
+            AudioSource.PlayClipAtPoint(destroySound, transform.position);
             //direction = Vector2.zero;
             //rigiBody2D.linearVelocity = Vector2.zero;
             //rigiBody2D.angularVelocity = 0;
