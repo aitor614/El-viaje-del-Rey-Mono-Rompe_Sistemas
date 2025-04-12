@@ -12,11 +12,18 @@ public class ScoreManagerAltura : MonoBehaviour
 
     void Start()
     {
-        // Asignar automáticamente si no está configurado desde el Inspector
+        // Buscar automáticamente el Player si no está asignado
         if (player == null)
         {
             GameObject p = GameObject.FindGameObjectWithTag("Player");
             if (p != null) player = p.transform;
+        }
+
+        // Buscar automáticamente el ScoreText si no está asignado
+        if (scoreText == null)
+        {
+            GameObject txt = GameObject.Find("ScoreText");
+            if (txt != null) scoreText = txt.GetComponent<TextMeshProUGUI>();
         }
 
         if (player != null)
@@ -25,7 +32,7 @@ public class ScoreManagerAltura : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
+        if (player == null || scoreText == null) return;
 
         if (player.position.y > maxYReached)
         {
@@ -33,6 +40,28 @@ public class ScoreManagerAltura : MonoBehaviour
             score = Mathf.FloorToInt(maxYReached * pointsPerUnit);
             scoreText.text = "Puntos: " + score;
         }
+    }
+
+    public void Initialize()
+    {
+        if (player == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) player = p.transform;
+        }
+
+        if (scoreText == null)
+        {
+            GameObject txt = GameObject.Find("ScoreText");
+            if (txt != null) scoreText = txt.GetComponent<TextMeshProUGUI>();
+        }
+
+        if (player != null)
+            maxYReached = player.position.y;
+
+        score = 0;
+        if (scoreText != null)
+            scoreText.text = "Puntos: 0";
     }
 
     public int GetScore()
@@ -44,6 +73,8 @@ public class ScoreManagerAltura : MonoBehaviour
     {
         score -= amount;
         if (score < 0) score = 0;
-        scoreText.text = "Puntos: " + score;
+
+        if (scoreText != null)
+            scoreText.text = "Puntos: " + score;
     }
 }

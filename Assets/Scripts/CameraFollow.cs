@@ -6,6 +6,15 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
 
+    void Start()
+    {
+        if (target == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) target = p.transform;
+        }
+    }
+
     void LateUpdate()
     {
         if (target.position.y > transform.position.y)
