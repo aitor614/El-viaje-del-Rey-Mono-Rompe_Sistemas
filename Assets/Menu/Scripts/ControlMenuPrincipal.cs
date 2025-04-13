@@ -194,6 +194,8 @@ public class ControlMenuPrincipal : MonoBehaviour
         {
             // Cargar la siguiente escena de minijuego
             escenaActual = escenasMinijuegos[indiceActual];
+            PlayerPrefs.SetString("EscenaActual", escenaActual);
+            PlayerPrefs.Save();
             SceneManager.LoadScene(escenasMinijuegos[indiceActual]);
         }
         else
