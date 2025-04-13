@@ -12,14 +12,11 @@ public class ControlInfierno : MonoBehaviour
     [Header("Elementos de la escena")]
     public PlayerInfierno player;
 
-    [Header("Scripts")]
-    //public Temp tempScript;
-
     [Header("Parámetros")]
     public Vector3 startPosition;
     public float tiempoRestante;
     public int puntuacionVictoria;
-    public int puntosAltura = 10;
+    public int puntosAltura;
 
     // Variables
     private int vidas = 3;
@@ -115,27 +112,6 @@ public class ControlInfierno : MonoBehaviour
             }
         }
 
-    }
-
-    // Función para el control de vidas
-    public void PerderVida()
-    {
-        Debug.Log("Perdiendo vida...");
-        vidas--;
-        ActualizarVidas();
-        // Si el jugador pierde todas las vidas, el juego termina con derrota
-        if (vidas <= 0)
-        {
-            Debug.Log("No quedan vidas. Fin del juego.");
-            GuardarPuntos();
-            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
-        }
-        // Si el jugador aún tiene vidas, se reinician los objetos
-        else
-        {
-            Debug.Log("Reiniciando jugador...");
-            RespawnPlayer();
-        }
     }
 
     // Actualiza el contador de saltos

@@ -2,60 +2,63 @@ using UnityEngine;
 
 public class RunTowardsPlayer : MonoBehaviour
 {
-    public Transform target;
-    public float speed = 5f;
-    public float attackDistance = 1.5f;
-    public int damage = 10;
-    public float attackCooldown = 2f;
+    [Header("Componentes")]
+    public Transform objetivo;
+    public Animator animador;
 
-    private Vector3 targetOffset;
+    [Header("Parámetros")]
+    public float offsetAlturaObjetivo;
+    public float velocidad;
+    public float distanciaAtaque;
+    public int fuerzaAtaque;
+    public float enfriamientoAtaque;
+
+    // Variables
     private float lastAttackTime;
-
-    private Animator animator;
     private bool hasAttacked = false;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
 
-        if (target != null)
-        {
-            float offsetRange = 1.5f;
-            Vector2 randomOffset = Random.insideUnitCircle * offsetRange;
-
-            targetOffset = new Vector3(
-                target.position.x + randomOffset.x,
-                transform.position.y,
-                target.position.z + randomOffset.y
-            );
-        }
     }
 
     void Update()
     {
-        float distance = Vector3.Distance(transform.position, target.position);
+        if (objetivo == null) return;
 
-        if (distance > attackDistance)
+        // Calcula la posición corregida del objetivo con altura ajustable
+        Vector3 posicionObjetivo = new(
+            objetivo.position.x,
+            objetivo.position.y + offsetAlturaObjetivo,
+            objetivo.position.z
+        );
+
+        float distance = Vector3.Distance(transform.position, posicionObjetivo);
+
+        if (distance > distanciaAtaque)
         {
-            // Movimiento
-            transform.position = Vector3.MoveTowards(transform.position, targetOffset, speed * Time.deltaTime);
-            transform.LookAt(new Vector3(targetOffset.x, transform.position.y, targetOffset.z));
+            Vector3 direccion = (posicionObjetivo - transform.position).normalized;
+
+            transform.position += Time.deltaTime * velocidad * direccion;
+
+            // Mira directamente al objetivo con la altura corregida
+            transform.LookAt(posicionObjetivo);
         }
         else
         {
             // Atacar si está cerca
             if (!hasAttacked)
             {
-                animator.SetTrigger("AttackTrigger");
-                hasAttacked = true; // evita que se repita la animación todo el rato
+                animador?.SetTrigger("AttackTrigger");
+                hasAttacked = true;
             }
 
-            if (Time.time - lastAttackTime >= attackCooldown)
+            if (Time.time - lastAttackTime >= enfriamientoAtaque)
             {
-                PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+                PlayerHealth playerHealth = objetivo.GetComponent<PlayerHealth>();
                 if (playerHealth != null)
                 {
-                    playerHealth.TakeDamage(damage);
+                    playerHealth.TakeDamage(fuerzaAtaque);
                 }
 
                 lastAttackTime = Time.time;

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +9,9 @@ public class ControlPausa : MonoBehaviour
     private bool menuCargado = false;
 
     private ControlAR controlAR;
+    private ControlVR controlVR;
     private bool arEstabaActivo = false;
+    private bool vrEstabaActivo = false;
 
     private void Awake()
     {
@@ -19,6 +22,8 @@ public class ControlPausa : MonoBehaviour
     {
         // Buscar automáticamente el ControlAR en la escena si existe
         controlAR = FindFirstObjectByType<ControlAR>();
+        // Buscar automáticamente el ControlVR en la escena si existe
+        controlVR = FindFirstObjectByType<ControlVR>();
     }
 
     public void Pausar()
@@ -33,6 +38,13 @@ public class ControlPausa : MonoBehaviour
                 Debug.Log("AR pausado por el sistema de pausa.");
             }
 
+            if (controlVR != null)
+            {
+                controlVR.DesactivarVR();
+                vrEstabaActivo = true;
+                Debug.Log("VR pausado por el sistema de pausa.");
+            }
+
             // Cargar la escena del menú de pausa
             Time.timeScale = 0f;
             SceneManager.LoadScene("MenuPausa", LoadSceneMode.Additive);
@@ -42,6 +54,9 @@ public class ControlPausa : MonoBehaviour
         }
 
         Debug.Log("Pausa activada.");
+        if(PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados" ||
+              PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial")
+            StartCoroutine(AsignarCamaraAlCanvas());
     }
 
     public void Reanudar()
@@ -56,6 +71,13 @@ public class ControlPausa : MonoBehaviour
             arEstabaActivo = false;
             Debug.Log("AR reanudado tras pausa.");
         }
+        if (vrEstabaActivo && controlVR != null)
+        {
+            controlVR.ActivarVR();
+            vrEstabaActivo = false;
+            Debug.Log("VR reanudado tras pausa.");
+        }
+
     }
 
     public void Reiniciar()
@@ -67,6 +89,12 @@ public class ControlPausa : MonoBehaviour
         {
             controlAR.DesactivarAR();
             arEstabaActivo = false;
+        }
+
+        if (controlVR != null)
+        {
+            controlVR.DesactivarVR();
+            vrEstabaActivo = false;
         }
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -83,6 +111,30 @@ public class ControlPausa : MonoBehaviour
             arEstabaActivo = false;
         }
 
+        if (controlVR != null)
+        {
+            controlVR.DesactivarVR();
+            vrEstabaActivo = false;
+        }
+
         SceneManager.LoadScene("MenuPrincipal");
+    }
+
+    private IEnumerator AsignarCamaraAlCanvas()
+    {
+        // Espera 1 frame para asegurar que la escena está cargada
+        yield return null;
+
+        Scene escenaPausa = SceneManager.GetSceneByName("MenuPausa");
+
+        foreach (GameObject rootObj in escenaPausa.GetRootGameObjects())
+        {
+            Canvas canvas = rootObj.GetComponentInChildren<Canvas>(true);
+            if (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceCamera)
+            {
+                canvas.worldCamera = Camera.main;
+                Debug.Log("Cámara principal asignada al canvas del menú de pausa.");
+            }
+        }
     }
 }

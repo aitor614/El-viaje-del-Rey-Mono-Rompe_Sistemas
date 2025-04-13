@@ -98,8 +98,6 @@ public class ControlEspiritus : MonoBehaviour
         }
     }
 
-
-
     private void OnDestroy()
     {
         controlAR.DesactivarAR();

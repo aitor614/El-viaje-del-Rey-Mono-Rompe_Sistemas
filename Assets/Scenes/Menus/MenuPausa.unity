@@ -423,7 +423,8 @@ MonoBehaviour:
   m_text: pausa
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a66a27f6443e01646ad0382c27fcdcad, type: 2}
-  m_sharedMaterial: {fileID: -6730622412547054013, guid: a66a27f6443e01646ad0382c27fcdcad, type: 2}
+  m_sharedMaterial: {fileID: -6730622412547054013, guid: a66a27f6443e01646ad0382c27fcdcad,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -556,7 +557,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3286278211245596891, guid: d6750eb998d244b468ef8ec0bb7184b6, type: 3}
+  m_Sprite: {fileID: -3286278211245596891, guid: d6750eb998d244b468ef8ec0bb7184b6,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -634,7 +636,8 @@ MonoBehaviour:
   m_text: el rey mono
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a66a27f6443e01646ad0382c27fcdcad, type: 2}
-  m_sharedMaterial: {fileID: -6730622412547054013, guid: a66a27f6443e01646ad0382c27fcdcad, type: 2}
+  m_sharedMaterial: {fileID: -6730622412547054013, guid: a66a27f6443e01646ad0382c27fcdcad,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -990,7 +993,8 @@ MonoBehaviour:
   m_text: Reanudar juego
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d5f133b7d484f9246982b0c5a3abc7c1, type: 2}
-  m_sharedMaterial: {fileID: 6948854969402970136, guid: d5f133b7d484f9246982b0c5a3abc7c1, type: 2}
+  m_sharedMaterial: {fileID: 6948854969402970136, guid: d5f133b7d484f9246982b0c5a3abc7c1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1081,7 +1085,8 @@ MonoBehaviour:
   m_text: Reiniciar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d5f133b7d484f9246982b0c5a3abc7c1, type: 2}
-  m_sharedMaterial: {fileID: 6948854969402970136, guid: d5f133b7d484f9246982b0c5a3abc7c1, type: 2}
+  m_sharedMaterial: {fileID: 6948854969402970136, guid: d5f133b7d484f9246982b0c5a3abc7c1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1226,7 +1231,8 @@ MonoBehaviour:
   m_text: "Men\xFA principal"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d5f133b7d484f9246982b0c5a3abc7c1, type: 2}
-  m_sharedMaterial: {fileID: 6948854969402970136, guid: d5f133b7d484f9246982b0c5a3abc7c1, type: 2}
+  m_sharedMaterial: {fileID: 6948854969402970136, guid: d5f133b7d484f9246982b0c5a3abc7c1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

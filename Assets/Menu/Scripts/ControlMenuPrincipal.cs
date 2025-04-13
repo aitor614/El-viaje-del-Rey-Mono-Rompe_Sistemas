@@ -40,12 +40,14 @@ public class ControlMenuPrincipal : MonoBehaviour
     // Inicializar el script
     void Start()
     {
+        PlayerPrefs.SetString("EscenaActual", "");
+        PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
         resultadoMinijuego = ResultadoMinijuego.Menu;
 
         // Asignar funciones a los botones
         BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
-        BtnPlayViaje.onClick.AddListener(Click_JuegoInfierno);
+        BtnPlayViaje.onClick.AddListener(Click_JugarTodos);
         BtnPlayInfierno.onClick.AddListener(Click_JuegoInfierno);
         BtnPlayHuida.onClick.AddListener(Click_JuegoHuida);
         BtnPlayBaston.onClick.AddListener(Click_JuegoBaston);
@@ -128,6 +130,8 @@ public class ControlMenuPrincipal : MonoBehaviour
     {
         modoActual = ModoJuego.Individual;
         escenaActual = nombreEscena;
+        PlayerPrefs.SetString("EscenaActual", nombreEscena);
+        PlayerPrefs.Save();
         SceneManager.LoadScene(nombreEscena);
     }
 
