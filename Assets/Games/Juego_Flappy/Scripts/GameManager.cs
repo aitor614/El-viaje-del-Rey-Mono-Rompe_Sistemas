@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private Player player;
+    [SerializeField] private FlappyPlayer player;
     [SerializeField] private Spawner spawner;
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject playButton;
@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     public int score { get; private set; } = 0;
 
-    private void Awake()
+    public void Awake()
     {
         if (Instance != null)
         {
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
         if (Instance == this)
         {
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Start()
     {
         Pause();
     }

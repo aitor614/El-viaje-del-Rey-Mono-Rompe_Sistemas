@@ -7,21 +7,21 @@ public class FlappyPlayer : MonoBehaviour
     public float gravity = -9.81f;
     public float tilt = 5f;
 
-    private SpriteRenderer spriteRenderer;
-    private Vector3 direction;
-    private int spriteIndex;
+    public SpriteRenderer spriteRenderer;
+    public Vector3 direction;
+    public int spriteIndex;
 
-    private void Awake()
+    public void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Start()
+    public void Start()
     {
         InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         Vector3 position = transform.position;
         position.y = 0f;
@@ -29,7 +29,7 @@ public class FlappyPlayer : MonoBehaviour
         direction = Vector3.zero;
     }
 
-    private void Update()
+    public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
@@ -46,7 +46,7 @@ public class FlappyPlayer : MonoBehaviour
         transform.eulerAngles = rotation;
     }
 
-    private void AnimateSprite()
+    public void AnimateSprite()
     {
         spriteIndex++;
 
@@ -61,7 +61,7 @@ public class FlappyPlayer : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Obstacle"))
         {

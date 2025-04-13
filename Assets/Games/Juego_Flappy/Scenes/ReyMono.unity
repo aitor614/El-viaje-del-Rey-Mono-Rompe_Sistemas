@@ -426,7 +426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f40323b4599725449bd5ea29327985ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 1171813586}
+  spawner: {fileID: 602110129}
   scoreText: {fileID: 1132232796}
   playButton: {fileID: 1867407891}
   gameOver: {fileID: 842886459}
@@ -833,8 +834,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites: []
-  gravity: -9.8
   strength: 5
+  gravity: -9.8
+  tilt: 5
+  spriteRenderer: {fileID: 0}
+  direction: {x: 0, y: 0, z: 0}
+  spriteIndex: 0
 --- !u!58 &1171813587
 CircleCollider2D:
   m_ObjectHideFlags: 0
