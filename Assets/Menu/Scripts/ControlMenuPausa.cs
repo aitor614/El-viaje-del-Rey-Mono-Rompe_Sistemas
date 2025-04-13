@@ -3,15 +3,21 @@ using UnityEngine;
 
 public class ControlMenuPausa : MonoBehaviour
 {
+    [Header("Controles")]
     public ControlPausa controlPausa;
+    [Header("Componentes")]
     public TextMeshProUGUI textoPausa;
+    [Header("Colores")]
     public int r = 255, g = 0, b = 0;
     public bool rojo = true, verde = false, azul = false;
+
+    // Variables
     private float hue = 0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+       
         controlPausa = ControlPausa.InstanciaControl;
         // Inicializa el texto de pausa
         textoPausa = FindFirstObjectByType<TextMeshProUGUI>();

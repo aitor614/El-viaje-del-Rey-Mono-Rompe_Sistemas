@@ -946,11 +946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1339ff67622cb9448beaa6fcc7cc189f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grosor: 1
   izquierda: {fileID: 1884021912}
   derecha: {fileID: 398785409}
   arriba: {fileID: 668189059}
   abajo: {fileID: 1922752302}
+  grosor: 1
+  solapamiento: 0
 --- !u!4 &1111795100
 Transform:
   m_ObjectHideFlags: 0

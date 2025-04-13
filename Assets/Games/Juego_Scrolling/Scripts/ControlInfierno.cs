@@ -74,11 +74,21 @@ public class ControlInfierno : MonoBehaviour
         if (player == null) return;
 
         float yActual = player.transform.position.y;
-        if (yActual - alturaAlcanzada > 1f)
+
+        // Altura relativa desde el punto de partida
+        float alturaRelativa = yActual - startPosition.y;
+
+        // Asegurarse de que solo se registra si ha superado la marca anterior
+        if (alturaRelativa > alturaAlcanzada + 1f)
         {
-            alturaAlcanzada = yActual;
-            puntuacion = Mathf.FloorToInt(alturaAlcanzada * puntosAltura);
+            alturaAlcanzada = alturaRelativa;
+
+            // Asegurar que la puntuación también es siempre positiva
+            puntuacion = Mathf.FloorToInt(Mathf.Max(0f, alturaRelativa) * puntosAltura);
+
+            // Guardar la altura relativa
             PlayerPrefs.SetFloat("AlturaMaxima", alturaAlcanzada);
+            PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
             PlayerPrefs.Save();
         }
     }

@@ -3,40 +3,49 @@ using TMPro;
 
 public class ScoreManagerAltura : MonoBehaviour
 {
+    [Header("Componentes")]
     public PlayerInfierno player;
+    public Transform posicionPlayer;
+
+    [Header("Parámetros")]
     public int pointsPerUnit = 10;
+
     private float maxYReached = 0f;
     private int score = 0;
-    public Transform posicionPlayer;
     int scorePrevio;
+    float alturaInicial;
+
 
     void Start()
     {
-        // Asignar automáticamente si no está configurado desde el Inspector
-        if (player == null)
-        {
-            if (player != null) posicionPlayer = player.transform;
-        }
-
         if (player != null)
-            maxYReached = posicionPlayer.position.y;
+        {
+            posicionPlayer = player.transform;
+            alturaInicial = posicionPlayer.position.y;
+            maxYReached = alturaInicial;
+        }
     }
 
     void Update()
     {
         if (player == null) return;
-        if (posicionPlayer.position.y > maxYReached)
+
+        float yActual = posicionPlayer.position.y;
+
+        if (yActual > maxYReached)
         {
-            maxYReached = posicionPlayer.position.y;
-            score = Mathf.FloorToInt(maxYReached * pointsPerUnit);
+            maxYReached = yActual;
+
+            float diferenciaAltura = maxYReached - alturaInicial;
+            score = Mathf.FloorToInt(diferenciaAltura * pointsPerUnit);
         }
+
         if (score > scorePrevio + 10)
         {
             PlayerPrefs.SetInt("PuntuacionPartida", score);
+            PlayerPrefs.Save();
             scorePrevio = score;
         }
-
-        scorePrevio = score;
     }
 
     public int GetScore()
