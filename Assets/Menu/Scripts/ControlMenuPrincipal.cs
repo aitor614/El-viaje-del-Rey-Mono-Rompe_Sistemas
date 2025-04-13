@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +12,7 @@ public class ControlMenuPrincipal : MonoBehaviour
     public enum ModoJuego { Individual, Continuo }
     public ModoJuego modoActual;
 
-    public enum ResultadoMinijuego { Exito, Derrota, Reiniciar, Menu, Salir }
+    public enum ResultadoMinijuego { Exito, Derrota, Reiniciar, Menu, Salir, Premio }
     public ResultadoMinijuego resultadoMinijuego;
 
     private string escenaActual = "";
@@ -199,6 +200,8 @@ public class ControlMenuPrincipal : MonoBehaviour
         }
     }
 
+
+
     // Funcion para procesar el resultado del minijuego
     public void ProcesarResultado(ResultadoMinijuego resultado)
     {
@@ -206,8 +209,8 @@ public class ControlMenuPrincipal : MonoBehaviour
         resultadoMinijuego = resultado;
         if (resultado == ResultadoMinijuego.Exito)
         {
-            // Cargar la escena de éxito
-            SceneManager.LoadScene("YouWin");
+            // Carga la escena de PremioBreakout
+            SceneManager.LoadScene("PremioBreakout");
         }
         else if (resultado == ResultadoMinijuego.Derrota)
         {
@@ -224,6 +227,11 @@ public class ControlMenuPrincipal : MonoBehaviour
             // Volver al menú principal
             escenaActual = "MenuPrincipal";
             SceneManager.LoadScene("MenuPrincipal");
+        }
+        else if (resultado == ResultadoMinijuego.Premio)
+        {
+            // Cargar la escena de premio
+            SceneManager.LoadScene("PremioBreakout");
         }
         else if (resultado == ResultadoMinijuego.Salir)
         {
