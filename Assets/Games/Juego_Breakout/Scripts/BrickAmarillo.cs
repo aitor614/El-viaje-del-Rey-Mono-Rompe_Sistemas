@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Brick : MonoBehaviour
+public class BrickAmarillo : BrickBase
 {
     private ControlBreakout control;
 
@@ -15,10 +15,9 @@ public class Brick : MonoBehaviour
         {
             Destroy(gameObject);
             // Incrementa la puntuación en 10 al destruir un ladrillo
-            control.SumarPuntuacion(10); 
+            PlayerPrefs.SetInt("Ladrillos", PlayerPrefs.GetInt("Ladrillos") + 1);
+            PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 10);
+            PlayerPrefs.Save();
         }
-
-
     }
-
 }

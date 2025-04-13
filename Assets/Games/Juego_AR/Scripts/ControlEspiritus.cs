@@ -11,14 +11,19 @@ using System;
 
 public class ControlEspiritus : MonoBehaviour
 {
-    [SerializeField] private ControlAR controlAR;
-    [SerializeField] private int tiempoDeEspera;
-    [SerializeField] private SpawnerEspiritus spawnerEspiritus;
-    [SerializeField] private ControlMenuPrincipal controlMenuPrincipal;
-    [SerializeField] private ControlHud controlHud;
-    [SerializeField] private int puntuacionVictoria;
+    [Header("Controles")]
+    public ControlAR controlAR;
+    public SpawnerEspiritus spawnerEspiritus;
+    public ControlMenuPrincipal controlMenuPrincipal;
+    public ControlHud controlHud;
 
+    [Header("Parámetros")]
+    public int tiempoDeEspera;
+    public int puntuacionVictoria;
+    public int espiritusObjeto;
     public float tiempoRestante = 60f;
+
+    // Variables
     private int espiritus;
     private int puntuacion;
 
@@ -32,9 +37,8 @@ public class ControlEspiritus : MonoBehaviour
 
         PlayerPrefs.SetInt("Espiritus", 0);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
+        PlayerPrefs.SetInt("EspiritusObjeto", 0);
         PlayerPrefs.Save();
-
-
     }
 
     private void Update()
@@ -42,19 +46,19 @@ public class ControlEspiritus : MonoBehaviour
         espiritus = PlayerPrefs.GetInt("Espiritus");
         puntuacion = PlayerPrefs.GetInt("PuntuacionPartida");
         ActualizarPuntos();
-        ActualizarEspiritus(); 
+        ActualizarContador(); 
         RestarTiempo();
 
     }
 
-    private void ActualizarEspiritus()
+    private void ActualizarContador()
     {
-        controlHud.TxtContador.text = "ESPíRITUS: " + espiritus;
+        controlHud.ActualizarContador("ESPíRITUS", espiritus);
     }
 
     private void ActualizarPuntos()
     {
-        controlHud.TxtScore.text = "SCORE: " + puntuacion;
+        controlHud.ActualizarPuntos("SCORE", puntuacion);
     }
 
     private void GuardarPuntos()
@@ -71,7 +75,7 @@ public class ControlEspiritus : MonoBehaviour
         {
             tiempoRestante -= Time.deltaTime;
             if (tiempoRestante < 0) tiempoRestante = 0;
-            controlHud.TxtTime.text = tiempoRestante.ToString("f0");
+            controlHud.ActualizarTiempo(tiempoRestante);
         }
 
         if (tiempoRestante == 0)
@@ -79,6 +83,10 @@ public class ControlEspiritus : MonoBehaviour
             
             if (puntuacion > puntuacionVictoria)
             {
+                if (espiritus >= espiritusObjeto) {
+                    PlayerPrefs.SetInt("ObjetoEspiritus", 1);
+                    PlayerPrefs.Save();
+                }
                 GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
             }

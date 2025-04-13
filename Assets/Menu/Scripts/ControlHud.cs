@@ -24,4 +24,34 @@ public class ControlHud : MonoBehaviour
     {
         
     }
+
+    public void ActualizarContador(string nombreContador, int contador)
+    {
+        TxtContador.text = nombreContador + ": " + contador;
+    }
+
+    public void ActualizarPuntos(string nombrePuntos, int puntos)
+    {
+        TxtScore.text = nombrePuntos + ": " + puntos;
+    }
+
+    public void ActualizarTiempo(float tiempo)
+    {
+        TxtTime.text = tiempo.ToString("f0");
+    }
+
+    public void ActualizarEmblemas(int cantidadEmblemas)
+    {
+        for (int i = 0; i < Emblemas.Length; i++)
+        {
+            if (i < cantidadEmblemas)
+            {
+                Emblemas[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                Emblemas[i].gameObject.SetActive(false);
+            }
+        }
+    }
 }

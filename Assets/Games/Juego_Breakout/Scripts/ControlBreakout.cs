@@ -6,20 +6,27 @@ using UnityEngine.UIElements;
 
 public class ControlBreakout : MonoBehaviour
 {
+    [Header("Controles")]
     public static ControlBreakout InstanciaControl { get; private set; }
     private ControlMenuPrincipal controlMenuPrincipal;
+    private ControlHud controlHud;
 
-    public int vidas = 3;
-
+    [Header("Elementos de la escena")]
     public Ball ball;
-    public Player player;
-    public Brick[] bricks;
-    public Temp tempScript;
-    public Emblema[] emblemas;
-    public TextMeshProUGUI TxtScore;
+    public PlayerBaston player;
 
-    public float tiempoRestante = 30f;
-    public int puntuacion = 0;
+    [Header("Scripts")]
+    public Temp tempScript;
+
+    [Header("Parámetros")]
+    public float tiempoRestante;
+    public int objetivoLadrillos;
+    public int puntuacionVictoria;
+
+    // Variables
+    private int vidas = 3;
+    private int puntuacion = 0;
+    private int ladrillosRotos = 0;
 
     // Funcion para inicializar el script
     void Awake()
@@ -31,15 +38,27 @@ public class ControlBreakout : MonoBehaviour
     // Función para ejecutar al inicio
     void Start()
     {
-        controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+        controlHud = ControlHud.InstanciaControl;
+        controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
+        PlayerPrefs.SetInt("VidasRestantes", vidas);
+        PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
+        PlayerPrefs.SetInt("Ladrillos", ladrillosRotos);
+        PlayerPrefs.SetInt("ObjetoBaston", 0);
+        PlayerPrefs.Save();
     }
 
     // Función para ejecutar en cada frame
     void Update()
     {
+        puntuacion = PlayerPrefs.GetInt("PuntuacionPartida");
+        ladrillosRotos = PlayerPrefs.GetInt("Ladrillos");
+
         RestarTiempo();
-        TxtScore.text = "SCORE: " + puntuacion.ToString();
+        ActualizarPuntos();
+        ActualizarContador();
+        CheckVida();
+
         // Si el jugador presiona la tecla Escape, se muestra el menú principal
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
@@ -47,12 +66,29 @@ public class ControlBreakout : MonoBehaviour
         }
 
         // Si se han roto todos los bloques, se gana el juego
-        if (bricks.Length == 0)
+        if (ladrillosRotos == objetivoLadrillos)
         {
+            PlayerPrefs.SetInt("ObjetoBaston", 1);
+            PlayerPrefs.Save();
             GuardarPuntos();
             controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
         }
 
+    }
+
+    private void ActualizarContador()
+    {
+        controlHud.ActualizarContador("LADRILLOS", ladrillosRotos);
+    }
+
+    private void ActualizarPuntos()
+    {
+        controlHud.ActualizarPuntos("SCORE", puntuacion);
+    }
+
+    private void ActualizarVidas()
+    {
+        controlHud.ActualizarContador("VIDAS", vidas);
     }
 
     // Función para controlar el tiempo
@@ -71,7 +107,7 @@ public class ControlBreakout : MonoBehaviour
         if (tiempoRestante == 0)
         {
             // Si la la puntuación es mayor a 50, se gana el juego
-            if (puntuacion > 50)
+            if (puntuacion > puntuacionVictoria)
             {
                 GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
@@ -87,28 +123,28 @@ public class ControlBreakout : MonoBehaviour
     }
 
     // Función para el control de vidas
-    public void PerderVida()
+    public void CheckVida()
     {
-        vidas--;
-        emblemas[vidas].Destruir();
-        // Si el jugador pierde todas las vidas, el juego termina con derrota
-        if (vidas <= 0)
+        
+        if (vidas != PlayerPrefs.GetInt("VidasRestantes"))
         {
-            ball.gameObject.SetActive(false);
-            GuardarPuntos();
-            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
+            vidas = PlayerPrefs.GetInt("VidasRestantes");
+            ActualizarVidas();
+            // Si el jugador pierde todas las vidas, el juego termina con derrota
+            if (vidas <= 0)
+            {
+                ball.gameObject.SetActive(false);
+                GuardarPuntos();
+                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
+            }
+            // Si el jugador aún tiene vidas, se reinician los objetos
+            else
+            {
+                Debug.Log("Reiniciando objetos.");
+                ResetObjetos();
+            }
         }
-        // Si el jugador aún tiene vidas, se reinician los objetos
-        else
-        {
-            ResetObjetos();
-        }
-    }
 
-    // Función para sumar puntos
-    public void SumarPuntuacion(int puntos)
-    {
-        puntuacion += puntos;
     }
 
     // Función para reiniciar objetos de juego

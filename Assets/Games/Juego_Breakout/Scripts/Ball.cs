@@ -2,16 +2,12 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-
-    private Rigidbody2D rigidBody2D;
-
+    [Header("Configuración de la bola")]
     public float speed;
 
-    private Vector2 velocity;
-
+    /// Variables
+    private Rigidbody2D rigidBody2D;
     private Vector2 startPosition;
-
-    private ControlBreakout control;
 
     private void Awake()
     {
@@ -20,7 +16,6 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        control = ControlBreakout.InstanciaControl;
         startPosition = transform.position;
         ResetBall();
     }
@@ -82,13 +77,15 @@ public class Ball : MonoBehaviour
 
             // Se aplica la nueva dirección a la bola
             rigidBody2D.linearVelocity = nuevaDireccion * rigidBody2D.linearVelocity.magnitude;
+
         }
 
 
         // Si la bola cae en la zona de muerte, se pierde una vida
         if (collision.gameObject.CompareTag("DeadZone"))
         {
-            control.PerderVida();
+            PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - 1);
+            PlayerPrefs.Save();
         }
     }
 
