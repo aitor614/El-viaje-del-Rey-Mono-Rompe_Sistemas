@@ -7,27 +7,12 @@ public class ScoreManagerAltura : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     public int pointsPerUnit = 10;
-    private float maxYReached = 0f;
-    private int score = 0;
+    private float maxYReached;
+    private int score;
 
     void Start()
     {
-        // Buscar automáticamente el Player si no está asignado
-        if (player == null)
-        {
-            GameObject p = GameObject.FindGameObjectWithTag("Player");
-            if (p != null) player = p.transform;
-        }
-
-        // Buscar automáticamente el ScoreText si no está asignado
-        if (scoreText == null)
-        {
-            GameObject txt = GameObject.Find("ScoreText");
-            if (txt != null) scoreText = txt.GetComponent<TextMeshProUGUI>();
-        }
-
-        if (player != null)
-            maxYReached = player.position.y;
+        ResetScore();
     }
 
     void Update()
@@ -42,7 +27,7 @@ public class ScoreManagerAltura : MonoBehaviour
         }
     }
 
-    public void Initialize()
+    public void ResetScore()
     {
         if (player == null)
         {
@@ -56,25 +41,12 @@ public class ScoreManagerAltura : MonoBehaviour
             if (txt != null) scoreText = txt.GetComponent<TextMeshProUGUI>();
         }
 
-        if (player != null)
-            maxYReached = player.position.y;
-
+        maxYReached = player != null ? player.position.y : 0f;
         score = 0;
+
         if (scoreText != null)
             scoreText.text = "Puntos: 0";
     }
 
-    public int GetScore()
-    {
-        return score;
-    }
-
-    public void SubtractPoints(int amount)
-    {
-        score -= amount;
-        if (score < 0) score = 0;
-
-        if (scoreText != null)
-            scoreText.text = "Puntos: " + score;
-    }
+    public int GetScore() => score;
 }

@@ -1,57 +1,66 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TimerManager : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
-    private float timeElapsed = 0f;
-    private bool isRunning = true;
+    public float startTimeInSeconds = 90f; // 1 minuto y medio
+    private float timeRemaining;
+    private bool isRunning;
 
     void Start()
     {
-        // Si no está asignado, lo busca por nombre
-        if (timerText == null)
-        {
-            GameObject txt = GameObject.Find("TimerText");
-            if (txt != null)
-                timerText = txt.GetComponent<TextMeshProUGUI>();
-        }
-
-        timeElapsed = 0f;
-        isRunning = true;
-
+        StartCountdown();
     }
 
     void Update()
     {
-        if (isRunning && timerText != null)
+        if (!isRunning || timerText == null) return;
+
+        timeRemaining -= Time.deltaTime;
+        if (timeRemaining <= 0f)
         {
-            timeElapsed += Time.deltaTime;
-            int minutes = Mathf.FloorToInt(timeElapsed / 60f);
-            int seconds = Mathf.FloorToInt(timeElapsed % 60f);
+            timeRemaining = 0f;
+            isRunning = false;
+            timerText.text = "00:00";
+
+            // Cambio a la escena de derrota
+            SceneManager.LoadScene("DefeatScene");
+        }
+        else
+        {
+            int minutes = Mathf.FloorToInt(timeRemaining / 60f);
+            int seconds = Mathf.FloorToInt(timeRemaining % 60f);
             timerText.text = $"{minutes:00}:{seconds:00}";
         }
     }
 
-    public void Initialize()
+    public void StartCountdown()
     {
+        timeRemaining = startTimeInSeconds;
+        isRunning = true;
+
         if (timerText == null)
         {
-            GameObject t = GameObject.Find("TimerText");
-            if (t != null) timerText = t.GetComponent<TextMeshProUGUI>();
+            GameObject txt = GameObject.Find("TimerText");
+            if (txt != null)
+            {
+                timerText = txt.GetComponent<TextMeshProUGUI>();
+                Debug.Log("TimerText asignado automáticamente.");
+            }
         }
 
-        timeElapsed = 0f;
-        isRunning = true;
+        if (timerText != null)
+        {
+            int minutes = Mathf.FloorToInt(timeRemaining / 60f);
+            int seconds = Mathf.FloorToInt(timeRemaining % 60f);
+            timerText.text = $"{minutes:00}:{seconds:00}";
+        }
     }
 
     public void StopTimer()
     {
         isRunning = false;
-    }
-
-    public float GetTime()
-    {
-        return timeElapsed;
     }
 }

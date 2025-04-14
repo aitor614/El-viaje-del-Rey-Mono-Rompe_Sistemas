@@ -1,18 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
-    public int maxLives = 3;
-    private int currentLives;
-    public LifeDisplay lifeDisplay;
-    private bool initialized = false;
-    private bool hasFallenThisLife = false;
-
-    private Vector3 startPosition;
 
     private void Awake()
     {
@@ -20,7 +11,6 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            currentLives = maxLives;
         }
         else
         {
@@ -38,117 +28,35 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void SetPlayerStartPosition()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            startPosition = player.transform.position;
-            Debug.Log("Start position actualizada: " + startPosition);
-        }
-    }
-
     public void PlayerFell()
     {
-        if (hasFallenThisLife) return;
-
-        hasFallenThisLife = true;
-        currentLives--;
-        Debug.Log("Vida perdida. Vidas restantes: " + currentLives);
-
-        if (lifeDisplay != null)
-        {
-            lifeDisplay.UpdateLives(currentLives);
-        }
-
-        if (currentLives > 0)
-        {
-            StartCoroutine(RespawnAfterDelay(1f)); // espera antes del respawn
-        }
-        else
-        {
-            StartCoroutine(LoadDefeatSceneWithDelay(1f)); // espera antes de cambiar de escena
-        }
-    }
-
-    private IEnumerator RespawnAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        RespawnPlayer();
-    }
-
-    private IEnumerator LoadDefeatSceneWithDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
         SceneManager.LoadScene("DefeatScene");
     }
 
-    private void RespawnPlayer()
+    public void RestartGame()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            player.transform.position = startPosition;
-
-            var rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
-            }
-
-            // Reiniciar cámara si tienes seguimiento
-            CameraFollow cam = FindAnyObjectByType<CameraFollow>();
-            if (cam != null)
-            {
-                cam.transform.position = new Vector3(cam.transform.position.x, startPosition.y, cam.transform.position.z);
-            }
-        }
-
-        hasFallenThisLife = false;
-    }
-
-    private void FindAndAssignLifeDisplay()
-    {
-        if (lifeDisplay == null)
-        {
-            lifeDisplay = Object.FindFirstObjectByType<LifeDisplay>();
-        }
-    }
-
-    private void InitializeIfNeeded()
-    {
-        if (initialized) return;
-
-        FindAndAssignLifeDisplay();
-
-        if (lifeDisplay != null)
-            lifeDisplay.UpdateLives(currentLives);
-
-        initialized = true;
+        SceneManager.LoadScene("SampleScene");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        InitializeIfNeeded();
-        SetPlayerStartPosition(); // NUEVO: cada vez que se carga la escena
+        if (scene.name == "SampleScene")
+        {
+            TimerManager timer = FindFirstObjectByType<TimerManager>();
+            if (timer != null)
+            {
+                Debug.Log("Reiniciando cronómetro");
+                timer.StartCountdown();
+            }
+            else
+            {
+                Debug.LogWarning("No se encontró TimerManager en escena.");
+            }
 
-        // Reasignar referencias manualmente después del cambio de escena
-        TimerManager timer = GetComponent<TimerManager>();
-        if (timer != null)
-            timer.Initialize();
-
-        ScoreManagerAltura scoreManager = GetComponent<ScoreManagerAltura>();
-        if (scoreManager != null)
-            scoreManager.Initialize();
-    }
-    public void ResetLives()
-    {
-        currentLives = maxLives;
-        hasFallenThisLife = false;
-
-        if (lifeDisplay != null)
-            lifeDisplay.UpdateLives(currentLives);
+            ScoreManagerAltura scoreManager = FindFirstObjectByType<ScoreManagerAltura>();
+            if (scoreManager != null)
+                scoreManager.ResetScore();
+        }
     }
 
-    public string gameSceneName = "SampleScene";
 }
