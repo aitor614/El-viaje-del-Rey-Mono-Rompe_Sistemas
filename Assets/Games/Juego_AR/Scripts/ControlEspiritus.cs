@@ -1,17 +1,10 @@
-﻿using System.Collections;
+﻿using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.Management;
-using Unity.XR.CoreUtils;
-using UnityEngine.EventSystems;
-using UnityEngine.XR.ARSubsystems;
-using System.Collections.Generic;
-using TMPro;
-using System;
 
 public class ControlEspiritus : MonoBehaviour
 {
     [Header("Controles")]
+    public ControlAR_Prueba _controlAR;
     public ControlAR controlAR;
     public SpawnerEspiritus spawnerEspiritus;
     public ControlMenuPrincipal controlMenuPrincipal;
@@ -21,11 +14,12 @@ public class ControlEspiritus : MonoBehaviour
     public int tiempoDeEspera;
     public int puntuacionVictoria;
     public int espiritusObjeto;
-    public float tiempoRestante = 60f;
+    public float tiempoRestante;
 
     // Variables
     private int espiritus;
     private int puntuacion;
+    private bool arActivado = false;
 
     void Start()
     {
@@ -33,8 +27,8 @@ public class ControlEspiritus : MonoBehaviour
         controlHud = ControlHud.InstanciaControl;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
-        controlAR.ActivarAR();
-
+        //controlAR.ActivarAR();
+        arActivado = true;
         PlayerPrefs.SetInt("Espiritus", 0);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("EspiritusObjeto", 0);
@@ -100,16 +94,24 @@ public class ControlEspiritus : MonoBehaviour
 
     private void OnDestroy()
     {
-        controlAR.DesactivarAR();
+        _controlAR.DesactivarAR();
+        //controlAR.DesactivarAR();
+        arActivado = false;
     }
 
     private void OnDisable()
     {
-        controlAR.DesactivarAR();
+        _controlAR.DesactivarAR();
+        //controlAR.DesactivarAR();
+        arActivado = false;
     }
 
     private void OnEnable()
     {
-        controlAR.ActivarAR();
+        if (!arActivado)
+        _controlAR.ActivarAR();
+
+        //controlAR.ActivarAR();
+        arActivado = true;
     }
 }

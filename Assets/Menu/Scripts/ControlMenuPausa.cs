@@ -5,8 +5,10 @@ public class ControlMenuPausa : MonoBehaviour
 {
     [Header("Controles")]
     public ControlPausa controlPausa;
+
     [Header("Componentes")]
     public TextMeshProUGUI textoPausa;
+
     [Header("Colores")]
     public int r = 255, g = 0, b = 0;
     public bool rojo = true, verde = false, azul = false;
@@ -21,6 +23,11 @@ public class ControlMenuPausa : MonoBehaviour
         controlPausa = ControlPausa.InstanciaControl;
         // Inicializa el texto de pausa
         textoPausa = FindFirstObjectByType<TextMeshProUGUI>();
+
+        if (PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial")
+        {
+            AdaptarCanvasParaVR();
+        }
     }
 
     // Función para reanudar el juego
@@ -57,4 +64,21 @@ public class ControlMenuPausa : MonoBehaviour
         textoPausa.color = nuevoColor;
     }
 
+    private void AdaptarCanvasParaVR()
+    {
+        if (!TryGetComponent<Canvas>(out var canvas)) return;
+
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.worldCamera = Camera.main;
+
+        // Poner el menú delante del jugador
+        Transform camara = Camera.main.transform;
+        canvas.transform.SetParent(camara);
+        // Ajustar la posición y rotación del canvas
+        canvas.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 2f), Quaternion.identity);
+        canvas.transform.localScale = Vector3.one * 0.0025f; // Ajusta según tamaño real
+
+        // Orden de renderizado alto para estar por delante del HUD
+        canvas.sortingOrder = 50;
+    }
 }

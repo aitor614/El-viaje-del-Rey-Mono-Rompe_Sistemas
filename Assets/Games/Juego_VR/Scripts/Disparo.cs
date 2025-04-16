@@ -1,21 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Google.XR.Cardboard;
 
 public class Disparo : MonoBehaviour
 {
     [Header("Componentes")]
     public GameObject proyectilPrefab; 
     public Transform puntoDisparo;
-    public InputActionReference disparoAction;
 
     [Header("Parámetros")]
-    public float fuerzaProyectil = 1000f;
-    public int maximoProyectiles = 10;
+    public float fuerzaProyectil;
+    public int maximoProyectiles;
 
     // Variables
     private List<GameObject> proyectiles; 
-
 
     void Update()
     {
@@ -26,23 +25,13 @@ public class Disparo : MonoBehaviour
         }
 #endif
 
-    }
+#if !UNITY_EDITOR
+        if (Api.IsTriggerHeldPressed)
+        {
+            RealizarDisparo();
+        }
+#endif
 
-    private void OnEnable()
-    {
-        if (disparoAction != null)
-            disparoAction.action.performed += OnDisparo;
-    }
-
-    private void OnDisable()
-    {
-        if (disparoAction != null)
-            disparoAction.action.performed -= OnDisparo;
-    }
-
-    private void OnDisparo(InputAction.CallbackContext ctx)
-    {
-        RealizarDisparo();
     }
 
     private void RealizarDisparo()

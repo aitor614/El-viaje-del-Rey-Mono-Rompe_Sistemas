@@ -6,13 +6,13 @@ using UnityEngine.XR.Management;
 using UnityEngine.Events;
 public class ControlAR : MonoBehaviour
 {
-    [SerializeField] private ARSession arSession;
-    [SerializeField] private XROrigin xrOrigin;
-    [SerializeField] private ARPlaneManager planeManager;
-    [SerializeField] private ARRaycastManager raycastManager;
-    [SerializeField] private ARCameraBackground arCameraBackground;
-    [SerializeField] private GameObject spawner;
-    [SerializeField] private GameObject interacciones;
+    public ARSession arSession;
+    public XROrigin xrOrigin;
+    public ARPlaneManager planeManager;
+    public ARRaycastManager raycastManager;
+    public ARCameraBackground arCameraBackground;
+    public GameObject spawner;
+    public GameObject interacciones;
 
 
     public void ActivarAR()

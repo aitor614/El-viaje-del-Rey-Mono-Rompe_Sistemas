@@ -9,7 +9,7 @@ public class ControlPausa : MonoBehaviour
     private bool menuCargado = false;
 
     private ControlAR controlAR;
-    private ControlVR controlVR;
+    private ControlCardBoard controlVR;
     private bool arEstabaActivo = false;
     private bool vrEstabaActivo = false;
 
@@ -23,7 +23,7 @@ public class ControlPausa : MonoBehaviour
         // Buscar automáticamente el ControlAR en la escena si existe
         controlAR = FindFirstObjectByType<ControlAR>();
         // Buscar automáticamente el ControlVR en la escena si existe
-        controlVR = FindFirstObjectByType<ControlVR>();
+        controlVR = FindFirstObjectByType<ControlCardBoard>();
     }
 
     public void Pausar()
@@ -40,7 +40,7 @@ public class ControlPausa : MonoBehaviour
 
             if (controlVR != null)
             {
-                controlVR.DesactivarVR();
+                controlVR.DesactivarCardBoard();
                 vrEstabaActivo = true;
                 Debug.Log("VR pausado por el sistema de pausa.");
             }
@@ -73,7 +73,7 @@ public class ControlPausa : MonoBehaviour
         }
         if (vrEstabaActivo && controlVR != null)
         {
-            controlVR.ActivarVR();
+            controlVR.ActivarCardBoard();
             vrEstabaActivo = false;
             Debug.Log("VR reanudado tras pausa.");
         }
@@ -93,7 +93,7 @@ public class ControlPausa : MonoBehaviour
 
         if (controlVR != null)
         {
-            controlVR.DesactivarVR();
+            controlVR.DesactivarCardBoard();
             vrEstabaActivo = false;
         }
 
@@ -113,7 +113,7 @@ public class ControlPausa : MonoBehaviour
 
         if (controlVR != null)
         {
-            controlVR.DesactivarVR();
+            controlVR.DesactivarCardBoard();
             vrEstabaActivo = false;
         }
 

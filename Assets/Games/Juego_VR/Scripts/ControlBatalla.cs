@@ -3,7 +3,6 @@ using UnityEngine;
 public class ControlBatalla : MonoBehaviour
 {
     [Header("Controles")]
-    public ControlVR controlVR;
     public static ControlBatalla Instancia { get; private set; }
     public ControlHud controlHud;
     private ControlMenuPrincipal controlMenuPrincipal;
@@ -35,24 +34,6 @@ public class ControlBatalla : MonoBehaviour
         PlayerPrefs.SetInt("ObjetoBatalla", 0);
         PlayerPrefs.Save();
 
-        if (controlVR != null) controlVR.ActivarVR();
-        else Debug.LogError("ControlVR no asignado en el inspector. Asegúrate de que el objeto ControlVR está en la escena y asignado correctamente.");
-
-    }
-
-    private void OnDestroy()
-    {
-        if (controlVR != null) controlVR.DesactivarVR();
-    }
-
-    private void OnDisable()
-    {
-        if(controlVR != null) controlVR.DesactivarVR();
-    }
-
-    private void OnEnable()
-    {
-        if (controlVR != null) controlVR.ActivarVR();
     }
 
     // Update is called once per frame

@@ -10,6 +10,9 @@ TagManager:
   - DeadZone
   - Ball
   - Proyectil
+  - Platform
+  - PlatformBoost
+  - BotonUI
   layers:
   - Default
   - TransparentFX
