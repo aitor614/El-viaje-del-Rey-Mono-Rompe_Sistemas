@@ -22,6 +22,9 @@ public class PlayerHuida : MonoBehaviour
     private int spriteIndex;
     private AudioSource audioSource;
 
+    public float fuerzaSalto = 7f; //añadido aitor
+
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -43,19 +46,36 @@ public class PlayerHuida : MonoBehaviour
         direction = Vector3.zero;
     }
 
+
+    //modificado aitor
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        bool salto = Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0);
+
+     #if UNITY_ANDROID || UNITY_IOS
+        salto = salto || Input.touchCount > 0;
+     #endif
+
+        if (salto)
         {
-            direction = Vector3.up * strength;
-            audioSource.PlayOneShot(salto);
+            Debug.Log("Salto pulsado");
+
+            // Reinicia velocidad para evitar acumulación de fuerza
+            rigiBody2D.linearVelocity = Vector2.zero;
+
+            // Aplica el salto
+            rigiBody2D.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
+
+            // Reproduce sonido si está asignado
+            if (this.salto != null) audioSource.PlayOneShot(this.salto);
         }
 
-        ControlMovimiento();
+        //ControlMovimiento();
 
     }
-
-    private void ControlMovimiento()
+    /*
+     
+     private void ControlMovimiento()
     {
         // Aplicar gravedad y actualizar la posición
         direction.y += gravity * Time.deltaTime;
@@ -66,6 +86,9 @@ public class PlayerHuida : MonoBehaviour
         rotation.z = direction.y * tilt;
         transform.eulerAngles = rotation;
     }
+
+     
+     */
 
     private void AnimateSprite()
     {
@@ -91,6 +114,7 @@ public class PlayerHuida : MonoBehaviour
         else if (other.gameObject.CompareTag("Scoring"))
         {
             PlayerPrefs.SetInt("PuntuacionActual", PlayerPrefs.GetInt("PuntuacionActual") + 5);
+            PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
             PlayerPrefs.Save();
         }
     }

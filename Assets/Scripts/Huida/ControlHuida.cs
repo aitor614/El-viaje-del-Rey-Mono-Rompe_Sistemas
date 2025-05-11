@@ -12,6 +12,7 @@ public class ControlHuida : MonoBehaviour
     public PlayerHuida player;
     public GeneradorObstaculos genObstaculos;
     public GameObject botonPlay;
+    public GameObject textoPreparado;
 
     [Header("Par·metros")]
     public float tiempoRestante;
@@ -41,8 +42,8 @@ public class ControlHuida : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
-        PlayerPrefs.SetInt("PuntuacionPartida", 0);
-        PlayerPrefs.SetInt("Vidas", vidas);
+        PlayerPrefs.SetInt("PuntuacionActual", 0);
+        PlayerPrefs.SetInt("Vidas", 3);// modificado para que tenga 3 inicialmente
         PlayerPrefs.SetInt("ObstaculosSalvados", 0);
         PlayerPrefs.SetInt("ObjetoHuida", 0);
         PlayerPrefs.Save();
@@ -52,7 +53,7 @@ public class ControlHuida : MonoBehaviour
 
     private void Update()
     {
-        puntuacion = PlayerPrefs.GetInt("PuntuacionPartida");
+        puntuacion = PlayerPrefs.GetInt("PuntuacionActual");
         obstaculosSalvados = PlayerPrefs.GetInt("ObstaculosSalvados");
         controlHud.ActualizarContador("Obst·culos: ", PlayerPrefs.GetInt("ObstaculosSalvados"));
         
@@ -78,7 +79,7 @@ public class ControlHuida : MonoBehaviour
 
     private void ActualizarContador()
     {
-        controlHud.ActualizarContador("OBST·CULOS", obstaculosSalvados);
+        controlHud.ActualizarContador("OBSTACULOS", obstaculosSalvados);
     }
 
     private void ActualizarPuntos()
@@ -160,6 +161,7 @@ public class ControlHuida : MonoBehaviour
     public void Play()
     {
         botonPlay.SetActive(false);
+        textoPreparado.SetActive(false);
 
         Time.timeScale = 1f;
         player.enabled = true;
@@ -169,8 +171,8 @@ public class ControlHuida : MonoBehaviour
         for (int i = 0; i < pipes.Length; i++)
         {
             Destroy(pipes[i].gameObject);
-            PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
-            PlayerPrefs.Save();
+            //PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
+            //PlayerPrefs.Save();
         }
     }
 
@@ -189,7 +191,7 @@ public class ControlHuida : MonoBehaviour
 
     private void GuardarPuntos()
     {
-        PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
+        PlayerPrefs.SetInt("PuntuacionActual", puntuacion);
         PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") + puntuacion);
         PlayerPrefs.Save();
     }
