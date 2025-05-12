@@ -109,6 +109,14 @@ public class PlayerHuida : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Obstacle"))
         {
+
+             // Resta una vida
+            int vidasActuales = PlayerPrefs.GetInt("VidasRestantes");
+            vidasActuales = Mathf.Max(vidasActuales - 1, 0); // Evita negativos
+            PlayerPrefs.SetInt("VidasRestantes", vidasActuales);
+            PlayerPrefs.Save();
+
+
             ControlHuida.InstanciaControl.GameOver();
         }
         else if (other.gameObject.CompareTag("Scoring"))

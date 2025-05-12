@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class ControlHuida : MonoBehaviour
@@ -44,6 +45,7 @@ public class ControlHuida : MonoBehaviour
         controlHud = ControlHud.InstanciaControl;
         PlayerPrefs.SetInt("PuntuacionActual", 0);
         PlayerPrefs.SetInt("Vidas", 3);// modificado para que tenga 3 inicialmente
+        PlayerPrefs.SetInt("VidasRestantes", 3);
         PlayerPrefs.SetInt("ObstaculosSalvados", 0);
         PlayerPrefs.SetInt("ObjetoHuida", 0);
         PlayerPrefs.Save();
@@ -61,7 +63,7 @@ public class ControlHuida : MonoBehaviour
         ActualizarPuntos();
         ActualizarContador();
         CheckVida();
-        ComprobarVictoriaObjeto();
+        //ComprobarVictoriaObjeto();
     }
 
     private void ComprobarVictoriaObjeto()
@@ -90,6 +92,7 @@ public class ControlHuida : MonoBehaviour
     private void ActualizarVidas()
     {
         controlHud.ActualizarContador("VIDAS", vidas);
+        controlHud.ActualizarEmblemas(vidas);
     }
 
     private void ActualizarTiempo()
@@ -112,6 +115,24 @@ public class ControlHuida : MonoBehaviour
 
         if (tiempoRestante == 0)
         {
+
+            //añadido aitor
+            bool porPuntuacion = puntuacion >= puntuacionVictoria;
+            bool porObstaculos = obstaculosSalvados >= objetivoObjetos;
+
+            if (porPuntuacion || porObstaculos)
+            {
+                PlayerPrefs.SetInt("ObjetoBaston", 1); // opcional
+                GuardarPuntos();
+                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+            }
+            else
+            {
+                GuardarPuntos();
+                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
+            }
+
+            /*
             // Si la la puntuación es mayor a 50, se gana el juego
             if (puntuacion > puntuacionVictoria)
             {
@@ -123,7 +144,10 @@ public class ControlHuida : MonoBehaviour
             {
                 GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
-            }
+            } 
+             
+             */
+
         }
 
     }
@@ -191,8 +215,17 @@ public class ControlHuida : MonoBehaviour
 
     private void GuardarPuntos()
     {
+        // Guardar score de esta partida
+        PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
         PlayerPrefs.SetInt("PuntuacionActual", puntuacion);
-        PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") + puntuacion);
+
+        // Actualizar score global
+        int puntuacionTotal = PlayerPrefs.GetInt("Puntuacion");
+        puntuacionTotal += puntuacion;
+        PlayerPrefs.SetInt("Puntuacion", puntuacionTotal);
+
+        //PlayerPrefs.SetInt("PuntuacionActual", puntuacion);
+        //PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") + puntuacion);
         PlayerPrefs.Save();
     }
 
