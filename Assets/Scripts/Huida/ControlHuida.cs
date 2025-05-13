@@ -11,7 +11,7 @@ public class ControlHuida : MonoBehaviour
     [Header("Elementos de la escena")]
     public PlayerHuida player;
     public GeneradorObstaculos genObstaculos;
-    public GameObject botonPlay;
+    public GameObject canvasBotonPlay;
 
     [Header("Parámetros")]
     public float tiempoRestante;
@@ -159,7 +159,8 @@ public class ControlHuida : MonoBehaviour
 
     public void Play()
     {
-        botonPlay.SetActive(false);
+        canvasBotonPlay.SetActive(false);
+        
 
         Time.timeScale = 1f;
         player.enabled = true;
@@ -176,7 +177,7 @@ public class ControlHuida : MonoBehaviour
 
     public void GameOver()
     {
-        botonPlay.SetActive(true);
+        canvasBotonPlay.SetActive(true);
 
         PausaInicial();
     }

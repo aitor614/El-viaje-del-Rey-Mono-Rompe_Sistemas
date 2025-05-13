@@ -803,7 +803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1171813591}
   genObstaculos: {fileID: 602110131}
-  botonPlay: {fileID: 1867407891}
+  canvasBotonPlay: {fileID: 1601062094}
   tiempoRestante: 30
   objetivoObjetos: 20
   puntuacionVictoria: 50
@@ -954,9 +954,9 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1867407891 stripped
+--- !u!1 &1601062094 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 4567993222278983865, guid: 8f04822a2a1865647a526f5b90f31596,
+  m_CorrespondingSourceObject: {fileID: 5693113615969878388, guid: 8f04822a2a1865647a526f5b90f31596,
     type: 3}
   m_PrefabInstance: {fileID: 1993311070257231484}
   m_PrefabAsset: {fileID: 0}
