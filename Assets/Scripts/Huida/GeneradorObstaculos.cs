@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class GeneradorObstaculos : MonoBehaviour
 {
-    public GameObject prefab;
+    public GameObject prefabObstaculo;
+    public GameObject premio;
     public float spawnRate = 1.0f;
     public float minHeight = -1.0f;
     public float maxHeight = 1.0f;
@@ -19,8 +20,10 @@ public class GeneradorObstaculos : MonoBehaviour
     }
     private void Spawn()
     {
-        GameObject pipes = Instantiate(prefab, transform.position, Quaternion.identity);
-        pipes.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+        // Instantia el obstáculo en una posición aleatoria dentro de los límites especificados
+        GameObject obstaculos = Instantiate(prefabObstaculo, transform.position, Quaternion.identity);
+        obstaculos.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+
     }
 
 }
