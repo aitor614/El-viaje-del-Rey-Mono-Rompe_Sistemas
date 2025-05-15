@@ -33,13 +33,13 @@ public class ControlMenuPausa : MonoBehaviour
     // Función para reanudar el juego
     public void Reanudar()
     {
-        controlPausa.Reanudar();
+        controlPausa.ReanudarJuego();
     }
 
     // Función para reiniciar el juego
     public void Reiniciar()
     {
-        controlPausa.Reiniciar();
+        controlPausa.ReiniciarJuego();
     }
 
     // Función para salir al menú principal

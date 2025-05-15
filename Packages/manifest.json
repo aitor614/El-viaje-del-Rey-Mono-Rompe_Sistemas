@@ -1,10 +1,9 @@
 {
   "dependencies": {
-    "com.google.xr.cardboard": "https://github.com/googlevr/cardboard-xr-plugin.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.feature.development": "1.0.2",
-    "com.unity.ide.visualstudio": "2.0.22",
+    "com.unity.ide.visualstudio": "2.0.23",
     "com.unity.inputsystem": "1.14.0",
     "com.unity.learn.iet-framework": "4.0.4",
     "com.unity.mobile.android-logcat": "1.4.5",
@@ -16,8 +15,9 @@
     "com.unity.xr.arcore": "6.1.0",
     "com.unity.xr.arfoundation": "6.1.0",
     "com.unity.xr.arkit": "6.1.0",
-    "com.unity.xr.interaction.toolkit": "3.1.1",
-    "com.unity.xr.management": "4.5.0",
+    "com.unity.xr.interaction.toolkit": "3.0.8",
+    "com.unity.xr.management": "4.5.1",
+    "com.unity.xr.openxr": "1.14.3",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -50,15 +50,5 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  },
-  "scopedRegistries": [
-    {
-      "name": "Google Cardboard",
-      "url": "https://unity.pkg.dev",
-      "scopes": [
-        "com.google.cardboard"
-      ],
-      "overrideBuiltIns": true
-    }
-  ]
+  }
 }

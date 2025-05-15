@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using Google.XR.Cardboard;
 
 public class InteraccionVista : MonoBehaviour
 {
