@@ -339,6 +339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabObstaculo: {fileID: 5142281229426199456, guid: 1ca99e27b51ad564c88e2a1a65ece16f,
     type: 3}
+  premio: {fileID: 0}
   spawnRate: 1
   minHeight: -1
   maxHeight: 1
