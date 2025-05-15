@@ -8,10 +8,16 @@ public class ControlHuida : MonoBehaviour
     private ControlMenuPrincipal controlMenuPrincipal;
     private ControlHud controlHud;
 
+    [Header("Sonidos")]
+    public AudioClip musica;
+    public AudioClip respawn;
+
     [Header("Elementos de la escena")]
+    public AudioSource audioSource;
     public PlayerHuida player;
     public GeneradorObstaculos genObstaculos;
     public GameObject canvasBotonPlay;
+    public GameObject obstaculo;
 
     [Header("Parámetros")]
     public float tiempoRestante;
@@ -42,24 +48,26 @@ public class ControlHuida : MonoBehaviour
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
-        PlayerPrefs.SetInt("Vidas", vidas);
+        PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.SetInt("ObstaculosSalvados", 0);
         PlayerPrefs.SetInt("ObjetoHuida", 0);
         PlayerPrefs.Save();
         player.enabled = false;
-        PausaInicial();
+        audioSource.clip = musica;
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
+        Pausa();
+
     }
 
     private void Update()
     {
         puntuacion = PlayerPrefs.GetInt("PuntuacionPartida");
         obstaculosSalvados = PlayerPrefs.GetInt("ObstaculosSalvados");
-        controlHud.ActualizarContador("Obstáculos: ", PlayerPrefs.GetInt("ObstaculosSalvados"));
-        
+
         RestarTiempo();
         ActualizarPuntos();
         ActualizarContador();
-        CheckVida();
         ComprobarVictoriaObjeto();
     }
 
@@ -88,7 +96,7 @@ public class ControlHuida : MonoBehaviour
 
     private void ActualizarVidas()
     {
-        controlHud.ActualizarContador("VIDAS", vidas);
+        controlHud.ActualizarEmblemas(vidas);
     }
 
     private void ActualizarTiempo()
@@ -131,63 +139,72 @@ public class ControlHuida : MonoBehaviour
     public void CheckVida()
     {
 
-        if (vidas != PlayerPrefs.GetInt("VidasRestantes"))
+        vidas = PlayerPrefs.GetInt("VidasRestantes");
+        ActualizarVidas();
+        // Si el jugador pierde todas las vidas, el juego termina con derrota
+        if (vidas <= 0)
         {
-            vidas = PlayerPrefs.GetInt("VidasRestantes");
-            ActualizarVidas();
-            // Si el jugador pierde todas las vidas, el juego termina con derrota
-            if (vidas <= 0)
-            {
-                GuardarPuntos();
-                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
-            }
-            // Si el jugador aún tiene vidas, se reinician los objetos
-            else
-            {
-                Debug.Log("Reiniciando objetos.");
-                ResetObjetos();
-            }
+            GuardarPuntos();
+            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
         }
 
     }
 
-    public void PausaInicial()
+    // Función para pausar el juego a espera de que el jugador pulse el botón de play
+    public void Pausa()
     {
         Time.timeScale = 0f;
         player.enabled = false;
+        audioSource.Pause();
     }
 
+    // Función para iniciar el juego pulsando el botón de play
     public void Play()
     {
         canvasBotonPlay.SetActive(false);
         
-
         Time.timeScale = 1f;
         player.enabled = true;
+        audioSource.Play();
 
-        Pipes[] pipes = FindObjectsByType<Pipes>(FindObjectsSortMode.None);
+        EliminarObstaculos();
 
-        for (int i = 0; i < pipes.Length; i++)
+    }
+
+    // Función para eliminar obstáculos
+    public void EliminarObstaculos()
+    {
+        // Se obtienen todos los obstáculos de la escena
+        GameObject[] obstaculos = GameObject.FindGameObjectsWithTag(obstaculo.tag);
+
+        // Se recorre todos los obstáculos y se destruyen
+        for (int i = 0; i < obstaculos.Length; i++)
         {
-            Destroy(pipes[i].gameObject);
+            Destroy(obstaculos[i].gameObject);
             PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
             PlayerPrefs.Save();
         }
     }
 
-    public void GameOver()
+    // Función para gestionar la colisión del jugador con los obstáculos
+    public void Colision()
     {
-        canvasBotonPlay.SetActive(true);
 
-        PausaInicial();
+        PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - 1);
+        PlayerPrefs.Save();
+        canvasBotonPlay.SetActive(true);
+        Pausa();
+        CheckVida();
     }
 
     // Función para reiniciar objetos de juego
     public void ResetObjetos()
     {
         player.ResetPlayer();
+        audioSource.PlayOneShot(respawn);
     }
 
+    // Función para guardar los puntos
     private void GuardarPuntos()
     {
         PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);

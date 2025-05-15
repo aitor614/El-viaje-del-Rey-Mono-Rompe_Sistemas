@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerHuida : MonoBehaviour
 {
@@ -9,30 +11,22 @@ public class PlayerHuida : MonoBehaviour
     public float gravity = -9.81f;
     public float tilt = 5f;
 
-    [Header("Componentes")]
-    public Rigidbody2D rigiBody2D;
+
 
     [Header("Sonidos")]
     public AudioClip salto;
-    public AudioClip respawn;
+    public AudioClip colision;
 
-    private SpriteRenderer spriteRenderer;
+    [Header("Componentes")]
+    public AudioSource audioSource;
+    public Rigidbody2D colisionPlayer;
+    public SpriteRenderer imagenPlayer;
     private Vector3 direction;
     private Vector2 posicionInicial;
-    private int spriteIndex;
-    private AudioSource audioSource;
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        audioSource = GetComponent<AudioSource>();
-    }
 
     private void Start()
     {
         posicionInicial = transform.position;
-        rigiBody2D = GetComponent<Rigidbody2D>();
-        InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
     }
 
     private void OnEnable()
@@ -45,16 +39,32 @@ public class PlayerHuida : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+
+        // Click izquierdo del ratón en editor
+#if UNITY_EDITOR
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            direction = Vector3.up * strength;
-            audioSource.PlayOneShot(salto);
+            Salto();
+        }
+#endif
+        // Tocar la pantalla en móvil
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        {
+            Salto();
         }
 
         ControlMovimiento();
 
     }
 
+    // Salto del sprite
+    public void Salto()
+    {
+        direction = Vector3.up * strength;
+        audioSource.PlayOneShot(salto);
+    }
+
+    // Controla el movimiento del jugador
     private void ControlMovimiento()
     {
         // Aplicar gravedad y actualizar la posición
@@ -67,30 +77,19 @@ public class PlayerHuida : MonoBehaviour
         transform.eulerAngles = rotation;
     }
 
-    private void AnimateSprite()
-    {
-        spriteIndex++;
-
-        if (spriteIndex >= sprites.Length)
-        {
-            spriteIndex = 0;
-        }
-
-        if (spriteIndex < sprites.Length && spriteIndex >= 0)
-        {
-            spriteRenderer.sprite = sprites[spriteIndex];
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Si el jugador colisiona con un obstáculo
         if (other.gameObject.CompareTag("Obstacle"))
         {
-            ControlHuida.InstanciaControl.GameOver();
+            ControlHuida.InstanciaControl.Colision();
+            audioSource.PlayOneShot(colision);
         }
+        // Si el jugador supera el obstáculo
         else if (other.gameObject.CompareTag("Scoring"))
         {
-            PlayerPrefs.SetInt("PuntuacionActual", PlayerPrefs.GetInt("PuntuacionActual") + 5);
+            PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 5);
+            PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
             PlayerPrefs.Save();
         }
     }
@@ -99,7 +98,6 @@ public class PlayerHuida : MonoBehaviour
     public void ResetPlayer()
     {
         transform.position = posicionInicial;
-        rigiBody2D.linearVelocity = Vector2.zero;
-        audioSource.PlayOneShot(respawn);
+        colisionPlayer.linearVelocity = Vector2.zero;
     }
 }
