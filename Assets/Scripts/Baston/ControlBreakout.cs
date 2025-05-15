@@ -11,9 +11,15 @@ public class ControlBreakout : MonoBehaviour
     private ControlMenuPrincipal controlMenuPrincipal;
     private ControlHud controlHud;
 
+    [Header("Sonidos")]
+    public AudioClip musica;
+
+
     [Header("Elementos de la escena")]
     public Ball ball;
     public PlayerBaston player;
+    public AudioSource audioSource;
+    public GameObject canvasBotonPlay;
 
     [Header("Parámetros")]
     public float tiempoRestante;
@@ -43,6 +49,13 @@ public class ControlBreakout : MonoBehaviour
         PlayerPrefs.SetInt("Ladrillos", ladrillosRotos);
         PlayerPrefs.SetInt("ObjetoBaston", 0);
         PlayerPrefs.Save();
+
+        audioSource.clip = musica;
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
+        audioSource.Play();
+        Pausa();
+
     }
 
     // Función para ejecutar en cada frame
@@ -152,12 +165,35 @@ public class ControlBreakout : MonoBehaviour
             // Si el jugador aún tiene vidas, se reinician los objetos
             else
             {
+                Pausa();
+                if (canvasBotonPlay != null)
+                    canvasBotonPlay.SetActive(true);
                 Debug.Log("Reiniciando objetos.");
                 ResetObjetos();
             }
         }
 
     }
+
+    public void Pausa()
+    {
+        Time.timeScale = 0f;
+        ball.enabled = false;
+        player.enabled = false;
+        audioSource.Pause();
+    }
+
+    public void Play()
+    {
+        if (canvasBotonPlay != null)
+            canvasBotonPlay.SetActive(false);
+
+        Time.timeScale = 1f;
+        ball.enabled = true;
+        player.enabled = true;
+        audioSource.Play();
+    }
+
 
     // Función para reiniciar objetos de juego
     public void ResetObjetos()
