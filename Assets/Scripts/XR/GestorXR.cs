@@ -4,17 +4,18 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Management;
-using Google.XR.Cardboard;
+//using Google.XR.Cardboard;
+using UnityEngine.XR.OpenXR;
 
 public class GestorXR : MonoBehaviour
 {
     public static GestorXR Instance { get; private set; }
 
     // Enum para los modos XR
-    public enum XRMode { None, Cardboard, ARCore }
+    public enum XRMode { None, Cardboard, ARCore, OpenXR }
 
     [Header("Configuración inicial XR")]
-    public XRMode initialMode = XRMode.None;
+    public XRMode modoInicial = XRMode.None;
 
     // Cardboard
     private const float _campoVisionDefecto = 60f;
@@ -25,9 +26,11 @@ public class GestorXR : MonoBehaviour
 
     void Awake()
     {
+        // Si no hay instancia, inicializar
         if (Instance == null)
         {
             Instance = this;
+            // No destruir el objeto al cargar nuevas escenas
             DontDestroyOnLoad(gameObject);
 
             // Verificar si XRGeneralSettings existe
@@ -52,50 +55,71 @@ public class GestorXR : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(InicializarCorrutinaXR(initialMode));
+        // Inicializar el modo XR al iniciar
+        StartCoroutine(InicializarCorrutinaXR(modoInicial));
     }
 
+    private void Update()
+    {
+        //// Control de inputs si Cardboard está activo
+        //if (XRGeneralSettings.Instance.Manager.activeLoader is Google.XR.Cardboard.XRLoader)
+        //{
+        //    ControlInputCardboard();
+        //}
+    }
+
+    // Al cargar una escena, definir el modo XR e inicializarlo
     private void AlCargarEscena(Scene scene, LoadSceneMode mode)
     {
-        DetermineInitialMode(scene);
-        StartCoroutine(InicializarCorrutinaXR(initialMode));
+        DefinirModoEscena(scene);
+        StartCoroutine(InicializarCorrutinaXR(modoInicial));
     }
 
+    // Activar el plugin XR según el modo pasado como parámetro
     public void ActivarPlugin(XRMode xRMode)
     {
-        initialMode = xRMode;
-        StartCoroutine(InicializarCorrutinaXR(initialMode));
+        modoInicial = xRMode;
+        StartCoroutine(InicializarCorrutinaXR(modoInicial));
     }
 
-    private void DetermineInitialMode(Scene scene)
+    // Definir el modo XR según la escena cargada
+    private void DefinirModoEscena(Scene scene)
     {
-        if (scene.name.Contains("AR")) initialMode = XRMode.ARCore;
-        else if (scene.name.Contains("VR")) initialMode = XRMode.Cardboard;
-        else initialMode = XRMode.None;
+        if (scene.name.Contains("AR")) modoInicial = XRMode.ARCore;
+        else if (scene.name.Contains("VR")) modoInicial = XRMode.OpenXR;
+        else if (scene.name.Contains("Cardboard")) modoInicial = XRMode.Cardboard;
+        else modoInicial = XRMode.None;
     }
 
+    // Cambiar modo XR
     public void CambiarModoXR(XRMode nuevoModo)
     {
-        StartCoroutine(SwitchModeCoroutine(nuevoModo));
+        StartCoroutine(CambiarModoCorrutina(nuevoModo));
     }
 
-    private IEnumerator SwitchModeCoroutine(XRMode nuevoModo)
+    // Corrutina para cambiar el modo XR
+    private IEnumerator CambiarModoCorrutina(XRMode nuevoModo)
     {
         yield return ApagarModoActual();
-        initialMode = nuevoModo;
+        modoInicial = nuevoModo;
         yield return InicializarCorrutinaXR(nuevoModo);
     }
 
+    // Inicializar el modo XR según el tipo pasado como parámetro
     private IEnumerator InicializarCorrutinaXR(XRMode mode)
     {
         switch (mode)
         {
-            case XRMode.Cardboard:
-                yield return InicializarCardboard();
-                break;
+            //case XRMode.Cardboard:
+            //    yield return InicializarCardboard();
+            //    break;
 
             case XRMode.ARCore:
                 yield return InicializarARCore();
+                break;
+
+            case XRMode.OpenXR:
+                yield return InicializarOpenXR();
                 break;
 
             default:
@@ -104,20 +128,19 @@ public class GestorXR : MonoBehaviour
         }
     }
 
-    public IEnumerator InicializarCardboard()
+    // Inicializar VR
+    public IEnumerator InicializarOpenXR()
     {
         // Obtener lista completa de loaders
         var loaders = XRGeneralSettings.Instance.Manager.activeLoaders;
 
-        // Reordenar la lista de loaders para que Cardboard sea el primero
+        // Reordenar la lista de loaders para que OpenXR sea el primero
         var loadersReordenados = new List<UnityEngine.XR.Management.XRLoader>();
-        foreach ( var loader in loaders)
+        foreach (var loader in loaders)
         {
-            if (loader is Google.XR.Cardboard.XRLoader)
+            if (loader is UnityEngine.XR.OpenXR.OpenXRLoader)
             {
                 loadersReordenados.Insert(0, loader);
-
-                break;
             }
             else if (loader is UnityEngine.XR.ARCore.ARCoreLoader)
             {
@@ -131,37 +154,79 @@ public class GestorXR : MonoBehaviour
             Debug.Log("[GESTOR XR] Loader " + i + ": " + loadersReordenados[i].name);
         }
 
+        // Inicializar loader y subsistemas
         yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());
         XRGeneralSettings.Instance.Manager.StartSubsystems();
 
         // Configurar parámetros y cámara
-        if (!Api.HasDeviceParams()) Api.ScanDeviceParams();
         DeshabilitarCamaraExistente();
-        ConfigurarInputCardboard();
+        ConfigurarPantallaOpenXR();
     }
 
-    private void ConfigurarInputCardboard()
+    // Configurar pantalla para OpenXR
+    private void ConfigurarPantallaOpenXR()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         Screen.brightness = 1.0f;
     }
 
-    private void Update()
-    {
-        if (XRGeneralSettings.Instance.Manager.activeLoader is Google.XR.Cardboard.XRLoader)
-        {
-            ControlInputCardboard();
-        }
-    }
+    //// Inicializar Cardboard
+    //public IEnumerator InicializarCardboard()
+    //{
+    //    // Obtener lista completa de loaders
+    //    var loaders = XRGeneralSettings.Instance.Manager.activeLoaders;
 
-    private void ControlInputCardboard()
-    {
-        if (Api.IsCloseButtonPressed) SalirVR();
-        if (Api.IsGearButtonPressed) Api.ScanDeviceParams();
-        if (Api.IsTriggerHeldPressed) Api.Recenter();
-        Api.UpdateScreenParams();
-    }
+    //    // Reordenar la lista de loaders para que Cardboard sea el primero
+    //    var loadersReordenados = new List<UnityEngine.XR.Management.XRLoader>();
+    //    foreach ( var loader in loaders)
+    //    {
+    //        if (loader is Google.XR.Cardboard.XRLoader)
+    //        {
+    //            loadersReordenados.Insert(0, loader);
 
+    //            break;
+    //        }
+    //        else if (loader is UnityEngine.XR.ARCore.ARCoreLoader)
+    //        {
+    //            loadersReordenados.Insert(loadersReordenados.Count, loader);
+    //        }
+    //    }
+    //    // Mostrar loaders cargados
+    //    Debug.Log("[GESTOR XR] Cargando " + loadersReordenados.Count + " loaders: ");
+    //    for (int i = 0; i < loadersReordenados.Count; i++)
+    //    {
+    //        Debug.Log("[GESTOR XR] Loader " + i + ": " + loadersReordenados[i].name);
+    //    }
+
+    //    yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());
+    //    XRGeneralSettings.Instance.Manager.StartSubsystems();
+
+    //    // Configurar parámetros y cámara
+    //    if (!Api.HasDeviceParams()) Api.ScanDeviceParams();
+    //    DeshabilitarCamaraExistente();
+    //    ConfigurarPantallaCardboard();
+    //}
+
+    //// Configurar pantalla para Cardboard
+    //private void ConfigurarPantallaCardboard()
+    //{
+    //    Screen.sleepTimeout = SleepTimeout.NeverSleep;
+    //    Screen.brightness = 1.0f;
+    //}
+
+
+    //// Controlar entradas de Cardboard
+    //private void ControlInputCardboard()
+    //{
+    //    // Comprobar si los botones de Cardboard están presionados
+    //    if (Api.IsCloseButtonPressed) SalirVR();
+    //    if (Api.IsGearButtonPressed) Api.ScanDeviceParams();
+    //    if (Api.IsTriggerHeldPressed) Api.Recenter();
+    //    // Actualizar parámetros de pantalla
+    //    Api.UpdateScreenParams();
+    //}
+
+    // Inicializar ARCore
     public IEnumerator InicializarARCore()
     {
         // Desactivar subsistemas de ARCore
@@ -181,10 +246,14 @@ public class GestorXR : MonoBehaviour
             {
                 loadersReordenados.Insert(0, loader);
             }
-            else if (loader is Google.XR.Cardboard.XRLoader)
+            else if (loader is UnityEngine.XR.OpenXR.OpenXRLoader)
             {
                 loadersReordenados.Insert(loadersReordenados.Count, loader);
             }
+            //else if (loader is Google.XR.Cardboard.XRLoader)
+            //{
+            //    loadersReordenados.Insert(loadersReordenados.Count, loader);
+            //}
         }
         Debug.Log("[GESTOR XR] Cargando " + loadersReordenados.Count + " loaders: ");
         for (int i = 0; i < loadersReordenados.Count; i++)
@@ -195,11 +264,12 @@ public class GestorXR : MonoBehaviour
         // Inicializar loader y subsistemas
         yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());
         XRGeneralSettings.Instance.Manager.StartSubsystems();
-        
     }
 
+    // Apagar modo actual
     public IEnumerator ApagarModoActual()
     {
+        // Obtener el XRManagerSettings
         var manager = XRGeneralSettings.Instance.Manager;
 
         // Si no hay XRGeneralSettings, salir
@@ -217,22 +287,14 @@ public class GestorXR : MonoBehaviour
             if (manager.isInitializationComplete)
                 manager.StopSubsystems();
 
-            // Ajustes visuales específicos según tipo de loader
-            if (manager.activeLoader is Google.XR.Cardboard.XRLoader)
-            {
-                Debug.Log("[GESTOR XR] Ajustes post-Cardboard.");
-                Screen.sleepTimeout = SleepTimeout.SystemSetting;
-                Screen.brightness = 0.5f;
-            }
-            else if (manager.activeLoader is UnityEngine.XR.ARCore.ARCoreLoader)
-            {
-                Debug.Log("[GESTOR XR] Ajustes post-ARCore.");
-                Screen.sleepTimeout = SleepTimeout.SystemSetting;
-                Screen.brightness = 0.5f;
-            }
+            // Devolver ajustes de pantalla a la configuración por defecto
+            Debug.Log("[GESTOR XR] Ajustes post-Loader genérico.");
+            Screen.sleepTimeout = SleepTimeout.SystemSetting;
+            Screen.brightness = 0.5f;
 
-
+            // Desactivar subsistemas y loader
             manager.DeinitializeLoader();
+            // Esperar para asegurar que el loader se apague correctamente
             yield return new WaitForSeconds(0.5f);
         }
         else
@@ -242,11 +304,13 @@ public class GestorXR : MonoBehaviour
         }
     }
 
+    // Deshabilitar cámara existente
     private void DeshabilitarCamaraExistente()
     {
         // Obtener la cámara XR directamente desde el Camera.main
         if (Camera.main != null) _xrCamera = Camera.main;
 
+        // Si se ha encontrado la cámara XR
         if (_xrCamera != null)
         {
             _xrCamera.tag = "MainCamera";
@@ -258,12 +322,15 @@ public class GestorXR : MonoBehaviour
         }
     }
 
+    // Inicializar entorno 2D 
     private void InicializarEntorno2D()
     {
+        // Activar cámara principal y desactivar cámara XR
         if (_mainCamera != null) _mainCamera.enabled = true;
         if (_xrCamera != null) _xrCamera.enabled = false;
     }
 
+    // Obtener el loaders del XRManagerSettings
     private T GetLoader<T>() where T : class
     {
         return XRGeneralSettings.Instance.Manager.activeLoaders
@@ -275,17 +342,23 @@ public class GestorXR : MonoBehaviour
         return XRGeneralSettings.Instance.Manager.activeLoaders.ToList();
     }
 
+    // Salir de VR
     public void SalirVR()
     {
+        // Desactivar subsistemas de XR
         StartCoroutine(ApagarModoActual());
+        // Desactivar cámara XR y activar cámara principal
         InicializarEntorno2D();
     }
 
+    // Al destruir el objeto
     void OnDestroy()
     {
         if (Instance == this)
         {
+            // Desuscribirse del evento de carga de escena
             SceneManager.sceneLoaded -= AlCargarEscena;
+            // Apagar modo actual
             StartCoroutine(ApagarModoActual());
         }
     }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Google.XR.Cardboard;
 
 public class Disparo : MonoBehaviour
 {
@@ -26,10 +25,10 @@ public class Disparo : MonoBehaviour
 #endif
 
 #if !UNITY_EDITOR
-        if (Api.IsTriggerHeldPressed)
-        {
-            RealizarDisparo();
-        }
+        //if (Api.IsTriggerHeldPressed)
+        //{
+        //    RealizarDisparo();
+        //}
 #endif
 
     }
