@@ -24,10 +24,11 @@ public class ControlMenuPausa : MonoBehaviour
         // Inicializa el texto de pausa
         textoPausa = FindFirstObjectByType<TextMeshProUGUI>();
 
-        if (PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial")
-        {
+        //if (PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial"
+        //    || PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados")
+        //{
             AdaptarCanvasParaVR();
-        }
+        //}
     }
 
     // Función para reanudar el juego

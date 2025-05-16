@@ -170,6 +170,11 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5980517845371711696, guid: e59984e2e73dad744b3a403ad817d703,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PausarJuego
+      objectReference: {fileID: 0}
     - target: {fileID: 6436739868640797192, guid: e59984e2e73dad744b3a403ad817d703,
         type: 3}
       propertyPath: m_AnchoredPosition.x

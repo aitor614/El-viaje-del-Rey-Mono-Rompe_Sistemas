@@ -108,7 +108,7 @@ public class ControlBreakout : MonoBehaviour
 
     private void ActualizarVidas()
     {
-        controlHud.ActualizarContador("VIDAS", vidas);
+        controlHud.ActualizarEmblemas(vidas);
     }
 
     private void ActualizarTiempo()

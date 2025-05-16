@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 163335381}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -809,7 +809,7 @@ MonoBehaviour:
   m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
+  m_XRTrackingOrigin: {fileID: 1655232406}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
     type: 3}
   m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018,
@@ -876,6 +876,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 324908257715802771, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 768885133721214942, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 859807984617624726, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1219660288209685261, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
         type: 3}
       propertyPath: m_Pivot.x
@@ -976,15 +991,155 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1460811038859797559, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1577256038027169392, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793276266529181988, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2029620477275115486, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570083531656998263, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2743006769872862367, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767802312377053239, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803959158481970032, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2857844379552655069, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
         type: 3}
       propertyPath: m_Camera
       value: 
+      objectReference: {fileID: 163335388}
+    - target: {fileID: 2857844379552655069, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_VertexColorAlwaysGammaSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3070086996289901173, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447872812471171503, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3550280361902174064, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PausarJuego
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939679561303129561, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4375343923562216099, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5369297771948499203, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
         type: 3}
       propertyPath: m_Name
       value: CanvasHudHorizontal
+      objectReference: {fileID: 0}
+    - target: {fileID: 5369297771948499203, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5369297771948499203, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_TagString
+      value: XR Simulation
+      objectReference: {fileID: 0}
+    - target: {fileID: 5441579754926024640, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5674883463532736383, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5908617106087769727, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006272723787115713, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6305402285280604681, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6689824960372128928, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495057807866310040, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932897431373814289, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8063473574811856871, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230643111599634156, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8429664833456111055, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9053553738347481091, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1229,7 +1384,7 @@ MonoBehaviour:
   controlHud: {fileID: 1528527020}
   tiempoDeEspera: 5
   puntuacionVictoria: 200
-  espiritusObjeto: 0
+  espiritusObjeto: 20
   tiempoRestante: 30
 --- !u!4 &1796759435
 Transform:

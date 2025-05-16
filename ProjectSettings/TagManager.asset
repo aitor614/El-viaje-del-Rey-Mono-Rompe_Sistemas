@@ -13,6 +13,9 @@ TagManager:
   - Platform
   - PlatformBoost
   - BotonUI
+  - Obstacle
+  - Scoring
+  - XR Simulation
   layers:
   - Default
   - TransparentFX

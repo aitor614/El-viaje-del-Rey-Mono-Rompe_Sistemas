@@ -34,7 +34,8 @@ public class ControlPausa : MonoBehaviour
 
         // Buscar automáticamente el ControlVR en la escena si existe
         //controlCardboard = FindFirstObjectByType<ControlCardBoard>();
-        controlOpenXR = FindFirstObjectByType<ControlOpenXR>();
+        if (FindAnyObjectByType<ControlOpenXR>() != null)
+            controlOpenXR = FindFirstObjectByType<ControlOpenXR>();
     }
 
     // Pausar el juego y cargar el menú de pausa
@@ -43,7 +44,7 @@ public class ControlPausa : MonoBehaviour
         // Si el menú ya está cargado, no hacemos nada
         if (!menuCargado)
         {
-            // Si hay AR activo, lo pausamos
+            // Si hay AR o VR activo, lo pausamos
             PausarAR();
             PausarVR();
 
@@ -57,8 +58,8 @@ public class ControlPausa : MonoBehaviour
         Debug.Log("Pausa activada.");
 
         // Asignar la cámara principal al canvas del menú de pausa
-        if (PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados" ||
-              PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial")
+        //if (PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados" ||
+        //      PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial")
             StartCoroutine(AsignarCamaraAlCanvas());
     }
 
@@ -215,12 +216,12 @@ public class ControlPausa : MonoBehaviour
         {
             // Busca el canvas en los objetos raíz
             Canvas canvas = rootObj.GetComponentInChildren<Canvas>(true);
-            if (canvas == null)
-            {
-                Debug.LogError("No se encontró el canvas en la escena del menú de pausa.");
-                yield break;
-            }
-            // Asigna la cámara principal al canvas si es ScreenSpaceCamera y  el canvas no es null
+            //if (canvas == null)
+            //{
+            //    Debug.LogError("No se encontró el canvas en la escena del menú de pausa.");
+            //    yield break;
+            //}
+            // Asigna la cámara principal al canvas si es ScreenSpaceCamera y el canvas no es null
             if (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceCamera)
             {
                 // Asigna la cámara principal al canvas

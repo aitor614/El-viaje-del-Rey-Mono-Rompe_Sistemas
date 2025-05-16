@@ -7,6 +7,7 @@ public class Disparo : MonoBehaviour
     [Header("Componentes")]
     public GameObject proyectilPrefab; 
     public Transform puntoDisparo;
+    public InputAction accionGatillo;
 
     [Header("Parámetros")]
     public float fuerzaProyectil;
@@ -22,13 +23,12 @@ public class Disparo : MonoBehaviour
         {
             RealizarDisparo();
         }
-#endif
-
-#if !UNITY_EDITOR
-        //if (Api.IsTriggerHeldPressed)
-        //{
-        //    RealizarDisparo();
-        //}
+#else
+        // En móvil con OpenXR
+        if (accionGatillo.WasPressedThisFrame())
+        {
+            RealizarDisparo();
+        }
 #endif
 
     }
