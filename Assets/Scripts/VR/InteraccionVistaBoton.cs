@@ -6,6 +6,7 @@ public class InteraccionVista : MonoBehaviour
 {
     public LayerMask capaInteractiva;
     public float distanciaMaxima = 20f;
+    public InputAction accionGatillo;
 
     void Update()
     {
@@ -14,11 +15,16 @@ public class InteraccionVista : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame)
             LanzarRaycast();
 #else
-        // En móvil con Cardboard
-        if (Api.IsTriggerHeldPressed)
+        // En móvil con OpenXR
+        if (accionGatillo.WasPressedThisFrame())
+        {
             LanzarRaycast();
+        }
 #endif
     }
+
+    void OnEnable() => accionGatillo.Enable();
+    void OnDisable() => accionGatillo.Disable();
 
     private void LanzarRaycast()
     {
@@ -30,6 +36,11 @@ public class InteraccionVista : MonoBehaviour
             // Intenta ejecutar un clic en UI o GameObject
             ExecuteEvents.Execute(objetivo, new PointerEventData(EventSystem.current), ExecuteEvents.pointerClickHandler);
             Debug.Log($"Objeto pulsado: {objetivo.name}");
+        }
+        // En móvil con OpenXR
+        if (accionGatillo.WasPressedThisFrame())
+        {
+            LanzarRaycast();
         }
     }
 }

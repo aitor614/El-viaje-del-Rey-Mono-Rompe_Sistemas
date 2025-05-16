@@ -7,12 +7,21 @@ public class PlatformMover : MonoBehaviour
     private float leftLimit;
     private float rightLimit;
     private bool movingRight = true;
+    public RectTransform fondo;
 
     void Start()
     {
         // Obtener los bordes visibles de la cámara en el mundo
-        float leftEdge = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).x;
-        float rightEdge = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x;
+        //float leftEdge = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).x;
+        //float rightEdge = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x;
+
+        // Obtener los límites del fondo
+        Vector3[] esquinas = new Vector3[4];
+        fondo.GetWorldCorners(esquinas);
+
+        // Asignar los límites izquierdo y derecho de la plataforma
+        float leftEdge = esquinas[0].x;
+        float rightEdge = esquinas[2].x;
 
         // Ancho de la plataforma
         float halfWidth = GetComponent<SpriteRenderer>().bounds.extents.x;

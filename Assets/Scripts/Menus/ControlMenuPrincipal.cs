@@ -13,7 +13,6 @@ public class ControlMenuPrincipal : MonoBehaviour
     [Header("Elementos de la escena")]
     public AudioSource audioSource;
 
-
     public static ControlMenuPrincipal InstanciaControl { get; private set; }
 
     public enum ModoJuego { Individual, Continuo }
@@ -41,7 +40,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         "Juego2DEscapeInfierno", 
         "Juego2DHuidaCelestial", 
         "Juego2DGolpeBaston", 
-        "JuegoAREspiritusDesencarnados", 
+        "JuegoAREspiritusDesencarnados",
         "JuegoVRBatallaCelestial"
     };
 
@@ -145,7 +144,6 @@ public class ControlMenuPrincipal : MonoBehaviour
     // Funcion para cargar la escena del minijuego
     public void JugarMinijuego(string nombreEscena)
     {
-        modoActual = ModoJuego.Individual;
         escenaActual = nombreEscena;
         PlayerPrefs.SetString("EscenaActual", nombreEscena);
         PlayerPrefs.Save();
@@ -153,10 +151,13 @@ public class ControlMenuPrincipal : MonoBehaviour
     }
 
     public void Click_JuegoInfierno()
-    {
-        
+    {       
         ReiniciarPuntuaciones();
+
+        audioSource.Stop();
+
         // Cargar la escena del minijuego de Escape del Infierno
+        modoActual = ModoJuego.Individual;
         JugarMinijuego("Juego2DEscapeInfierno");
     }
 
@@ -167,6 +168,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         audioSource.Stop();
 
         // Cargar la escena del minijuego de Huida Celestial
+        modoActual = ModoJuego.Individual;
         JugarMinijuego("Juego2DHuidaCelestial");
     }
 
@@ -177,6 +179,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         audioSource.Stop();
 
         // Cargar la escena del minijuego de Golpe Bastón
+        modoActual = ModoJuego.Individual;
         JugarMinijuego("Juego2DGolpeBaston");
     }
 
@@ -187,6 +190,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         audioSource.Stop();
 
         // Cargar la escena del minijuego de Espíritus Desencarnados
+        modoActual = ModoJuego.Individual;
         JugarMinijuego("JuegoAREspiritusDesencarnados");
     }
 
@@ -197,6 +201,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         audioSource.Stop();
 
         // Cargar la escena del minijuego de Batalla Celestial
+        modoActual = ModoJuego.Individual;
         JugarMinijuego("JuegoVRBatallaCelestial");
     }
 
@@ -223,14 +228,16 @@ public class ControlMenuPrincipal : MonoBehaviour
     // Funcion para cargar el siguiente minijuego en modo continuo
     public void SiguienteMinijuego()
     {
-        indiceActual++;
+
         if (indiceActual < escenasMinijuegos.Count)
         {
+            indiceActual++;
             // Cargar la siguiente escena de minijuego
             escenaActual = escenasMinijuegos[indiceActual];
             PlayerPrefs.SetString("EscenaActual", escenaActual);
             PlayerPrefs.Save();
             SceneManager.LoadScene(escenasMinijuegos[indiceActual]);
+            Debug.Log("Cargando escena: " + escenasMinijuegos[indiceActual]);
         }
         else
         {

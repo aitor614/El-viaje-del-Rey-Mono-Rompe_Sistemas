@@ -17,6 +17,11 @@ MonoBehaviour:
   description: A scene configured for AR Development.
   preview: {fileID: 2800000, guid: 5843b284d48a6ff4193b606a018b6bd2, type: 3}
   dependencies:
+  - dependency: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+    instantiationMode: 1
+  - dependency: {fileID: 5369297771948499203, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+      type: 3}
+    instantiationMode: 0
   - dependency: {fileID: 8926484042661614526, guid: ffb0d770c6e15044aa4781fb3e0682e5,
       type: 3}
     instantiationMode: 1
@@ -32,8 +37,6 @@ MonoBehaviour:
     instantiationMode: 1
   - dependency: {fileID: 919132149155446097, guid: 799dbb7ab1cb52442b37014d8c0b2d35,
       type: 3}
-    instantiationMode: 0
-  - dependency: {fileID: 2800000, guid: d4af31c9cd405426488b1eaf34c38a9e, type: 3}
     instantiationMode: 0
   - dependency: {fileID: 1413457130841149401, guid: 4f45730523918f0468666ca7f8a63599,
       type: 3}
@@ -56,16 +59,12 @@ MonoBehaviour:
   - dependency: {fileID: 919132149155446097, guid: 54214eb3aa1f1d64794e0697f57e8625,
       type: 3}
     instantiationMode: 0
-  - dependency: {fileID: 2100000, guid: e467c9d6ea10d7e4da7bacb8490ac24b, type: 2}
-    instantiationMode: 0
   - dependency: {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
-    instantiationMode: 0
-  - dependency: {fileID: 112000000, guid: bafdd673ae5a8ca499672d830a5bd0c9, type: 2}
     instantiationMode: 0
   - dependency: {fileID: 7980562751466926346, guid: 80179e9fd6f47054783ab293685941bf,
       type: 3}
     instantiationMode: 0
-  - dependency: {fileID: 8900000, guid: 69f0eee5277d4a74698aae60d26d44a9, type: 3}
+  - dependency: {fileID: 2100000, guid: e467c9d6ea10d7e4da7bacb8490ac24b, type: 2}
     instantiationMode: 0
   - dependency: {fileID: 2800000, guid: 5a4a2f7e718e3b44b81f624a50a3d907, type: 3}
     instantiationMode: 0
@@ -109,10 +108,11 @@ MonoBehaviour:
     instantiationMode: 0
   - dependency: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     instantiationMode: 1
+  - dependency: {fileID: -944628639613478452, guid: 76b6418efbabb4946b852f71d9303b92,
+      type: 3}
+    instantiationMode: 1
   - dependency: {fileID: 2800000, guid: dadc1da3060f74b4bbfb319c04689fc9, type: 3}
     instantiationMode: 0
-  - dependency: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
-    instantiationMode: 1
   - dependency: {fileID: 919132149155446097, guid: 49f4c592fdfa84f499b46ce7d1ec53e8,
       type: 3}
     instantiationMode: 0
