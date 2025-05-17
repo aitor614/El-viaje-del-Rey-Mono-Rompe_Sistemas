@@ -11,31 +11,31 @@ public class ControlOpenXR : MonoBehaviour
     public GameObject interacciones;
     public GestorXR gestorXR;
 
-    public void ActivarAR()
+    public void ActivarOpenXR()
     {
         gestorXR = GestorXR.Instance;
 
         // Desactiva todos los componentes de OpenXR
         if (xrOrigin != null) xrOrigin.gameObject.SetActive(false);
-        else Debug.LogError("[Control_AR] xrOrigin is null");
+        else Debug.LogError("[Control_OpenXR] xrOrigin is null");
         if (spawner != null) spawner.SetActive(false);
-        else Debug.LogError("[Control_AR] spawner is null");
+        else Debug.LogError("[Control_OpenXR] spawner is null");
         if (interacciones != null) interacciones.SetActive(false);
-        else Debug.LogError("[Control_AR] interacciones is null");
+        else Debug.LogError("[Control_OpenXR] interacciones is null");
 
-        StartCoroutine(gestorXR.InicializarARCore());
+        StartCoroutine(gestorXR.InicializarOpenXR());
 
 
         // Activar todos los componentes de OpenXR
         if (xrOrigin != null) xrOrigin.gameObject.SetActive(true);
-        else Debug.LogError("[Control_AR] xrOrigin is null");
+        else Debug.LogError("[Control_OpenXR] xrOrigin is null");
         if (spawner != null) spawner.SetActive(true);
-        else Debug.LogError("[Control_AR] spawner is null");
+        else Debug.LogError("[Control_OpenXR] spawner is null");
         if (interacciones != null) interacciones.SetActive(true);
-        else Debug.LogError("[Control_AR] interacciones is null");
+        else Debug.LogError("[Control_OpenXR] interacciones is null");
     }
 
-    public void DesactivarAR()
+    public void DesactivarOpenXR()
     {
         StartCoroutine(gestorXR.ApagarModoActual());
 

@@ -154,6 +154,8 @@ public class GestorXR : MonoBehaviour
             Debug.Log("[GESTOR XR] Loader " + i + ": " + loadersReordenados[i].name);
         }
 
+        XRGeneralSettings.Instance.Manager.TrySetLoaders(loadersReordenados);
+
         // Inicializar loader y subsistemas
         yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());
         XRGeneralSettings.Instance.Manager.StartSubsystems();
@@ -260,6 +262,8 @@ public class GestorXR : MonoBehaviour
         {
             Debug.Log("[GESTOR XR] Loader " + i + ": " + loadersReordenados[i].name);
         }
+
+        XRGeneralSettings.Instance.Manager.TrySetLoaders(loadersReordenados);
 
         // Inicializar loader y subsistemas
         yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());

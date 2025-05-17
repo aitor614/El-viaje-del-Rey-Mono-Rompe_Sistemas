@@ -340,9 +340,9 @@ MonoBehaviour:
   prefabObstaculo: {fileID: 5142281229426199456, guid: 1ca99e27b51ad564c88e2a1a65ece16f,
     type: 3}
   premio: {fileID: 0}
-  spawnRate: 1
-  minHeight: -1
-  maxHeight: 1
+  spawnRate: 1.2
+  minHeight: -2.5
+  maxHeight: 2.5
 --- !u!1 &789139111
 GameObject:
   m_ObjectHideFlags: 0
