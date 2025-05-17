@@ -14,6 +14,8 @@ public class Enemigo : MonoBehaviour
 
     // Variables
     private bool ataqueRealizado = false;
+    public GameObject efectoExplosion;
+
 
     void Start()
     {
@@ -43,11 +45,29 @@ public class Enemigo : MonoBehaviour
 
     }
 
+    /*void RestarVida(int cantidad)
+    {
+        vida -= cantidad;
+        if (vida <= 0)
+        {
+            PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosEliminar);
+            PlayerPrefs.SetInt("EnemigosEliminados", PlayerPrefs.GetInt("EnemigosEliminados") + 1);
+            PlayerPrefs.Save();
+            Destroy(gameObject);
+        }
+    }*/
     void RestarVida(int cantidad)
     {
         vida -= cantidad;
         if (vida <= 0)
         {
+            // Instanciar la explosión en la posición del enemigo
+            if (efectoExplosion != null)
+            {
+                Instantiate(efectoExplosion, transform.position, Quaternion.identity);
+            }
+
+            // Actualizar puntuación y eliminar al enemigo
             PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosEliminar);
             PlayerPrefs.SetInt("EnemigosEliminados", PlayerPrefs.GetInt("EnemigosEliminados") + 1);
             PlayerPrefs.Save();

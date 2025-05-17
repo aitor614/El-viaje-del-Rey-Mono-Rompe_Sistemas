@@ -25,7 +25,7 @@ public class GeneradorEnemigos : MonoBehaviour
     void Start()
     {
         // Repetir SpawnEnemy cada cierto intervalo
-        InvokeRepeating(nameof(SpawnEnemy), 1f, intervaloAparicion);
+        InvokeRepeating(nameof(SpawnEnemy), 3f, intervaloAparicion);
     }
 
     void SpawnEnemy()

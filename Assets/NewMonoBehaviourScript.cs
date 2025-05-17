@@ -1,4 +1,4 @@
-/*using UnityEngine;
+using UnityEngine;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
@@ -14,4 +14,3 @@ public class NewMonoBehaviourScript : MonoBehaviour
         
     }
 }
-*/

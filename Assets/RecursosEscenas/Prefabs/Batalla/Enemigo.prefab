@@ -184,6 +184,8 @@ MonoBehaviour:
   vida: 1
   poderGolpe: 1
   puntosEliminar: 10
+  efectoExplosion: {fileID: 1413457130841149401, guid: 4f45730523918f0468666ca7f8a63599,
+    type: 3}
 --- !u!114 &3488455596036625674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +202,7 @@ MonoBehaviour:
   animador: {fileID: 3559640468732402887}
   offsetAlturaObjetivo: 0
   velocidad: 5
-  distanciaAtaque: 1.5
+  distanciaAtaque: 3
   fuerzaAtaque: 1
   enfriamientoAtaque: 2
 --- !u!1001 &7696845602683566493
