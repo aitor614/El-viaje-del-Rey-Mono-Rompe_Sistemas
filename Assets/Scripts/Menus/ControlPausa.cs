@@ -55,7 +55,7 @@ public class ControlPausa : MonoBehaviour
 
         }
 
-        Debug.Log("Pausa activada.");
+        Debug.Log("[ControlPausa] Pausa activada.");
 
         // Asignar la cámara principal al canvas del menú de pausa
         //if (PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados" ||
@@ -75,7 +75,7 @@ public class ControlPausa : MonoBehaviour
         ReanudarAR();
         ReanudarVR();
 
-        Debug.Log("Pausa desactivada.");
+        Debug.Log("[ControlPausa] Pausa desactivada.");
 
 
     }
@@ -119,7 +119,7 @@ public class ControlPausa : MonoBehaviour
             if (controlAR != null) controlAR.ActivarAR();
             else if (controlAR_old != null) controlAR_old.ActivarAR();
             arEstabaActivo = false;
-            Debug.Log("AR reanudado tras pausa.");
+            Debug.Log("[ControlPausa] AR reanudado tras pausa.");
         }
     }
 
@@ -135,9 +135,9 @@ public class ControlPausa : MonoBehaviour
 
         if (vrEstabaActivo && controlOpenXR != null)
         {
-            controlOpenXR.ActivarAR();
+            controlOpenXR.ActivarOpenXR();
             vrEstabaActivo = false;
-            Debug.Log("VR reanudado tras pausa.");
+            Debug.Log("[ControlPausa] VR reanudado tras pausa.");
         }
     }
 
@@ -154,8 +154,8 @@ public class ControlPausa : MonoBehaviour
             controlAR_old.DesactivarAR();
             arEstabaActivo = true;
         }
-        if (arEstabaActivo) Debug.Log("AR pausado por el sistema de pausa.");
-        else Debug.Log("AR no estaba activo al pausar.");
+        if (arEstabaActivo) Debug.Log("[ControlPausa] AR pausado por el sistema de pausa.");
+        else Debug.Log("[ControlPausa] AR no estaba activo al pausar.");
 
     }
 
@@ -170,11 +170,11 @@ public class ControlPausa : MonoBehaviour
 
         if (controlOpenXR != null)
         {
-            controlOpenXR.DesactivarAR();
+            controlOpenXR.DesactivarOpenXR();
             vrEstabaActivo = true;
         }
-        if (vrEstabaActivo) Debug.Log("VR pausado por el sistema de pausa.");
-        else Debug.Log("VR no estaba activo al pausar.");
+        if (vrEstabaActivo) Debug.Log("[ControlPausa] VR pausado por el sistema de pausa.");
+        else Debug.Log("[ControlPausa] VR no estaba activo al pausar.");
     }
 
     // Desactivar AR reiniciar o volver al menú principal
@@ -190,7 +190,7 @@ public class ControlPausa : MonoBehaviour
     private void DesactivarVR()
     {
         //if (controlCardboard != null) controlCardboard.DesactivarCardBoard();
-        if (controlOpenXR != null) controlOpenXR.DesactivarAR();
+        if (controlOpenXR != null) controlOpenXR.DesactivarOpenXR();
 
         vrEstabaActivo = false;
     }
@@ -207,7 +207,7 @@ public class ControlPausa : MonoBehaviour
         // Verifica si la escena del menú de pausa está cargada
         if (!escenaPausa.isLoaded)
         {
-            Debug.LogError("La escena del menú de pausa no está cargada.");
+            Debug.LogError("[ControlPausa] La escena del menú de pausa no está cargada.");
             yield break;
         }
 
@@ -226,7 +226,7 @@ public class ControlPausa : MonoBehaviour
             {
                 // Asigna la cámara principal al canvas
                 canvas.worldCamera = Camera.main;
-                Debug.Log("Cámara principal asignada al canvas del menú de pausa.");
+                Debug.Log("[ControlPausa] Cámara principal asignada al canvas del menú de pausa.");
             }
         }
     }
