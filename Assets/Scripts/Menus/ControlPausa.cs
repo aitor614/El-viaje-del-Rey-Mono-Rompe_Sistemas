@@ -7,6 +7,12 @@ public class ControlPausa : MonoBehaviour
 
     private bool menuCargado = false;
 
+
+    [Header("Sonidos")]
+    private AudioSource musicaActiva;
+
+
+
     [Header("Controles")]
     public static ControlPausa InstanciaControl { get; private set; }
     private ControlAR_old controlAR_old;
@@ -36,6 +42,19 @@ public class ControlPausa : MonoBehaviour
         //controlCardboard = FindFirstObjectByType<ControlCardBoard>();
         if (FindAnyObjectByType<ControlOpenXR>() != null)
             controlOpenXR = FindFirstObjectByType<ControlOpenXR>();
+
+        GameObject musicaGO = GameObject.FindGameObjectWithTag("Musica");
+        if (musicaGO != null)
+        {
+            musicaActiva = musicaGO.GetComponent<AudioSource>();
+            Debug.Log("Música detectada por tag.");
+        }
+        else
+        {
+            Debug.Log("No se encontró ningún objeto con el tag 'Musica'.");
+        }
+
+
     }
 
     // Pausar el juego y cargar el menú de pausa
@@ -47,6 +66,12 @@ public class ControlPausa : MonoBehaviour
             // Si hay AR o VR activo, lo pausamos
             PausarAR();
             PausarVR();
+
+            if (musicaActiva != null && musicaActiva.isPlaying)
+            {
+                musicaActiva.Pause();
+            }
+
 
             // Pausar tiempo y cargar la escena del menú de pausa
             Time.timeScale = 0f;
@@ -66,6 +91,13 @@ public class ControlPausa : MonoBehaviour
     // Reanudar el juego y descargar el menú de pausa
     public void ReanudarJuego()
     {
+
+        if (musicaActiva != null)
+        {
+            musicaActiva.Play();
+        }
+
+
         // Reanudar el tiempo y descargar la escena del menú de pausa
         Time.timeScale = 1f;
         SceneManager.UnloadSceneAsync("MenuPausa");
