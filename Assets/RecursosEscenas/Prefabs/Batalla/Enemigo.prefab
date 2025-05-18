@@ -21,7 +21,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 07441823dbdeb7f4b8b54529bfec6605,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.226
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07441823dbdeb7f4b8b54529bfec6605,
         type: 3}
@@ -286,8 +286,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6445169148091812635, guid: c023a01b3143b304ab18294ed32f0f30,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4387606203648729478}
   m_SourcePrefab: {fileID: 100100000, guid: c023a01b3143b304ab18294ed32f0f30, type: 3}
+--- !u!1 &3720368544956478086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6445169148091812635, guid: c023a01b3143b304ab18294ed32f0f30,
+    type: 3}
+  m_PrefabInstance: {fileID: 7696845602683566493}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &4387606203648729478
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3720368544956478086}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -7.4214935, y: 96.437294}
+  m_Radius: 100
 --- !u!4 &7879620628662607478 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c023a01b3143b304ab18294ed32f0f30,

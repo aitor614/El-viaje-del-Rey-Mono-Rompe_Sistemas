@@ -33,7 +33,7 @@ public class Enemigo : MonoBehaviour
             RestarVida(1);
         }
 
-        if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
+        /*if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
         {
             PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - poderGolpe);
             PlayerPrefs.Save();
@@ -41,7 +41,19 @@ public class Enemigo : MonoBehaviour
             //animacion.SetBool("isAttacking", true);
             Debug.Log("¡El enemigo ataca!");
             Destroy(gameObject, 1f);
+        }*/
+        if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
+        {
+            for (int i = 0; i < poderGolpe; i++)
+            {
+                ControlBatalla.Instancia?.PerderVida(); // Llamada centralizada
+            }
+
+            ataqueRealizado = true;
+            Debug.Log("¡El enemigo ataca!");
+            Destroy(gameObject, 1f);
         }
+
 
     }
 

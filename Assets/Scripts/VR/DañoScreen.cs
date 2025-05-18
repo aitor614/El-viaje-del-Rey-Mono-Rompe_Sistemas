@@ -10,6 +10,11 @@ public class DañoScreen : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        if (imagenDaño != null)
+        {
+            imagenDaño.gameObject.SetActive(false); // 👈 Oculta la imagen al iniciar
+        }
+
     }
 
     public void MostrarDaño()
