@@ -10,18 +10,24 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4041346643053310261, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 524171427, guid: 1dd9d742b00139e48bf9e6862d052df6,
+        type: 3}
+    - target: {fileID: 4041346643053310261, guid: 1721eea19ea799842b4d2f35f1cfd989,
+        type: 3}
       propertyPath: m_Color.b
-      value: 0.28627452
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4041346643053310261, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.7490196
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4041346643053310261, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.9882353
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4541378608153632070, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
@@ -36,12 +42,12 @@ PrefabInstance:
     - target: {fileID: 7938990539240863287, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.69
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 7938990539240863287, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.34
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 7938990539240863287, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
@@ -93,6 +99,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8022341012571810970, guid: 1721eea19ea799842b4d2f35f1cfd989,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 3.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022341012571810970, guid: 1721eea19ea799842b4d2f35f1cfd989,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.28
+      objectReference: {fileID: 0}
     - target: {fileID: 8813317732387250473, guid: 1721eea19ea799842b4d2f35f1cfd989,
         type: 3}
       propertyPath: vidas
@@ -108,6 +124,23 @@ PrefabInstance:
       propertyPath: sonidoDestruccion
       value: 
       objectReference: {fileID: 8300000, guid: 4617f38c8aee1e641ac516dcc4c39b68, type: 3}
+    - target: {fileID: 8813317732387250473, guid: 1721eea19ea799842b4d2f35f1cfd989,
+        type: 3}
+      propertyPath: spritesPorEstado.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8813317732387250473, guid: 1721eea19ea799842b4d2f35f1cfd989,
+        type: 3}
+      propertyPath: 'spritesPorEstado.Array.data[0]'
+      value: 
+      objectReference: {fileID: 524171427, guid: 1dd9d742b00139e48bf9e6862d052df6,
+        type: 3}
+    - target: {fileID: 8813317732387250473, guid: 1721eea19ea799842b4d2f35f1cfd989,
+        type: 3}
+      propertyPath: 'spritesPorEstado.Array.data[1]'
+      value: 
+      objectReference: {fileID: -358498019, guid: 73d69ca0035ed7c489a2a6933c5181fe,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
