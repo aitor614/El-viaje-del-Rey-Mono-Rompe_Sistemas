@@ -4,8 +4,8 @@ using UnityEngine;
 public class ControlEspiritus : MonoBehaviour
 {
     [Header("Controles")]
-    public ControlAR _controlAR;
-    public ControlAR_old controlAR;
+    public ControlAR controlAR;
+    public ControlAR_old controlAR_old;
     public SpawnerEspiritus spawnerEspiritus;
     public ControlMenuPrincipal controlMenuPrincipal;
     public ControlHud controlHud;
@@ -27,8 +27,14 @@ public class ControlEspiritus : MonoBehaviour
         controlHud = ControlHud.InstanciaControl;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
-        //controlAR.ActivarAR();
-        arActivado = true;
+        // Activar plugin AR si no está activado
+        if (!arActivado) { 
+            controlAR.ActivarAR();
+            //controlAR_old.ActivarAR();
+            arActivado = true;
+        }
+
+        // Inicializamos los valores de PlayerPrefs
         PlayerPrefs.SetInt("Espiritus", 0);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("EspiritusObjeto", 0);
@@ -94,24 +100,25 @@ public class ControlEspiritus : MonoBehaviour
 
     private void OnDestroy()
     {
-        _controlAR.DesactivarAR();
-        //controlAR.DesactivarAR();
+        controlAR.DesactivarAR();
+        //controlAR_old.DesactivarAR();
         arActivado = false;
     }
 
     private void OnDisable()
     {
-        _controlAR.DesactivarAR();
-        //controlAR.DesactivarAR();
+        controlAR.DesactivarAR();
+        //controlAR_old.DesactivarAR();
         arActivado = false;
     }
 
     private void OnEnable()
     {
         if (!arActivado)
-        _controlAR.ActivarAR();
-
-        //controlAR.ActivarAR();
-        arActivado = true;
+        {
+            controlAR.ActivarAR();
+            //controlAR_old.ActivarAR();
+            arActivado = true;
+        }
     }
 }

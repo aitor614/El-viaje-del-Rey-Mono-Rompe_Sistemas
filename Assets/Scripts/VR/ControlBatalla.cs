@@ -1,10 +1,12 @@
 using UnityEngine;
+using static UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticsUtility;
 
 public class ControlBatalla : MonoBehaviour
 {
     [Header("Controles")]
     public static ControlBatalla Instancia { get; private set; }
     public ControlHud controlHud;
+    public ControlOpenXR controlOpenXR;
     private ControlMenuPrincipal controlMenuPrincipal;
 
     [Header("Parámetros")]
@@ -16,6 +18,7 @@ public class ControlBatalla : MonoBehaviour
     private int vidas = 3;
     private int puntuacion = 0;
     private int enemigosEliminados = 0;
+    private bool openXRActivado = false;
 
     void Awake()
     {
@@ -28,6 +31,16 @@ public class ControlBatalla : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
+
+        // Activar plugin OpenXR si no está activado
+        if (!openXRActivado)
+        {
+            controlOpenXR.ActivarOpenXR();
+            //controlAR_old.ActivarAR();
+            openXRActivado = true;
+        }
+
+        // Inicializamos los valores de PlayerPrefs
         PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("EnemigosEliminados", 0);
@@ -152,6 +165,31 @@ public class ControlBatalla : MonoBehaviour
                 GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
             }
+        }
+
+    }
+
+    private void OnDestroy()
+    {
+        controlOpenXR.DesactivarOpenXR();
+        //controlAR.DesactivarAR();
+        openXRActivado = false;
+    }
+
+    private void OnDisable()
+    {
+        controlOpenXR.DesactivarOpenXR();
+        //controlAR.DesactivarAR();
+        openXRActivado = false;
+    }
+
+    private void OnEnable()
+    {
+        if (!openXRActivado)
+        {
+            controlOpenXR.ActivarOpenXR();
+            //controlAR.ActivarAR();
+            openXRActivado = true;
         }
 
     }
