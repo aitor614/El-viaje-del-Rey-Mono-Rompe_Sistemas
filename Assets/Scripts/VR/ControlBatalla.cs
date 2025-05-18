@@ -1,13 +1,185 @@
 using UnityEngine;
-using static UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticsUtility;
+
+
 
 public class ControlBatalla : MonoBehaviour
 {
     [Header("Controles")]
     public static ControlBatalla Instancia { get; private set; }
     public ControlHud controlHud;
-    public ControlOpenXR controlOpenXR;
     private ControlMenuPrincipal controlMenuPrincipal;
+    private DañoScreen dañoScreen;
+    private bool enPausa = true; // Inicia pausado
+
+    public bool EstaEnPausa() => enPausa;
+
+    [Header("Parámetros")]
+    public float tiempoRestante;
+    public int puntuacionVictoria;
+    public int enemigosObjetivo;
+
+    [Header("Pausa Inicial")]
+    public GameObject canvasPausaInicial;
+    public AudioSource audioSource; // Asigna el AudioSource con la música
+
+    // Variables
+    private int vidas = 3;
+    private int puntuacion = 0;
+    private int enemigosEliminados = 0;
+
+    void Awake()
+    {
+        Instancia = this;
+    }
+
+    void Start()
+    {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
+        controlHud = ControlHud.InstanciaControl;
+        dañoScreen = FindAnyObjectByType<DañoScreen>();
+
+        PlayerPrefs.SetInt("VidasRestantes", vidas);
+        PlayerPrefs.SetInt("PuntuacionPartida", 0);
+        PlayerPrefs.SetInt("EnemigosEliminados", 0);
+        PlayerPrefs.SetInt("ObjetoBatalla", 0);
+        PlayerPrefs.Save();
+
+        Pausa(); // Pausamos el juego al iniciar
+    }
+
+    void Update()
+    {
+        if (enPausa) return;
+        enemigosEliminados = PlayerPrefs.GetInt("EnemigosEliminados");
+        puntuacion = PlayerPrefs.GetInt("PuntuacionPartida");
+
+        CheckVida();
+        RestarTiempo();
+        ActualizarEnemigos();
+        ActualizarPuntos();
+        CheckObjeto();
+    }
+
+    private void CheckObjeto()
+    {
+        if (enemigosEliminados >= enemigosObjetivo)
+        {
+            PlayerPrefs.SetInt("ObjetoBatalla", 1);
+            PlayerPrefs.Save();
+            GuardarPuntos();
+            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+        }
+    }
+
+    public void CheckVida()
+    {
+        if (vidas != PlayerPrefs.GetInt("VidasRestantes"))
+        {
+            Debug.Log("Vidas cambiadas. Actualizando...");
+            vidas = PlayerPrefs.GetInt("VidasRestantes");
+            ActualizarVidas();
+            if (vidas <= 0)
+            {
+                Debug.Log("Jugador sin vidas. Fin del juego.");
+                GuardarPuntos();
+                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
+            }
+        }
+    }
+
+    public void PerderVida()
+    {
+        Debug.Log("Perdiendo vida...");
+        vidas--;
+        dañoScreen?.MostrarDaño();
+        ActualizarVidas();
+        if (vidas <= 0)
+        {
+            Debug.Log("No quedan vidas. Fin del juego.");
+            GuardarPuntos();
+            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
+        }
+    }
+
+    private void ActualizarEnemigos()
+    {
+        controlHud.ActualizarContador("Enemigos", enemigosEliminados);
+    }
+
+    private void ActualizarPuntos()
+    {
+        controlHud.ActualizarPuntos("SCORE", puntuacion);
+    }
+
+    private void ActualizarVidas()
+    {
+        controlHud.ActualizarEmblemas(vidas);
+    }
+
+    private void ActualizarTiempo(float tiempo)
+    {
+        controlHud.ActualizarTiempo(tiempo);
+    }
+
+    private void GuardarPuntos()
+    {
+        PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") + puntuacion);
+        PlayerPrefs.Save();
+    }
+
+    void RestarTiempo()
+    {
+        if (tiempoRestante > 0)
+        {
+            tiempoRestante -= Time.deltaTime;
+            if (tiempoRestante < 0) tiempoRestante = 0;
+            ActualizarTiempo(tiempoRestante);
+        }
+
+        if (tiempoRestante == 0)
+        {
+            if (puntuacion > puntuacionVictoria)
+            {
+                GuardarPuntos();
+                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+            }
+            else
+            {
+                GuardarPuntos();
+                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
+            }
+        }
+    }
+
+    // MÉTODOS PARA PAUSA Y PLAY INICIAL
+    public void Pausa()
+    {
+        enPausa = true;
+        audioSource?.Pause();
+        if (canvasPausaInicial != null)
+            canvasPausaInicial.SetActive(true);
+    }
+
+    public void Play()
+    {
+        Debug.Log("Botón Play pulsado");
+        enPausa = false;
+        audioSource?.Play();
+        if (canvasPausaInicial != null)
+            canvasPausaInicial.SetActive(false);
+    }
+}
+
+/*
+public class ControlBatalla : MonoBehaviour
+{
+    [Header("Controles")]
+    public static ControlBatalla Instancia { get; private set; }
+    public ControlHud controlHud;
+    private ControlMenuPrincipal controlMenuPrincipal;
+    private DañoScreen dañoScreen;
+
 
     [Header("Parámetros")]
     public float tiempoRestante;
@@ -18,7 +190,6 @@ public class ControlBatalla : MonoBehaviour
     private int vidas = 3;
     private int puntuacion = 0;
     private int enemigosEliminados = 0;
-    private bool openXRActivado = false;
 
     void Awake()
     {
@@ -31,21 +202,16 @@ public class ControlBatalla : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
+        dañoScreen = FindAnyObjectByType<DañoScreen>();
 
-        // Activar plugin OpenXR si no está activado
-        if (!openXRActivado)
-        {
-            controlOpenXR.ActivarOpenXR();
-            //controlAR_old.ActivarAR();
-            openXRActivado = true;
-        }
-
-        // Inicializamos los valores de PlayerPrefs
         PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("EnemigosEliminados", 0);
         PlayerPrefs.SetInt("ObjetoBatalla", 0);
         PlayerPrefs.Save();
+        
+
+
 
     }
 
@@ -97,6 +263,7 @@ public class ControlBatalla : MonoBehaviour
     {
         Debug.Log("Perdiendo vida...");
         vidas--;
+        dañoScreen?.MostrarDaño();
         ActualizarVidas();
         // Si el jugador pierde todas las vidas, el juego termina con derrota
         if (vidas <= 0)
@@ -168,29 +335,5 @@ public class ControlBatalla : MonoBehaviour
         }
 
     }
-
-    private void OnDestroy()
-    {
-        controlOpenXR.DesactivarOpenXR();
-        //controlAR.DesactivarAR();
-        openXRActivado = false;
-    }
-
-    private void OnDisable()
-    {
-        controlOpenXR.DesactivarOpenXR();
-        //controlAR.DesactivarAR();
-        openXRActivado = false;
-    }
-
-    private void OnEnable()
-    {
-        if (!openXRActivado)
-        {
-            controlOpenXR.ActivarOpenXR();
-            //controlAR.ActivarAR();
-            openXRActivado = true;
-        }
-
-    }
 }
+*/

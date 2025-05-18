@@ -1,4 +1,67 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class Disparo : MonoBehaviour
+{
+    [Header("Componentes")]
+    public GameObject proyectilPrefab;
+    public Transform puntoDisparo;
+    public InputAction accionGatillo;
+    public AudioSource sonidoDisparo; // ‚Üê Nuevo campo para el sonido
+
+    [Header("Par√°metros")]
+    public float fuerzaProyectil;
+    public int maximoProyectiles;
+
+    // Variables
+    private List<GameObject> proyectiles;
+
+    void Update()
+    {
+#if UNITY_EDITOR
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            RealizarDisparo();
+        }
+#else
+        // En m√≥vil con OpenXR
+        if (accionGatillo.WasPressedThisFrame())
+        {
+            RealizarDisparo();
+        }
+#endif
+    }
+
+    private void RealizarDisparo()
+    {
+        proyectiles ??= new List<GameObject>();
+
+        if (proyectilPrefab == null || puntoDisparo == null)
+        {
+            Debug.LogWarning("Prefab o punto de disparo no asignados.");
+            return;
+        }
+
+        if (proyectiles.Count >= maximoProyectiles)
+        {
+            Debug.LogWarning("Destruyendo proyectil m√°s antiguo.");
+            Destroy(proyectiles[0]);
+            proyectiles.RemoveAt(0); // Tambi√©n hay que quitarlo de la lista
+        }
+
+        GameObject disparo = Instantiate(proyectilPrefab, puntoDisparo.position, puntoDisparo.rotation);
+        disparo.GetComponent<Rigidbody>().AddForce(puntoDisparo.forward * fuerzaProyectil);
+        proyectiles.Add(disparo);
+
+        // üîä Reproducir sonido de disparo
+        if (sonidoDisparo != null)
+        {
+            sonidoDisparo.Play();
+        }
+    }
+}
+/* using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +72,7 @@ public class Disparo : MonoBehaviour
     public Transform puntoDisparo;
     public InputAction accionGatillo;
 
-    [Header("Par·metros")]
+    [Header("Par√°metros")]
     public float fuerzaProyectil;
     public int maximoProyectiles;
 
@@ -24,7 +87,7 @@ public class Disparo : MonoBehaviour
             RealizarDisparo();
         }
 #else
-        // En mÛvil con OpenXR
+        // En m√≥vil con OpenXR
         if (accionGatillo.WasPressedThisFrame())
         {
             RealizarDisparo();
@@ -37,25 +100,26 @@ public class Disparo : MonoBehaviour
     {
         // Crear array de proyectiles si no existe
         proyectiles ??= new List<GameObject>();
-        // Comprobar si el prefab y el punto de disparo est·n asignados
+        // Comprobar si el prefab y el punto de disparo est√°n asignados
         if (proyectilPrefab == null || puntoDisparo == null)
         {
             Debug.LogWarning("Prefab o punto de disparo no asignados.");
             return;
         }
-        // Comprobar si el n˙mero m·ximo de proyectiles ha sido alcanzado
+        // Comprobar si el n√∫mero m√°ximo de proyectiles ha sido alcanzado
         if (proyectiles.Count >= maximoProyectiles)
         {
-            Debug.LogWarning("Destruyendo proyectil m·s antiguo.");
-            Destroy(proyectiles[0]); // Destruir el proyectil m·s antiguo
+            Debug.LogWarning("Destruyendo proyectil m√°s antiguo.");
+            Destroy(proyectiles[0]); // Destruir el proyectil m√°s antiguo
         }
-        // Crea un proyectil en el punto de disparo con la misma rotaciÛn que el punto
+        // Crea un proyectil en el punto de disparo con la misma rotaci√≥n que el punto
         GameObject disparo = Instantiate(proyectilPrefab, puntoDisparo.position, puntoDisparo.rotation);
 
-        // AÒade una fuerza al proyectil para que se mueva
+        // A√±ade una fuerza al proyectil para que se mueva
         disparo.GetComponent<Rigidbody>().AddForce(puntoDisparo.forward * fuerzaProyectil);
 
-        // AÒade el proyectil al array
+        // A√±ade el proyectil al array
         proyectiles.Add(disparo);
     }
 }
+*/
