@@ -7,7 +7,7 @@ public class RunTowardsPlayer : MonoBehaviour
     public Animator animador;
 
     [Header("Parámetros")]
-    public float offsetAlturaObjetivo;
+    public float offsetAlturaObjetivo= -5f;
     public float velocidad;
     public float distanciaAtaque;
     public int fuerzaAtaque;
@@ -16,6 +16,8 @@ public class RunTowardsPlayer : MonoBehaviour
     // Variables
     private float lastAttackTime;
     private bool hasAttacked = false;
+    
+
 
     void Start()
     {
