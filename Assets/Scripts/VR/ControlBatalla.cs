@@ -32,13 +32,13 @@ public class ControlBatalla : MonoBehaviour
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
 
-        // Activar plugin OpenXR si no está activado
-        if (!openXRActivado)
-        {
-            controlOpenXR.ActivarOpenXR();
-            //controlAR_old.ActivarAR();
-            openXRActivado = true;
-        }
+        //// Activar plugin OpenXR si no está activado
+        //if (!openXRActivado)
+        //{
+        //    controlOpenXR.ActivarOpenXR();
+        //    //controlAR_old.ActivarAR();
+        //    openXRActivado = true;
+        //}
 
         // Inicializamos los valores de PlayerPrefs
         PlayerPrefs.SetInt("VidasRestantes", vidas);

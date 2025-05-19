@@ -1,13 +1,12 @@
-using TMPro;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
-public class ControlBreakout : MonoBehaviour
+public class ControlGolpe : MonoBehaviour
 {
     [Header("Controles")]
-    public static ControlBreakout InstanciaControl { get; private set; }
+    public static ControlGolpe InstanciaControl { get; private set; }
     private ControlMenuPrincipal controlMenuPrincipal;
     private ControlHud controlHud;
 
@@ -30,6 +29,7 @@ public class ControlBreakout : MonoBehaviour
     private int vidas = 3;
     private int puntuacion = 0;
     private int ladrillosRotos = 0;
+    private bool premio = false;
 
     // Funcion para inicializar el script
     void Awake()
@@ -50,6 +50,7 @@ public class ControlBreakout : MonoBehaviour
         PlayerPrefs.SetInt("ObjetoBaston", 0);
         PlayerPrefs.Save();
 
+        // Inicializar música
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
@@ -72,6 +73,7 @@ public class ControlBreakout : MonoBehaviour
         ComprobarInput();
     }
 
+    // Función para comprobar la entrada del jugador
     private void ComprobarInput()
     {
         // Si el jugador presiona la tecla Escape, se muestra el menú principal
@@ -82,17 +84,49 @@ public class ControlBreakout : MonoBehaviour
 
     }
 
+    // Función para comprobar si se ha ganado el juego obteniendo el objeto
     private void ComprobarVictoriaObjeto()
     {
 
         // Si se han roto todos los bloques, se gana el juego
-        if (ladrillosRotos == objetivoLadrillos)
+        if (ladrillosRotos >= objetivoLadrillos)
         {
-            PlayerPrefs.SetInt("ObjetoBaston", 1);
-            PlayerPrefs.Save();
-            GuardarPuntos();
-            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+            if (SceneManager.sceneCount <= 1 && !premio)
+            {
+                Time.timeScale = 0f;
+
+                PlayerPrefs.SetInt("ObjetoBaston", 1);
+                PlayerPrefs.Save();
+                GuardarPuntos();
+                Debug.Log("Cargando escena: PremioGolpeBaston");
+
+                SceneManager.sceneLoaded += OnPremioSceneLoaded;
+                SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
+            }
         }
+    }
+
+    // Función para lanzar espera de la escena de premio cuando se carga
+    private void OnPremioSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Premio")
+        {
+            Debug.Log("Escena de premio cargada completamente.");
+            // Desuscribirse del evento de carga de escena
+            SceneManager.sceneLoaded -= OnPremioSceneLoaded;
+            // Desactivar el objeto de la escena actual
+            StartCoroutine(EsperarPremio());
+        }
+    }
+
+    // Función para esperar 5 segundos antes de descargar la escena de premio
+    IEnumerator EsperarPremio()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        SceneManager.UnloadSceneAsync("Premio");
+        yield return null;
+        Time.timeScale = 1f;
+        controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
     }
 
 

@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1210241739}
   - component: {fileID: 1210241738}
   m_Layer: 0
-  m_Name: ControlPremio
+  m_Name: ControlPremioBreakOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fc3d5df7dcabf42bfef284d5b1eb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 1537600748}
+  canvas: {fileID: 1865181373}
 --- !u!4 &1210241739
 Transform:
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1537600747
+--- !u!1001 &1865181372
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -180,13 +180,13 @@ PrefabInstance:
     - target: {fileID: 2425755746789471742, guid: 7badf46e2cb6df342b683d36ef153bec,
         type: 3}
       propertyPath: m_text
-      value: pluma del ave fenix
+      value: inscripcion del sello de buda
       objectReference: {fileID: 0}
     - target: {fileID: 4196077521436634113, guid: 7badf46e2cb6df342b683d36ef153bec,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1356969292, guid: e2843c7a858d27c44b96db80db37dafc,
+      objectReference: {fileID: -1641844536, guid: f772e518ec1180d45807c753d9fd8fa5,
         type: 3}
     - target: {fileID: 7561161256565996710, guid: 7badf46e2cb6df342b683d36ef153bec,
         type: 3}
@@ -293,15 +293,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7badf46e2cb6df342b683d36ef153bec, type: 3}
---- !u!223 &1537600748 stripped
+--- !u!223 &1865181373 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 792771945130378705, guid: 7badf46e2cb6df342b683d36ef153bec,
     type: 3}
-  m_PrefabInstance: {fileID: 1537600747}
+  m_PrefabInstance: {fileID: 1865181372}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1210241739}
-  - {fileID: 1537600747}
+  - {fileID: 1865181372}

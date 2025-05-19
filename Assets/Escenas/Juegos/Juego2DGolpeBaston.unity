@@ -1434,8 +1434,8 @@ GameObject:
   - component: {fileID: 2066103227}
   - component: {fileID: 2066103228}
   m_Layer: 0
-  m_Name: ControlBreakout
-  m_TagString: Musica
+  m_Name: ControlGolpe
+  m_TagString: ControlEscena
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1474,7 +1474,7 @@ MonoBehaviour:
   audioSource: {fileID: 2066103228}
   canvasBotonPlay: {fileID: 721252218}
   tiempoRestante: 60
-  objetivoLadrillos: 20
+  objetivoLadrillos: 1
   puntuacionVictoria: 100
 --- !u!82 &2066103228
 AudioSource:

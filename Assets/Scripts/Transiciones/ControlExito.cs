@@ -13,6 +13,8 @@ public class ControlExito : MonoBehaviour
         controlMenu = ControlMenuPrincipal.InstanciaControl;
         TxtScorePartida.text = "SCORE PARTIDA: " + PlayerPrefs.GetInt("PuntuacionPartida");
         TxtScore.text = "SCORE TOTAL: " + PlayerPrefs.GetInt("Puntuacion");
+
+
     }
 
     // Click en el botón de continuar
