@@ -36,24 +36,6 @@ EditorBuildSettings:
     path: Assets/Escenas/Transiciones/YouWin.unity
     guid: 202d2da720618054f859c29baf67e2ff
   - enabled: 1
-    path: Assets/Escenas/Premios/PremioBatallaCelestial.unity
-    guid: 73831d1a1c1ef4c4987415c2e182820d
-  - enabled: 1
-    path: Assets/Escenas/Premios/PremioEscapeInfierno.unity
-    guid: a7fcb9a3e7506304cb72327f37c1cc5f
-  - enabled: 1
-    path: Assets/Escenas/Premios/PremioEspiritusDesencarnados.unity
-    guid: 7438c756177519e43b0c67076816f5fc
-  - enabled: 1
-    path: Assets/Escenas/Premios/PremioGolpeBaston.unity
-    guid: f7b26a55c385cfe479820ca6592c37d3
-  - enabled: 1
-    path: Assets/Escenas/Premios/PremioHuidaCelestial.unity
-    guid: c70785b7fb8b15b4dbf4c542e0c9173c
-  - enabled: 1
-    path: Assets/Escenas/Premios/PremioJuegoCompleto.unity
-    guid: f4febfabc6da7294eb0330bd7c0e649e
-  - enabled: 1
     path: Assets/Escenas/Transiciones/Premio.unity
     guid: 48eb0202e0d9a0c4caeb49fa56e75727
   m_configObjects:

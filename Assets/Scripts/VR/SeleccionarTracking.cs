@@ -14,7 +14,7 @@ public class SeleccionarTracking : MonoBehaviour
 #else
         Debug.Log("[Tracking (Camara)] Modo VR");
         if (poseEditor != null) poseEditor.enabled = false;
-        if (poseCardboard != null) poseCardboard.enabled = true;
+        if (poseVR != null) poseVR.enabled = true;
 #endif
     }
 }

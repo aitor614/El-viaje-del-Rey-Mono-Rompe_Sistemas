@@ -273,6 +273,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 602800209}
+  premio: {fileID: 0}
+  TxtPremio: {fileID: 0}
+  premioEscape: {fileID: 0}
+  premioGolpe: {fileID: 0}
+  premioHuida: {fileID: 0}
+  premioEspiritus: {fileID: 0}
+  premioBatalla: {fileID: 0}
+  premioCompleto: {fileID: 0}
 --- !u!4 &1210241739
 Transform:
   m_ObjectHideFlags: 0
