@@ -1474,7 +1474,7 @@ MonoBehaviour:
   audioSource: {fileID: 2066103228}
   canvasBotonPlay: {fileID: 721252218}
   tiempoRestante: 60
-  objetivoLadrillos: 1
+  objetivoLadrillos: 20
   puntuacionVictoria: 100
 --- !u!82 &2066103228
 AudioSource:

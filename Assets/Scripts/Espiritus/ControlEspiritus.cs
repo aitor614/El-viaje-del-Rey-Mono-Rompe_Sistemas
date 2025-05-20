@@ -37,12 +37,13 @@ public class ControlEspiritus : MonoBehaviour
         controlHud = ControlHud.InstanciaControl;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
-        // Activar plugin AR si no está activado
-        //if (!arActivado) { 
-        //    controlAR.ActivarAR();
-        //    //controlAR_old.ActivarAR();
-        //    arActivado = true;
-        //}
+        //Activar plugin AR si no está activado
+        if (!arActivado)
+        {
+            controlAR.ActivarAR();
+            //controlAR_old.ActivarAR();
+            arActivado = true;
+        }
 
         // Inicializamos los valores de PlayerPrefs
         PlayerPrefs.SetInt("Espiritus", 0);

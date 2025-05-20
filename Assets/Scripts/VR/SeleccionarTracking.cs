@@ -3,16 +3,16 @@ using UnityEngine;
 public class SeleccionarTracking : MonoBehaviour
 {
     public Behaviour poseEditor;
-    public Behaviour poseCardboard;
+    public Behaviour poseVR;
 
     void Awake()
     {
 #if UNITY_EDITOR
-        Debug.Log("Modo Editor");
+        Debug.Log("[Tracking (Camara)] Modo Editor");
         if (poseEditor != null) poseEditor.enabled = true;
-        if (poseCardboard != null) poseCardboard.enabled = false;
+        if (poseVR != null) poseVR.enabled = false;
 #else
-        Debug.Log("Modo Cardboard");
+        Debug.Log("[Tracking (Camara)] Modo VR");
         if (poseEditor != null) poseEditor.enabled = false;
         if (poseCardboard != null) poseCardboard.enabled = true;
 #endif

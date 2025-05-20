@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using static UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticsUtility;
 
 public class ControlBatalla : MonoBehaviour
@@ -9,10 +10,17 @@ public class ControlBatalla : MonoBehaviour
     public ControlOpenXR controlOpenXR;
     private ControlMenuPrincipal controlMenuPrincipal;
 
+    [Header("Elementos de la escena")]
+    public GameObject canvasBotonPlay;
+
     [Header("Parámetros")]
     public float tiempoRestante;
     public int puntuacionVictoria;
     public int enemigosObjetivo;
+
+    [Header("Sonidos")]
+    public AudioClip musica;
+    public AudioSource audioSource;
 
     // Variables
     private int vidas = 3;
@@ -32,13 +40,13 @@ public class ControlBatalla : MonoBehaviour
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
 
-        //// Activar plugin OpenXR si no está activado
-        //if (!openXRActivado)
-        //{
-        //    controlOpenXR.ActivarOpenXR();
-        //    //controlAR_old.ActivarAR();
-        //    openXRActivado = true;
-        //}
+        // Activar plugin OpenXR si no está activado
+        if (!openXRActivado)
+        {
+            controlOpenXR.ActivarOpenXR();
+            //controlAR_old.ActivarAR();
+            openXRActivado = true;
+        }
 
         // Inicializamos los valores de PlayerPrefs
         PlayerPrefs.SetInt("VidasRestantes", vidas);
@@ -47,6 +55,12 @@ public class ControlBatalla : MonoBehaviour
         PlayerPrefs.SetInt("ObjetoBatalla", 0);
         PlayerPrefs.Save();
 
+        // Inicializar música
+        audioSource.clip = musica;
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
+        audioSource.Play();
+        Pausa();
     }
 
     // Update is called once per frame
@@ -169,28 +183,53 @@ public class ControlBatalla : MonoBehaviour
 
     }
 
-    private void OnDestroy()
+    // Función para pausar el juego
+    public void Pausa()
     {
-        controlOpenXR.DesactivarOpenXR();
-        //controlAR.DesactivarAR();
-        openXRActivado = false;
+        Time.timeScale = 0f;
+        audioSource.Pause();
     }
+
+    // Función para reanudar el juego
+    public void Play()
+    {
+        if (canvasBotonPlay != null)
+            canvasBotonPlay.SetActive(false);
+
+        Time.timeScale = 1f;
+        audioSource.Play();
+    }
+
 
     private void OnDisable()
     {
-        controlOpenXR.DesactivarOpenXR();
-        //controlAR.DesactivarAR();
-        openXRActivado = false;
+        DesactivarOpenXR();
     }
 
     private void OnEnable()
     {
         if (!openXRActivado)
         {
-            controlOpenXR.ActivarOpenXR();
-            //controlAR.ActivarAR();
-            openXRActivado = true;
+            ActivarOpenXR();
         }
-
     }
+
+    private void DesactivarOpenXR()
+    {
+        if (controlOpenXR != null)
+        {
+            controlOpenXR.DesactivarOpenXR();
+        }
+        openXRActivado = false;
+    }
+
+    private void ActivarOpenXR()
+    {
+        if (controlOpenXR != null)
+        {
+            controlOpenXR.ActivarOpenXR();
+        }
+        openXRActivado = true;
+    }
+
 }
