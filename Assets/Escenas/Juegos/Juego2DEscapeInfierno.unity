@@ -169,6 +169,7 @@ MonoBehaviour:
   minY: 1
   maxY: 60
   horizontalMargin: 2
+  distanciaEntreEnemigos: 5
 --- !u!1 &342560911 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5469117648145094666, guid: 4960b81a9f43c2b4d8073ef1d0ba85f6,
@@ -1639,9 +1640,10 @@ MonoBehaviour:
   canvasBotonPlay: {fileID: 2103804987}
   audioSource: {fileID: 1863697501}
   startPosition: {x: 0, y: 0, z: 0}
-  tiempoRestante: 30
+  tiempoRestante: 45
   puntuacionVictoria: 200
   puntosAltura: 5
+  puntuacion: 0
 --- !u!82 &1863697501
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2321,6 +2323,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_VertexColorAlwaysGammaSpace
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7892197929705520205, guid: ca052d65e0be4d547afc26a5654a94d3,
+        type: 3}
+      propertyPath: m_text
+      value: 'SCORE: '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
