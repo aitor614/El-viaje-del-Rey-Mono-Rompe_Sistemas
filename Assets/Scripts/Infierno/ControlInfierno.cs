@@ -29,7 +29,7 @@ public class ControlInfierno : MonoBehaviour
 
     // Variables
     private int vidas = 3;
-    private int puntuacion = 0;
+    public int puntuacion = 0;
     private float alturaAlcanzada = 0f;
 
     void Awake()
@@ -63,12 +63,9 @@ public class ControlInfierno : MonoBehaviour
         }
 
         if (canvasBotonPlay != null)
-            canvasBotonPlay.SetActive(false); // Oculta el botón al inicio
+            canvasBotonPlay.SetActive(true); // Botón activo al inicio del juego
 
-        Time.timeScale = 1f; // Asegura que el juego empiece a moverse
-        if (player != null)
-            player.enabled = true;
-
+        Pausa();
     }
 
     private void Update()
