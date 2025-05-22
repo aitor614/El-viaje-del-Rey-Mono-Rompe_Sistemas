@@ -170,7 +170,7 @@ public class ControlHuida : MonoBehaviour
         audioSource.Play();
 
         EliminarObstaculos();
-        EliminarVidaExxtra()
+        // EliminarVidaExxtra();
 
     }
 
@@ -184,12 +184,12 @@ public class ControlHuida : MonoBehaviour
         for (int i = 0; i < obstaculos.Length; i++)
         {
             Destroy(obstaculos[i].gameObject);
-            // PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
+            PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
             PlayerPrefs.Save();
         }
     }
 
-    public void EliminarVidaExxtra()
+    /* public void EliminarVidaExxtra()
     {
         // Se obtienen todos los obstáculos de la escena
         GameObject[] VidaExtra = GameObject.FindGameObjectsWithTag(VidaExxtra.tag);
@@ -202,7 +202,7 @@ public class ControlHuida : MonoBehaviour
             PlayerPrefs.Save();
         }
     }
-
+    */
     // Función para gestionar la colisión del jugador con los obstáculos
     public void Colision()
     {
@@ -218,8 +218,6 @@ public class ControlHuida : MonoBehaviour
     {
         PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") + 1);
         PlayerPrefs.Save();
-        canvasBotonPlay.SetActive(true);
-        Pausa();
         CheckVida();
     }
 

@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 1144018502175049282}
   m_Layer: 0
   m_Name: Vida
-  m_TagString: Untagged
+  m_TagString: VidaExxtra
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,7 +185,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4157454306900885792}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
