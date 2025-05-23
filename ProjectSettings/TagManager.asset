@@ -17,6 +17,7 @@ TagManager:
   - Scoring
   - XR Simulation
   - ControlEscena
+  - GestorXR_Pruebas
   layers:
   - Default
   - TransparentFX

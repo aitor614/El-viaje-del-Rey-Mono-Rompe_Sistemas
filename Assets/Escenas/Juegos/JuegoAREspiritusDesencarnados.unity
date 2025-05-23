@@ -514,6 +514,11 @@ PrefabInstance:
       objectReference: {fileID: 163335388}
     - target: {fileID: 2644793015569042559, guid: 8f04822a2a1865647a526f5b90f31596,
         type: 3}
+      propertyPath: m_PlaneDistance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644793015569042559, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
       propertyPath: m_VertexColorAlwaysGammaSpace
       value: 1
       objectReference: {fileID: 0}
@@ -885,7 +890,7 @@ GameObject:
   - component: {fileID: 1308961092}
   - component: {fileID: 1308961091}
   m_Layer: 0
-  m_Name: GestorXR_PruebasLocal
+  m_Name: GestorXR_Pruebas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1212,7 +1217,7 @@ PrefabInstance:
     - target: {fileID: 2857844379552655069, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
         type: 3}
       propertyPath: m_PlaneDistance
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2857844379552655069, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
         type: 3}
@@ -1568,6 +1573,7 @@ MonoBehaviour:
   tiempoRestante: 45
   musica: {fileID: 8300000, guid: f7439dd207b73bc46a1bb88f561108bf, type: 3}
   audioSource: {fileID: 1796759436}
+  gestorXR_pruebas: {fileID: 1308961091}
 --- !u!4 &1796759435
 Transform:
   m_ObjectHideFlags: 0

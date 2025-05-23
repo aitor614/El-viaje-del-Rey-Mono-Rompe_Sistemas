@@ -26,6 +26,7 @@ public class ControlBatalla : MonoBehaviour
 
     [Header("XR")]
     private GestorXR gestorXR;
+    public GestorXR gestorXR_pruebas;
 
     public enum ModoXR { OpenXR, Cardboard, ARCore }
     public ModoXR modoSeleccionado;
@@ -48,10 +49,10 @@ public class ControlBatalla : MonoBehaviour
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
         // Obtener el gestor de XR
-        if (GestorXR.InstanciaGestorXR == null)
+        if (controlMenuPrincipal == null || controlMenuPrincipal.gestorXR == null)
         {
             Debug.Log("[ControlBatalla] GestorXR no encontrado. Buscando en la escena...");
-            gestorXR = FindFirstObjectByType<GestorXR>();
+            gestorXR = gestorXR_pruebas;
             if (gestorXR == null)
             {
                 Debug.LogError("[ControlBatalla] GestorXR sigue sin encontrarse.");
@@ -61,7 +62,7 @@ public class ControlBatalla : MonoBehaviour
         }
         else
         {
-            gestorXR = GestorXR.InstanciaGestorXR;
+            gestorXR = controlMenuPrincipal.gestorXR;
         }
 
         // Activar plugin OpenXR si no está activado
@@ -292,7 +293,7 @@ public class ControlBatalla : MonoBehaviour
                 break;
         }
 
-        vrActivado = false;
+        vrActivado = true;
     }
 
 }

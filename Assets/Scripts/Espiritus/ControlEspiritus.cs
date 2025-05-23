@@ -27,6 +27,7 @@ public class ControlEspiritus : MonoBehaviour
 
     [Header("XR")]
     private GestorXR gestorXR;
+    public GestorXR gestorXR_pruebas;
 
     // Variables
     private int espiritus;
@@ -36,14 +37,14 @@ public class ControlEspiritus : MonoBehaviour
 
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
         // Obtener el gestor de XR
-        if (GestorXR.InstanciaGestorXR == null)
+        if (controlMenuPrincipal == null || controlMenuPrincipal.gestorXR == null)
         {
             Debug.Log("[ControlBatalla] GestorXR no encontrado. Buscando en la escena...");
-            gestorXR = FindFirstObjectByType<GestorXR>();
+            gestorXR = gestorXR_pruebas;
             if (gestorXR == null)
             {
                 Debug.LogError("[ControlBatalla] GestorXR sigue sin encontrarse.");
@@ -53,15 +54,13 @@ public class ControlEspiritus : MonoBehaviour
         }
         else
         {
-            gestorXR = GestorXR.InstanciaGestorXR;
+            gestorXR = controlMenuPrincipal.gestorXR;
         }
 
         //Activar plugin AR si no está activado
         if (!arActivado)
         {
-            controlAR.ActivarAR();
-            //controlAR_old.ActivarAR();
-            arActivado = true;
+            ActivarAR();
         }
 
         // Inicializamos los valores de PlayerPrefs
@@ -204,7 +203,10 @@ public class ControlEspiritus : MonoBehaviour
 
     private void OnDisable()
     {
-        DesactivarAR();
+        if (arActivado)
+        { 
+            DesactivarAR();
+        }
     }
 
     private void OnEnable()
