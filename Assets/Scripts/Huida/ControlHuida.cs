@@ -18,6 +18,7 @@ public class ControlHuida : MonoBehaviour
     public GeneradorObstaculos genObstaculos;
     public GameObject canvasBotonPlay;
     public GameObject obstaculo;
+    public GameObject VidaExxtra;
 
     [Header("Parámetros")]
     public float tiempoRestante;
@@ -64,6 +65,7 @@ public class ControlHuida : MonoBehaviour
     {
         puntuacion = PlayerPrefs.GetInt("PuntuacionPartida");
         obstaculosSalvados = PlayerPrefs.GetInt("ObstaculosSalvados");
+        vidas = PlayerPrefs.GetInt("VidaExtraSalvados");
 
         RestarTiempo();
         ActualizarPuntos();
@@ -168,6 +170,7 @@ public class ControlHuida : MonoBehaviour
         audioSource.Play();
 
         EliminarObstaculos();
+        // EliminarVidaExxtra();
 
     }
 
@@ -186,6 +189,20 @@ public class ControlHuida : MonoBehaviour
         }
     }
 
+    /* public void EliminarVidaExxtra()
+    {
+        // Se obtienen todos los obstáculos de la escena
+        GameObject[] VidaExtra = GameObject.FindGameObjectsWithTag(VidaExxtra.tag);
+
+        // Se recorre todos los obstáculos y se destruyen
+        for (int i = 0; i < VidaExtra.Length; i++)
+        {
+            Destroy(VidaExtra[i].gameObject);
+            PlayerPrefs.SetInt("VidaExtraSalvados", PlayerPrefs.GetInt("VidaExtraSalvados") + 1);
+            PlayerPrefs.Save();
+        }
+    }
+    */
     // Función para gestionar la colisión del jugador con los obstáculos
     public void Colision()
     {
@@ -194,6 +211,13 @@ public class ControlHuida : MonoBehaviour
         PlayerPrefs.Save();
         canvasBotonPlay.SetActive(true);
         Pausa();
+        CheckVida();
+    }
+
+    public void ColisionVida()
+    {
+        PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") + 1);
+        PlayerPrefs.Save();
         CheckVida();
     }
 
@@ -209,6 +233,7 @@ public class ControlHuida : MonoBehaviour
     {
         PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
         PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") + puntuacion);
+        PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.Save();
     }
 

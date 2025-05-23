@@ -92,6 +92,10 @@ public class PlayerHuida : MonoBehaviour
             PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
             PlayerPrefs.Save();
         }
+        else if (other.gameObject.CompareTag("VidaExxtra"))
+        {
+            ControlHuida.InstanciaControl.ColisionVida();
+        }
     }
 
     // Reinicia la posición del jugador
@@ -101,3 +105,4 @@ public class PlayerHuida : MonoBehaviour
         colisionPlayer.linearVelocity = Vector2.zero;
     }
 }
+   
