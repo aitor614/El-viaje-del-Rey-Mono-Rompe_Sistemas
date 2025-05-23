@@ -1434,8 +1434,8 @@ GameObject:
   - component: {fileID: 2066103227}
   - component: {fileID: 2066103228}
   m_Layer: 0
-  m_Name: ControlBreakout
-  m_TagString: Musica
+  m_Name: ControlGolpe
+  m_TagString: ControlEscena
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

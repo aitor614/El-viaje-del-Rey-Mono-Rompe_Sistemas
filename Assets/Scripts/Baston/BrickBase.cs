@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class BrickBase : MonoBehaviour
 {
-    private ControlBreakout control;
+    private ControlGolpe control;
 
     [Header("Configuración")]
     public int vidas;
@@ -19,7 +19,7 @@ public class BrickBase : MonoBehaviour
 
     private void Start()
     {
-        control = ControlBreakout.InstanciaControl;
+        control = ControlGolpe.InstanciaControl;
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 

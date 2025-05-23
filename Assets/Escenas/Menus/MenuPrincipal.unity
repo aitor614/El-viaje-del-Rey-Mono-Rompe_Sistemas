@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d972f746b8f0a7a4b91f897db1539a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMode: 0
+  modoInicial: 0
 --- !u!4 &910713074
 Transform:
   m_ObjectHideFlags: 0
@@ -773,6 +773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0e6ae538e878641ae8fd4d859a378c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gestorXR: {fileID: 910713073}
   musica: {fileID: 8300000, guid: 9aedc70ff08367f4f95ebdba79c220f3, type: 3}
   audioSource: {fileID: 2056351792}
   modoActual: 0

@@ -14,6 +14,8 @@ public class Enemigo : MonoBehaviour
 
     // Variables
     private bool ataqueRealizado = false;
+    public GameObject efectoExplosion;
+
 
     void Start()
     {
@@ -31,7 +33,7 @@ public class Enemigo : MonoBehaviour
             RestarVida(1);
         }
 
-        if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
+        /*if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
         {
             PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - poderGolpe);
             PlayerPrefs.Save();
@@ -39,15 +41,45 @@ public class Enemigo : MonoBehaviour
             //animacion.SetBool("isAttacking", true);
             Debug.Log("¡El enemigo ataca!");
             Destroy(gameObject, 1f);
+        }*/
+        if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
+        {
+            for (int i = 0; i < poderGolpe; i++)
+            {
+                ControlBatalla.Instancia?.PerderVida(); // Llamada centralizada
+            }
+
+            ataqueRealizado = true;
+            Debug.Log("¡El enemigo ataca!");
+            Destroy(gameObject, 1f);
         }
+
 
     }
 
+    /*void RestarVida(int cantidad)
+    {
+        vida -= cantidad;
+        if (vida <= 0)
+        {
+            PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosEliminar);
+            PlayerPrefs.SetInt("EnemigosEliminados", PlayerPrefs.GetInt("EnemigosEliminados") + 1);
+            PlayerPrefs.Save();
+            Destroy(gameObject);
+        }
+    }*/
     void RestarVida(int cantidad)
     {
         vida -= cantidad;
         if (vida <= 0)
         {
+            // Instanciar la explosión en la posición del enemigo
+            if (efectoExplosion != null)
+            {
+                Instantiate(efectoExplosion, transform.position, Quaternion.identity);
+            }
+
+            // Actualizar puntuación y eliminar al enemigo
             PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosEliminar);
             PlayerPrefs.SetInt("EnemigosEliminados", PlayerPrefs.GetInt("EnemigosEliminados") + 1);
             PlayerPrefs.Save();

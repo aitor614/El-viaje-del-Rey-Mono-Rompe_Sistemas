@@ -9,21 +9,24 @@ public class SpawnerEspiritus : MonoBehaviour
     {
         public string nombre;
         public GameObject prefab;
-        public int peso = 1;
+        public int peso;
+        public int cantidadMaxima;
     }
     [Header("Tipos de espíritus")]
-    [SerializeField] private TipoEspiritu[] tiposEspiritus;
+    public TipoEspiritu[] tiposEspiritus;
 
     [Header("Configuración del spawner")]
-    [SerializeField] private Camera camaraAR;
-    [SerializeField] private int cantidad;
-    [SerializeField] private float distanciaMinima;
-    [SerializeField] private float distanciaMaxima;
-    [SerializeField] private float primerSpawnDelay;
-    [SerializeField] private float tiempoSpawn;
-    [SerializeField] private int maxEspiritus;
+    public Camera camaraAR;
+    public float distanciaMinima;
+    public float distanciaMaxima;
+    public float primerSpawnDelay;
+    public float tiempoSpawn;
+    public int maxEspiritus;
+
+    /// Variables
     private List<GameObject> espiritusActivos = new();
     private bool corutinaLanzada = false;
+    private bool todosGenerados = false;
 
     public static SpawnerEspiritus Instancia { get; private set; }
 
@@ -34,13 +37,12 @@ public class SpawnerEspiritus : MonoBehaviour
 
     private void Start()
     {
+        // Obtener la cámara AR si no se ha asignado
         if (camaraAR == null) camaraAR = Camera.main;
-
         Debug.Log("Spawn iniciado");
-        InvokeRepeating(nameof(SpawnEspiritus), primerSpawnDelay, tiempoSpawn);
     }
 
-        private void Update()
+    private void Update()
     {
         if (!corutinaLanzada)
         {
@@ -49,65 +51,77 @@ public class SpawnerEspiritus : MonoBehaviour
         }
     }
 
+    // Spawnear espíritus cada cierto tiempo
     private IEnumerator SpawnearCadaTiempo()
     {
         Debug.Log("Esperando para primer spawn...");
         yield return new WaitForSeconds(primerSpawnDelay);
 
-        while (true)
+        while (!todosGenerados)
         {
             Debug.Log("Ejecutando SpawnEspiritus");
             SpawnEspiritus();
+            // Esperar el tiempo de spawn
             yield return new WaitForSeconds(tiempoSpawn);
         }
+        Debug.Log("[Spawner] Todos los espíritus generados. Corutina detenida.");
     }
 
-
+    // Ejecutar el spawn al activar el objeto
     private void OnEnable()
     {
         Debug.Log("Spawner ejecutando spawn.");
         SpawnEspiritus();
     }
 
+    // Generar espíritus en la escena
     public void SpawnEspiritus()
     {
         if (camaraAR == null || tiposEspiritus.Length == 0) return;
         if (espiritusActivos.Count >= maxEspiritus) return;
 
+        // Ordenar por peso descendente
+        List<TipoEspiritu> tiposOrdenados = new(tiposEspiritus);
+        tiposOrdenados.Sort((a, b) => b.peso.CompareTo(a.peso));
+
+        // Calcular el espacio disponible
         int espacioDisponible = maxEspiritus - espiritusActivos.Count;
-        int aGenerar = Mathf.Min(cantidad, espacioDisponible);
+        if (espacioDisponible <= 0) return;
 
-        for (int i = 0; i < aGenerar; i++)
+        int cantidad = 0;
+        foreach (var tipo in tiposOrdenados)
         {
+            cantidad++;
+            if (tipo.prefab == null || espacioDisponible <= 0) continue;
+
+            // Contar cuántos espíritus de este tipo ya están activos
+            int activosDeEsteTipo = espiritusActivos.FindAll(e => e != null && e.name.StartsWith(tipo.prefab.name)).Count;
+            if (activosDeEsteTipo >= tipo.cantidadMaxima) continue;
+
+            // Solo generar 1 por llamada para hacerlo gradual
             Vector3 posicionSpawn = GenerarPosicionAleatoria();
-
-            TipoEspiritu tipo = CalcTipoEspiritu();
-            if (tipo == null || tipo.prefab == null) continue;
-
             GameObject espiritu = Instantiate(tipo.prefab, posicionSpawn, Quaternion.identity);
+            espiritu.name = tipo.prefab.name + "_" + Random.Range(0, 10000);
             espiritusActivos.Add(espiritu);
 
+            Debug.Log($"[Spawner] Generado {tipo.nombre}. Total: {espiritusActivos.Count}/{maxEspiritus}");
+            // Generar solo uno por ciclo
+            if (cantidad == 2) break; 
         }
-        Debug.Log($"[Spawner] Ejecutando SpawnEspiritus. Activos: {espiritusActivos.Count}/{maxEspiritus}");
-    }
 
-    private TipoEspiritu CalcTipoEspiritu()
-    {
-        int totalPeso = 0;
-        foreach (var tipo in tiposEspiritus)
-            totalPeso += tipo.peso;
-
-        int valor = Random.Range(0, totalPeso);
-        int acumulador = 0;
-
+        // Comprobar si ya no queda ninguno por generar
+        bool todosCompletos = true;
         foreach (var tipo in tiposEspiritus)
         {
-            acumulador += tipo.peso;
-            if (valor < acumulador)
-                return tipo;
+            int activos = espiritusActivos.FindAll(e => e != null && e.name.StartsWith(tipo.prefab.name)).Count;
+            if (activos < tipo.cantidadMaxima)
+            {
+                todosCompletos = false;
+                break;
+            }
         }
 
-        return tiposEspiritus[0];
+        todosGenerados = todosCompletos;
     }
 
     public void EliminarEspiritu(GameObject espiritu)

@@ -1,19 +1,45 @@
 using System.Collections;
 using Unity.XR.CoreUtils;
 using UnityEngine;
-using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.Management;
 
 public class ControlOpenXR : MonoBehaviour
 {
+    [Header("Elementos de XR")]
+    public GestorXR gestorXR;
     public XROrigin xrOrigin;
     public GameObject spawner;
     public GameObject interacciones;
-    public GestorXR gestorXR;
+
+    // Variables
+    private int sleepInicial;
+    private float brilloInicial;
 
     public void ActivarOpenXR()
     {
-        gestorXR = GestorXR.Instance;
+        StartCoroutine(ActivarOpenXRCoroutine());
+    }
+
+    private IEnumerator ActivarOpenXRCoroutine()
+    {
+        // Obtener el gestor de XR
+        if (ControlMenuPrincipal.InstanciaControl == null || ControlMenuPrincipal.InstanciaGestorXR == null)
+        {
+            if (ControlMenuPrincipal.InstanciaControl == null) Debug.LogError("[Control_OpenXR] No se encuentra instancia ControlMenuPrincioal.");
+            Debug.LogError("[Control_OpenXR] GestorXR no encontrado. Buscando en la escena...");
+            gestorXR = FindFirstObjectByType<GestorXR>();
+            if (gestorXR == null)
+            {
+                Debug.LogError("[Control_OpenXR] GestorXR sigue sin encontrarse.");
+                yield break;
+            }
+        }
+        else
+        {
+            gestorXR = ControlMenuPrincipal.InstanciaGestorXR;
+        }
+
+        sleepInicial = Screen.sleepTimeout;
+        brilloInicial = Screen.brightness;
 
         // Desactiva todos los componentes de OpenXR
         if (xrOrigin != null) xrOrigin.gameObject.SetActive(false);
@@ -23,7 +49,7 @@ public class ControlOpenXR : MonoBehaviour
         if (interacciones != null) interacciones.SetActive(false);
         else Debug.LogError("[Control_OpenXR] interacciones is null");
 
-        StartCoroutine(gestorXR.InicializarOpenXR());
+        yield return gestorXR.InicializarOpenXR();
 
 
         // Activar todos los componentes de OpenXR
@@ -33,6 +59,9 @@ public class ControlOpenXR : MonoBehaviour
         else Debug.LogError("[Control_OpenXR] spawner is null");
         if (interacciones != null) interacciones.SetActive(true);
         else Debug.LogError("[Control_OpenXR] interacciones is null");
+
+        Screen.sleepTimeout = sleepInicial;
+        Screen.brightness = brilloInicial;
     }
 
     public void DesactivarOpenXR()

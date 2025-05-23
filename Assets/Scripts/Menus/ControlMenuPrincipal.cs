@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class ControlMenuPrincipal : MonoBehaviour
 {
 
+    [Header("Controles")]
+    public GestorXR gestorXR;
+
     [Header("Sonidos")]
     public AudioClip musica;
 
@@ -14,6 +17,7 @@ public class ControlMenuPrincipal : MonoBehaviour
     public AudioSource audioSource;
 
     public static ControlMenuPrincipal InstanciaControl { get; private set; }
+    public static GestorXR InstanciaGestorXR { get; private set; }
 
     public enum ModoJuego { Individual, Continuo }
     public ModoJuego modoActual;
@@ -121,6 +125,21 @@ public class ControlMenuPrincipal : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+
+        if (InstanciaGestorXR == null)
+        {
+            InstanciaGestorXR = gestorXR;
+            if(InstanciaGestorXR == null)
+            {
+                Debug.LogError("[ControlMenuPrincipal] GestorXR no encontrado. Buscando en la escena...");
+                InstanciaGestorXR = FindAnyObjectByType<GestorXR>();
+                if (InstanciaGestorXR == null)
+                {
+                    Debug.LogError("[ControlMenuPrincipal] GestorXR sigue sin encontrarse.");
+                    return;
+                }
+            }
         }
 
         // Asignar la instancia de ControlMenuPrincipal

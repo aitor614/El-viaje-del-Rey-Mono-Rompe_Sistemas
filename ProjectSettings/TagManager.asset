@@ -16,7 +16,8 @@ TagManager:
   - Obstacle
   - Scoring
   - XR Simulation
-  - Musica
+  - ControlEscena
+  - GestorXR_Pruebas
   layers:
   - Default
   - TransparentFX

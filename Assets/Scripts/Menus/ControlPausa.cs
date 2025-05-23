@@ -5,22 +5,17 @@ using UnityEngine.SceneManagement;
 public class ControlPausa : MonoBehaviour
 {
 
-    private bool menuCargado = false;
-
-
-    [Header("Sonidos")]
-    private AudioSource musicaActiva;
-
-
 
     [Header("Controles")]
     public static ControlPausa InstanciaControl { get; private set; }
+    private GameObject controlEscena;
     private ControlAR_old controlAR_old;
     private ControlAR controlAR;
     //private ControlCardBoard controlCardboard;
     private ControlOpenXR controlOpenXR;
+    private AudioSource musica;
 
-
+    private bool menuCargado = false;
     // Banderas para saber si AR o VR estaban activos al pausar
     private bool arEstabaActivo = false;
     private bool vrEstabaActivo = false;
@@ -34,24 +29,34 @@ public class ControlPausa : MonoBehaviour
     {
         // Buscar automáticamente el ControlAR en la escena si existe
         if(FindAnyObjectByType<ControlAR_old>() != null)
+        {
+            Debug.Log("ControlAR_old encontrado en la escena.");
             controlAR_old = FindAnyObjectByType<ControlAR_old>();
+
+        }
         else if (FindAnyObjectByType<ControlAR>() != null)
+        {
+            Debug.Log("ControlAR encontrado en la escena.");
             controlAR = FindAnyObjectByType<ControlAR>();
+        }
 
         // Buscar automáticamente el ControlVR en la escena si existe
         //controlCardboard = FindFirstObjectByType<ControlCardBoard>();
         if (FindAnyObjectByType<ControlOpenXR>() != null)
-            controlOpenXR = FindFirstObjectByType<ControlOpenXR>();
-
-        GameObject musicaGO = GameObject.FindGameObjectWithTag("Musica");
-        if (musicaGO != null)
         {
-            musicaActiva = musicaGO.GetComponent<AudioSource>();
-            Debug.Log("Música detectada por tag.");
+            Debug.Log("ControlOpenXR encontrado en la escena.");
+            controlOpenXR = FindFirstObjectByType<ControlOpenXR>();
+        }
+
+        controlEscena = GameObject.FindGameObjectWithTag("ControlEscena") ?? null;
+        if (controlEscena != null)
+        {
+            musica = controlEscena.GetComponent<AudioSource>();
+            Debug.Log("AudioSource obtenido del control de escena.");
         }
         else
         {
-            Debug.Log("No se encontró ningún objeto con el tag 'Musica'.");
+            Debug.Log("Control de la escena no encontrado.");
         }
 
 
@@ -67,11 +72,7 @@ public class ControlPausa : MonoBehaviour
             PausarAR();
             PausarVR();
 
-            if (musicaActiva != null && musicaActiva.isPlaying)
-            {
-                musicaActiva.Pause();
-            }
-
+            if (musica != null && musica.isPlaying) musica.Pause();
 
             // Pausar tiempo y cargar la escena del menú de pausa
             Time.timeScale = 0f;
@@ -92,11 +93,7 @@ public class ControlPausa : MonoBehaviour
     public void ReanudarJuego()
     {
 
-        if (musicaActiva != null)
-        {
-            musicaActiva.Play();
-        }
-
+        if (musica != null) musica.Play();
 
         // Reanudar el tiempo y descargar la escena del menú de pausa
         Time.timeScale = 1f;
@@ -108,7 +105,6 @@ public class ControlPausa : MonoBehaviour
         ReanudarVR();
 
         Debug.Log("[ControlPausa] Pausa desactivada.");
-
 
     }
 
