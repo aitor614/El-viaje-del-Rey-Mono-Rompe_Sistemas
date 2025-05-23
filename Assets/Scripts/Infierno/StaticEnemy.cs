@@ -8,7 +8,6 @@ public class StaticEnemy : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             Debug.Log("¡Tocado por enemigo!");
-            SceneManager.LoadScene("DefeatScene");
         }
     }
 }
