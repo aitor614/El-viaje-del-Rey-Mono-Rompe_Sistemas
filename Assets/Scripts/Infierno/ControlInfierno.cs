@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using UnityEngine.Audio;
+
+
 
 public class ControlInfierno : MonoBehaviour
 {
@@ -9,8 +13,13 @@ public class ControlInfierno : MonoBehaviour
     public ControlHud controlHud;
     private ControlMenuPrincipal controlMenuPrincipal;
 
+    [Header("Sonidos")]
+    public AudioClip musicaFondo;
+
     [Header("Elementos de la escena")]
     public PlayerInfierno player;
+    public GameObject canvasBotonPlay;
+    public AudioSource audioSource;
 
     [Header("Parámetros")]
     public Vector3 startPosition;
@@ -20,7 +29,7 @@ public class ControlInfierno : MonoBehaviour
 
     // Variables
     private int vidas = 3;
-    private int puntuacion = 0;
+    public int puntuacion = 0;
     private float alturaAlcanzada = 0f;
 
     void Awake()
@@ -33,18 +42,30 @@ public class ControlInfierno : MonoBehaviour
         Screen.orientation = ScreenOrientation.Portrait;
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
-
         PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
         PlayerPrefs.SetFloat("AlturaMaxima", alturaAlcanzada);
         PlayerPrefs.SetInt("ObjetoInfierno", 0);
         PlayerPrefs.Save();
 
+        if (audioSource != null && musicaFondo != null)
+        {
+            audioSource.clip = musicaFondo;
+            audioSource.loop = true;
+            audioSource.playOnAwake = false;
+            audioSource.Play();
+        }
+
         if (player != null)
         {
             startPosition = player.transform.position;
             alturaAlcanzada = player.transform.position.y;
         }
+
+        if (canvasBotonPlay != null)
+            canvasBotonPlay.SetActive(true); // Botón activo al inicio del juego
+
+        Pausa();
     }
 
     private void Update()
@@ -62,7 +83,15 @@ public class ControlInfierno : MonoBehaviour
         if (PlayerPrefs.GetInt("ObjetoInfierno") == 1)
         {
             GuardarPuntos();
-            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+
+            if (controlMenuPrincipal != null)
+            {
+                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+            }
+            else
+            {
+                Debug.LogWarning("controlMenuPrincipal no está asignado en ControlInfierno");
+            }
         }
     }
 
@@ -93,7 +122,7 @@ public class ControlInfierno : MonoBehaviour
     // Función para el control de vidas
     public void CheckVida()
     {
-        //dDebug.Log("Comprobando vidas...");
+
         if (vidas != PlayerPrefs.GetInt("VidasRestantes"))
         {
             vidas = PlayerPrefs.GetInt("VidasRestantes");
@@ -107,11 +136,31 @@ public class ControlInfierno : MonoBehaviour
             // Si el jugador aún tiene vidas, se reinician los objetos
             else
             {
+                Pausa(); // Pausa del juego automáticamente
+                if (canvasBotonPlay != null)
+                    canvasBotonPlay.SetActive(true); // Se activa el botón para que el jugador continúe manualmente
                 Debug.Log("Reiniciando jugador...");
                 RespawnPlayer();
             }
         }
 
+    }
+
+    public void Pausa()
+    {
+        Time.timeScale = 0f;
+        player.enabled = false;
+        audioSource.Pause();
+    }
+
+    public void Play()
+    {
+        if (canvasBotonPlay != null)
+            canvasBotonPlay.SetActive(false);
+        
+        Time.timeScale = 1f;
+        player.enabled = true;
+        audioSource.Play();
     }
 
     // Actualiza el contador de saltos
@@ -132,9 +181,9 @@ public class ControlInfierno : MonoBehaviour
         controlHud.ActualizarEmblemas(vidas);
     }
 
-    private void ActualizarTiempo(float tiempo)
+    private void ActualizarTiempo()
     {
-        controlHud.ActualizarTiempo(tiempo);
+        controlHud.ActualizarTiempo(tiempoRestante);
     }
 
     // Guarda la puntuación en PlayerPrefs
@@ -154,7 +203,7 @@ public class ControlInfierno : MonoBehaviour
             if (tiempoRestante < 0)
                 tiempoRestante = 0;
             // Mostramos el tiempo restante en el UI
-            ActualizarTiempo(tiempoRestante);
+            ActualizarTiempo();
         }
 
         if (tiempoRestante == 0)

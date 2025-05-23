@@ -177,6 +177,32 @@ public class PlayerInfierno : MonoBehaviour
             PlayerPrefs.Save();
             ResetPlayer();
         }
+
+        if (colisionador.collider.CompareTag("Enemy"))
+        {
+            Debug.Log("¡Colisión con enemigo!");
+
+            // 1. Restar una vida
+            PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - 1);
+
+            // 2. Restar puntos (evitar que sea negativo)
+            int puntosActuales = PlayerPrefs.GetInt("PuntuacionPartida");
+            int puntosARestar = 50;
+            puntosActuales = Mathf.Max(0, puntosActuales - puntosARestar);
+            PlayerPrefs.SetInt("PuntuacionPartida", puntosActuales);
+            PlayerPrefs.Save();
+
+            // 3. Actualizar puntuación en pantalla
+            ControlHud.InstanciaControl.ActualizarPuntos("SCORE", puntosActuales);
+            ControlInfierno.Instancia.puntuacion = puntosActuales;
+            Debug.Log("Puntuación actual tras colisión con enemigo: " + puntosActuales);
+
+            // 4. Destruir el enemigo
+            Destroy(colisionador.gameObject);
+
+            // 5. Resetear al jugador (o animación/muerte)
+            ResetPlayer();
+        }
     }
 
     public void ResetPlayer()
