@@ -72,6 +72,7 @@ public class ControlBatalla : MonoBehaviour
         }
 
         // Inicializamos los valores de PlayerPrefs
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("EnemigosEliminados", 0);
