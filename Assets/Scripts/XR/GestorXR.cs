@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Management;
-//using Google.XR.Cardboard;
+using UnityEngine.XR.ARCore;
 using UnityEngine.XR.OpenXR;
+//using Google.XR.Cardboard;
 
 public class GestorXR : MonoBehaviour
 {
-    public static GestorXR Instance { get; private set; }
+    public static GestorXR InstanciaGestorXR { get; private set; }
 
     // Enum para los modos XR
     public enum XRMode { None, Cardboard, ARCore, OpenXR }
@@ -27,10 +27,9 @@ public class GestorXR : MonoBehaviour
     void Awake()
     {
         // Si no hay instancia, inicializar
-        if (Instance == null)
+        if (InstanciaGestorXR == null)
         {
-            Instance = this;
-            // No destruir el objeto al cargar nuevas escenas
+            InstanciaGestorXR = this;
             DontDestroyOnLoad(gameObject);
 
             // Verificar si XRGeneralSettings existe
@@ -61,7 +60,7 @@ public class GestorXR : MonoBehaviour
 
     private void Update()
     {
-        //// Control de inputs si Cardboard está activo
+        // Control de inputs si Cardboard está activo
         //if (XRGeneralSettings.Instance.Manager.activeLoader is Google.XR.Cardboard.XRLoader)
         //{
         //    ControlInputCardboard();
@@ -110,9 +109,9 @@ public class GestorXR : MonoBehaviour
     {
         switch (mode)
         {
-            //case XRMode.Cardboard:
-            //    yield return InicializarCardboard();
-            //    break;
+            case XRMode.Cardboard:
+                //yield return InicializarCardboard();
+                break;
 
             case XRMode.ARCore:
                 yield return InicializarARCore();
@@ -138,14 +137,18 @@ public class GestorXR : MonoBehaviour
         var loadersReordenados = new List<UnityEngine.XR.Management.XRLoader>();
         foreach (var loader in loaders)
         {
-            if (loader is UnityEngine.XR.OpenXR.OpenXRLoader)
+            if (loader is OpenXRLoader)
             {
                 loadersReordenados.Insert(0, loader);
             }
-            else if (loader is UnityEngine.XR.ARCore.ARCoreLoader)
+            else if (loader is ARCoreLoader)
             {
                 loadersReordenados.Insert(loadersReordenados.Count, loader);
             }
+            //else if (loader is Google.XR.Cardboard.XRLoader)
+            //{
+            //    loadersReordenados.Insert(loadersReordenados.Count, loader);
+            //}
         }
         // Mostrar loaders cargados
         Debug.Log("[GESTOR XR] Cargando " + loadersReordenados.Count + " loaders: ");
@@ -154,11 +157,7 @@ public class GestorXR : MonoBehaviour
             Debug.Log("[GESTOR XR] Loader " + i + ": " + loadersReordenados[i].name);
         }
 
-        XRGeneralSettings.Instance.Manager.TrySetLoaders(loadersReordenados);
-
-        // Inicializar loader y subsistemas
-        yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());
-        XRGeneralSettings.Instance.Manager.StartSubsystems();
+        yield return SetNuevosLoaders(loadersReordenados);
 
         // Configurar parámetros y cámara
         DeshabilitarCamaraExistente();
@@ -172,7 +171,7 @@ public class GestorXR : MonoBehaviour
         Screen.brightness = 1.0f;
     }
 
-    //// Inicializar Cardboard
+    // Inicializar Cardboard
     //public IEnumerator InicializarCardboard()
     //{
     //    // Obtener lista completa de loaders
@@ -180,7 +179,7 @@ public class GestorXR : MonoBehaviour
 
     //    // Reordenar la lista de loaders para que Cardboard sea el primero
     //    var loadersReordenados = new List<UnityEngine.XR.Management.XRLoader>();
-    //    foreach ( var loader in loaders)
+    //    foreach (var loader in loaders)
     //    {
     //        if (loader is Google.XR.Cardboard.XRLoader)
     //        {
@@ -188,7 +187,11 @@ public class GestorXR : MonoBehaviour
 
     //            break;
     //        }
-    //        else if (loader is UnityEngine.XR.ARCore.ARCoreLoader)
+    //        else if (loader is ARCoreLoader)
+    //        {
+    //            loadersReordenados.Insert(loadersReordenados.Count, loader);
+    //        }
+    //        else if (loader is OpenXRLoader)
     //        {
     //            loadersReordenados.Insert(loadersReordenados.Count, loader);
     //        }
@@ -200,8 +203,7 @@ public class GestorXR : MonoBehaviour
     //        Debug.Log("[GESTOR XR] Loader " + i + ": " + loadersReordenados[i].name);
     //    }
 
-    //    yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());
-    //    XRGeneralSettings.Instance.Manager.StartSubsystems();
+    //    yield return SetNuevosLoaders(loadersReordenados);
 
     //    // Configurar parámetros y cámara
     //    if (!Api.HasDeviceParams()) Api.ScanDeviceParams();
@@ -244,11 +246,11 @@ public class GestorXR : MonoBehaviour
         var loadersReordenados = new List<UnityEngine.XR.Management.XRLoader>();
         foreach (var loader in loaders)
         {
-            if (loader is UnityEngine.XR.ARCore.ARCoreLoader)
+            if (loader is ARCoreLoader)
             {
                 loadersReordenados.Insert(0, loader);
             }
-            else if (loader is UnityEngine.XR.OpenXR.OpenXRLoader)
+            else if (loader is OpenXRLoader)
             {
                 loadersReordenados.Insert(loadersReordenados.Count, loader);
             }
@@ -263,11 +265,8 @@ public class GestorXR : MonoBehaviour
             Debug.Log("[GESTOR XR] Loader " + i + ": " + loadersReordenados[i].name);
         }
 
-        XRGeneralSettings.Instance.Manager.TrySetLoaders(loadersReordenados);
+        yield return SetNuevosLoaders(loadersReordenados);
 
-        // Inicializar loader y subsistemas
-        yield return StartCoroutine(XRGeneralSettings.Instance.Manager.InitializeLoader());
-        XRGeneralSettings.Instance.Manager.StartSubsystems();
     }
 
     // Apagar modo actual
@@ -287,19 +286,30 @@ public class GestorXR : MonoBehaviour
         {
             Debug.Log("[GESTOR XR] Apagando loader activo: " + manager.activeLoader.GetType().Name);
 
-            // Detener subsistemas 
-            if (manager.isInitializationComplete)
-                manager.StopSubsystems();
-
             // Devolver ajustes de pantalla a la configuración por defecto
-            Debug.Log("[GESTOR XR] Ajustes post-Loader genérico.");
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
             Screen.brightness = 0.5f;
 
+            if (manager.isInitializationComplete)
+            {
+                manager.StopSubsystems();
+                Debug.Log("[GESTOR XR] Subsistemas detenidos.");
+            }
+
             // Desactivar subsistemas y loader
             manager.DeinitializeLoader();
-            // Esperar para asegurar que el loader se apague correctamente
-            yield return new WaitForSeconds(0.5f);
+
+            // Esperar a que el loader se apague completamente
+            float tiempoMax = 2f;
+            float tiempoEspera = 0f;
+            while (manager.activeLoader != null && tiempoEspera < tiempoMax)
+            {
+                yield return null;
+                tiempoEspera += Time.unscaledDeltaTime;
+            }
+
+            if (manager.activeLoader == null) Debug.Log("[GESTOR XR] Loader desinicializado correctamente.");
+            else Debug.LogWarning("[GESTOR XR] Timeout al esperar la desinicialización del loader.");
         }
         else
         {
@@ -322,7 +332,7 @@ public class GestorXR : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[GESTOR XR] No se encontró la cámara de Cardboard.");
+            Debug.LogError("[GESTOR XR] No se encontró la cámara de XR.");
         }
     }
 
@@ -334,18 +344,6 @@ public class GestorXR : MonoBehaviour
         if (_xrCamera != null) _xrCamera.enabled = false;
     }
 
-    // Obtener el loaders del XRManagerSettings
-    private T GetLoader<T>() where T : class
-    {
-        return XRGeneralSettings.Instance.Manager.activeLoaders
-            .FirstOrDefault(loader => loader is T) as T;
-    }
-
-    private List<UnityEngine.XR.Management.XRLoader> GetLoaders()
-    {
-        return XRGeneralSettings.Instance.Manager.activeLoaders.ToList();
-    }
-
     // Salir de VR
     public void SalirVR()
     {
@@ -355,15 +353,61 @@ public class GestorXR : MonoBehaviour
         InicializarEntorno2D();
     }
 
-    // Al destruir el objeto
-    void OnDestroy()
+    //// Al destruir el objeto
+    //void OnDestroy()
+    //{
+    //    if (Instance == this)
+    //    {
+    //        // Desuscribirse del evento de carga de escena
+    //        SceneManager.sceneLoaded -= AlCargarEscena;
+    //        // Apagar modo actual
+    //        StartCoroutine(ApagarModoActual());
+    //    }
+    //}
+
+    // Establecer nuevos loaders
+    private IEnumerator SetNuevosLoaders(List<UnityEngine.XR.Management.XRLoader> loadersReordenados)
     {
-        if (Instance == this)
+        var manager = XRGeneralSettings.Instance.Manager;
+
+        // Si se han establecido los loaders correctamente, inicializar el loader y sus subsistemas
+        if (manager.TrySetLoaders(loadersReordenados))
         {
-            // Desuscribirse del evento de carga de escena
-            SceneManager.sceneLoaded -= AlCargarEscena;
-            // Apagar modo actual
-            StartCoroutine(ApagarModoActual());
+            Debug.Log("[GESTOR XR] Se han establecido los loaders correctamente.");
+            yield return manager.InitializeLoader();
+            if (manager.isInitializationComplete)
+            {
+                if (!manager.automaticRunning)
+                {
+                    manager.StartSubsystems();
+                    Debug.Log("[GESTOR XR] Subsistemas XR iniciados manualmente.");
+                }
+            }
+            else
+            {
+                Debug.LogError("[GESTOR XR] La inicialización del loader ha fallado.");
+            }
         }
+        // Si no se han establecido los loaders, mostrar error
+        else
+        {
+            Debug.LogError("[GESTOR XR] No se pudieron establecer los loaders.");
+        }
+    }
+    
+    // Método para obtener el campo de visión por defecto
+    public float GetCampoVisionDefecto()
+    {
+        return _campoVisionDefecto;
+    }
+    // Método para obtener la cámara XR
+    public Camera GetXRCamera()
+    {
+        return _xrCamera;
+    }
+    // Método para obtener la cámara principal
+    public Camera GetMainCamera()
+    {
+        return _mainCamera;
     }
 }

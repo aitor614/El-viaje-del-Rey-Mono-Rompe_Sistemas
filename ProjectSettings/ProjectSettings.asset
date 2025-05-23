@@ -147,11 +147,11 @@ PlayerSettings:
   preloadedAssets:
   - {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   - {fileID: 11400000, guid: 0075b4ff14fb72849855ec3a28420c6f, type: 2}
-  - {fileID: 4800000, guid: c9f956787b1d945e7b36e0516201fc76, type: 3}
-  - {fileID: 4800000, guid: 0945859e5a1034c2cb6dce53cb4fb899, type: 3}
   - {fileID: 11400000, guid: c199e683398494f32b4cde18e73ab731, type: 2}
   - {fileID: 7409956309476867576, guid: 3fd4fc0127790db4bae83f7b77da8d45, type: 2}
   - {fileID: -5800411215614207588, guid: 6ebcfde56ed0e584ba08f1136a273aa7, type: 2}
+  - {fileID: 4800000, guid: c9f956787b1d945e7b36e0516201fc76, type: 3}
+  - {fileID: 4800000, guid: 0945859e5a1034c2cb6dce53cb4fb899, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -266,12 +266,12 @@ PlayerSettings:
   clonedFromGUID: 069202b91adc77e41923adcf0d1b815b
   templatePackageId: com.unity.template.ar-mobile@2.0.3
   templateDefaultScene: Assets/Scenes/SampleScene.unity
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 1
   useCustomLauncherGradleManifest: 0
   useCustomBaseGradleTemplate: 0
-  useCustomGradlePropertiesTemplate: 1
+  useCustomGradlePropertiesTemplate: 0
   useCustomGradleSettingsTemplate: 0
   useCustomProguardFile: 0
   AndroidTargetArchitectures: 2

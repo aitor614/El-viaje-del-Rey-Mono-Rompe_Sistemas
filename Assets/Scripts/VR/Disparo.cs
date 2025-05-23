@@ -1,13 +1,20 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
+using UnityEngine.XR;
 
 public class Disparo : MonoBehaviour
 {
     [Header("Componentes")]
     public GameObject proyectilPrefab;
-    public Transform puntoDisparo;
-    public InputAction accionGatillo;
+
+    [Header("Punto de disparo")]
+    public Transform puntoDisparoXR;
+    public Transform puntoDisparoCardboard;
+    public Transform puntoDisparoAR;
+
+    [Header("Sonido")]
     public AudioSource sonidoDisparo; // ← Nuevo campo para el sonido
 
     [Header("Parámetros")]
@@ -16,21 +23,58 @@ public class Disparo : MonoBehaviour
 
     // Variables
     private List<GameObject> proyectiles;
+    private Transform puntoDisparo;
+    UnityEngine.XR.InputDevice dispositivoManoDerecha;
+
+    void Start()
+    {
+        dispositivoManoDerecha = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
+        if (GestorXR.InstanciaGestorXR.modoInicial == GestorXR.XRMode.Cardboard)
+        {
+            puntoDisparo = puntoDisparoCardboard;
+            Debug.Log("[Disparo] Modo Cardboard");
+        }
+        else if (GestorXR.InstanciaGestorXR.modoInicial == GestorXR.XRMode.OpenXR)
+        {
+            puntoDisparo = puntoDisparoXR;
+            Debug.Log("[Disparo] Modo OpenXR");
+        }
+        else if (GestorXR.InstanciaGestorXR.modoInicial == GestorXR.XRMode.ARCore)
+        {
+            puntoDisparo = puntoDisparoAR;
+            Debug.Log("[Disparo] Modo ARCore");
+        }
+        else
+        {
+            puntoDisparo = puntoDisparoAR;
+            Debug.Log("[Disparo] Modo Editor");
+        }
+    }
 
     void Update()
     {
-#if UNITY_EDITOR
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        // Modo Editor (Mouse izquierdo)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             RealizarDisparo();
         }
-#else
-        // En móvil con OpenXR
-        if (accionGatillo.WasPressedThisFrame())
+        // Modo OpenXR (gatillo derecho)
+        else if (dispositivoManoDerecha.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool presionado) && presionado)
         {
             RealizarDisparo();
         }
-#endif
+        // Modo ARCore (toque en pantalla)
+        else if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        {
+            RealizarDisparo();
+        }
+
+        //// En Cardboard (gatillo)
+        //if (Google.XR.Cardboard.Api.IsTriggerPressed)
+        //{
+        //    RealizarDisparo();
+        //}
     }
 
     private void RealizarDisparo()
@@ -60,66 +104,5 @@ public class Disparo : MonoBehaviour
             sonidoDisparo.Play();
         }
     }
+
 }
-/* using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
-
-public class Disparo : MonoBehaviour
-{
-    [Header("Componentes")]
-    public GameObject proyectilPrefab; 
-    public Transform puntoDisparo;
-    public InputAction accionGatillo;
-
-    [Header("Parámetros")]
-    public float fuerzaProyectil;
-    public int maximoProyectiles;
-
-    // Variables
-    private List<GameObject> proyectiles; 
-
-    void Update()
-    {
-#if UNITY_EDITOR
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            RealizarDisparo();
-        }
-#else
-        // En móvil con OpenXR
-        if (accionGatillo.WasPressedThisFrame())
-        {
-            RealizarDisparo();
-        }
-#endif
-
-    }
-
-    private void RealizarDisparo()
-    {
-        // Crear array de proyectiles si no existe
-        proyectiles ??= new List<GameObject>();
-        // Comprobar si el prefab y el punto de disparo están asignados
-        if (proyectilPrefab == null || puntoDisparo == null)
-        {
-            Debug.LogWarning("Prefab o punto de disparo no asignados.");
-            return;
-        }
-        // Comprobar si el número máximo de proyectiles ha sido alcanzado
-        if (proyectiles.Count >= maximoProyectiles)
-        {
-            Debug.LogWarning("Destruyendo proyectil más antiguo.");
-            Destroy(proyectiles[0]); // Destruir el proyectil más antiguo
-        }
-        // Crea un proyectil en el punto de disparo con la misma rotación que el punto
-        GameObject disparo = Instantiate(proyectilPrefab, puntoDisparo.position, puntoDisparo.rotation);
-
-        // Añade una fuerza al proyectil para que se mueva
-        disparo.GetComponent<Rigidbody>().AddForce(puntoDisparo.forward * fuerzaProyectil);
-
-        // Añade el proyectil al array
-        proyectiles.Add(disparo);
-    }
-}
-*/

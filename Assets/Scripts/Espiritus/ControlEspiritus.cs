@@ -25,6 +25,9 @@ public class ControlEspiritus : MonoBehaviour
     public AudioClip musica;
     public AudioSource audioSource;
 
+    [Header("XR")]
+    private GestorXR gestorXR;
+
     // Variables
     private int espiritus;
     private int puntuacion;
@@ -36,6 +39,22 @@ public class ControlEspiritus : MonoBehaviour
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+        // Obtener el gestor de XR
+        if (GestorXR.InstanciaGestorXR == null)
+        {
+            Debug.Log("[ControlBatalla] GestorXR no encontrado. Buscando en la escena...");
+            gestorXR = FindFirstObjectByType<GestorXR>();
+            if (gestorXR == null)
+            {
+                Debug.LogError("[ControlBatalla] GestorXR sigue sin encontrarse.");
+                return;
+            }
+            else gestorXR.enabled = true;
+        }
+        else
+        {
+            gestorXR = GestorXR.InstanciaGestorXR;
+        }
 
         //Activar plugin AR si no está activado
         if (!arActivado)

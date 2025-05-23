@@ -1,12 +1,11 @@
-//using UnityEngine;
-//using UnityEngine.XR.Management;
 //using Google.XR.Cardboard;
 //using System.Collections;
+//using UnityEngine;
+//using UnityEngine.XR.Management;
 
-//public class ControlCardBoard : MonoBehaviour
+//public class ControlCardBoard_old : MonoBehaviour
 //{
-//    private bool recentrado = false;
-
+//    private bool _recentrado = false;
 //    void Start()
 //    {
 //        Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -47,10 +46,10 @@
 
 //    private void RecentrarVista()
 //    {
-//        if (!recentrado)
+//        if (!_recentrado)
 //        {
 //            Api.Recenter();
-//            recentrado = true;
+//            _recentrado = true;
 //        }
 //    }
 

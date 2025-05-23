@@ -8,6 +8,8 @@ public class ControlBatalla : MonoBehaviour
     public static ControlBatalla Instancia { get; private set; }
     public ControlHud controlHud;
     public ControlOpenXR controlOpenXR;
+    public ControlAR controlAR;
+    //public ControlCardBoard controlCardBoard;
     private ControlMenuPrincipal controlMenuPrincipal;
 
     [Header("Elementos de la escena")]
@@ -22,11 +24,17 @@ public class ControlBatalla : MonoBehaviour
     public AudioClip musica;
     public AudioSource audioSource;
 
+    [Header("XR")]
+    private GestorXR gestorXR;
+
+    public enum ModoXR { OpenXR, Cardboard, ARCore }
+    public ModoXR modoSeleccionado;
+
     // Variables
     private int vidas = 3;
     private int puntuacion = 0;
     private int enemigosEliminados = 0;
-    private bool openXRActivado = false;
+    private bool vrActivado = false;
 
     void Awake()
     {
@@ -39,13 +47,27 @@ public class ControlBatalla : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
+        // Obtener el gestor de XR
+        if (GestorXR.InstanciaGestorXR == null)
+        {
+            Debug.Log("[ControlBatalla] GestorXR no encontrado. Buscando en la escena...");
+            gestorXR = FindFirstObjectByType<GestorXR>();
+            if (gestorXR == null)
+            {
+                Debug.LogError("[ControlBatalla] GestorXR sigue sin encontrarse.");
+                return;
+            }
+            else gestorXR.enabled = true;
+        }
+        else
+        {
+            gestorXR = GestorXR.InstanciaGestorXR;
+        }
 
         // Activar plugin OpenXR si no está activado
-        if (!openXRActivado)
+        if (!vrActivado)
         {
-            controlOpenXR.ActivarOpenXR();
-            //controlAR_old.ActivarAR();
-            openXRActivado = true;
+            ActivarVR();
         }
 
         // Inicializamos los valores de PlayerPrefs
@@ -203,33 +225,74 @@ public class ControlBatalla : MonoBehaviour
 
     private void OnDisable()
     {
-        DesactivarOpenXR();
+        if (vrActivado)
+        {
+            DesactivarVR();
+        }
     }
 
     private void OnEnable()
     {
-        if (!openXRActivado)
+        if (!vrActivado)
         {
-            ActivarOpenXR();
+            ActivarVR();
         }
     }
 
-    private void DesactivarOpenXR()
+    // Desactiva el plugin VR
+    private void DesactivarVR()
     {
-        if (controlOpenXR != null)
+        if (gestorXR == null)
         {
-            controlOpenXR.DesactivarOpenXR();
+            Debug.LogError("[ControlBatalla] GestorXR no encontrado.");
+            return;
         }
-        openXRActivado = false;
+
+        switch (modoSeleccionado)
+        {
+            case ModoXR.OpenXR:
+                if (controlOpenXR != null) controlOpenXR.DesactivarOpenXR();
+                break;
+            case ModoXR.Cardboard:
+                // if (controlCardBoard != null) controlCardBoard.DesactivarCardBoard();
+                break;
+            case ModoXR.ARCore:
+                if (controlAR != null) controlAR.DesactivarAR();
+                break;
+            default:
+                Debug.LogError("[ControlBatalla] Modo XR no reconocido.");
+                break;
+        }
+
+        vrActivado = false;
     }
 
-    private void ActivarOpenXR()
+    // Activa el plugin VR
+    private void ActivarVR()
     {
-        if (controlOpenXR != null)
+        if (gestorXR == null)
         {
-            controlOpenXR.ActivarOpenXR();
+            Debug.LogError("[ControlBatalla] GestorXR no encontrado.");
+            return;
         }
-        openXRActivado = true;
+
+        switch (modoSeleccionado)
+        {
+            case ModoXR.OpenXR:
+                if(controlOpenXR != null) controlOpenXR.ActivarOpenXR();
+                break;
+            case ModoXR.Cardboard:
+                // if (controlCardBoard != null) controlCardBoard.DesactivarCardBoard();
+                break;
+            case ModoXR.ARCore:
+                if (controlAR != null) controlAR.ActivarAR();
+                break;
+            default:
+                Debug.LogError("[ControlBatalla] Modo XR no reconocido.");
+                break;
+        }
+
+        vrActivado = false;
     }
 
 }

@@ -383,7 +383,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 20
+  far clip plane: 1000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -693,7 +693,6 @@ MonoBehaviour:
   arCameraBackground: {fileID: 163335385}
   spawner: {fileID: 504735699}
   interacciones: {fileID: 1716576759}
-  gestorXR: {fileID: 1308961091}
 --- !u!1 &702413256
 GameObject:
   m_ObjectHideFlags: 0
@@ -1402,7 +1401,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1655232402
 MonoBehaviour:
   m_ObjectHideFlags: 0

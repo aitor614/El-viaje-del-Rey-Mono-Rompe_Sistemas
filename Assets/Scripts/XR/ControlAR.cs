@@ -2,10 +2,10 @@ using System.Collections;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.Management;
 
 public class ControlAR : MonoBehaviour
 {
+    [Header("Elementos de XR")]
     public ARSession arSession;
     public XROrigin xrOrigin;
     public ARPlaneManager planeManager;
@@ -13,11 +13,40 @@ public class ControlAR : MonoBehaviour
     public ARCameraBackground arCameraBackground;
     public GameObject spawner;
     public GameObject interacciones;
-    public GestorXR gestorXR;
+
+    // Referencias a otras instancias
+    private GestorXR gestorXR;
+
+    // Variables
+    private int sleepInicial;
+    private float brilloInicial;
 
     public void ActivarAR()
     {
-        gestorXR = GestorXR.Instance;
+        StartCoroutine(ActivarARCoroutine());
+    }
+
+    private IEnumerator ActivarARCoroutine()
+    {
+        // Obtener el gestor de XR
+        if (ControlMenuPrincipal.InstanciaControl == null || ControlMenuPrincipal.InstanciaGestorXR == null)
+        {
+            if(ControlMenuPrincipal.InstanciaControl == null) Debug.LogError("[Control_AR] No se encuentra instancia ControlMenuPrincioal.");
+            Debug.LogError("[Control_AR] GestorXR no encontrado. Buscando en la escena...");
+            gestorXR = FindFirstObjectByType<GestorXR>();
+            if (gestorXR == null)
+            {
+                Debug.LogError("[Control_AR] GestorXR sigue sin encontrarse.");
+                yield break;
+            }
+        }
+        else
+        {
+            gestorXR = ControlMenuPrincipal.InstanciaGestorXR;
+        }
+
+        sleepInicial = Screen.sleepTimeout;
+        brilloInicial = Screen.brightness;
 
         // Desactiva todos los componentes de AR
         if (arSession != null) arSession.gameObject.SetActive(false);
@@ -35,8 +64,7 @@ public class ControlAR : MonoBehaviour
         if (interacciones != null) interacciones.SetActive(false);
         else Debug.LogError("[Control_AR] interacciones is null");
 
-        StartCoroutine(gestorXR.InicializarARCore());
-
+        yield return gestorXR.InicializarARCore();
 
         // Activar todos los componentes de AR
         if (arSession != null) arSession.gameObject.SetActive(true);
@@ -68,6 +96,8 @@ public class ControlAR : MonoBehaviour
         if (spawner != null) spawner.SetActive(false);
         if (interacciones != null) interacciones.SetActive(false);
 
+        Screen.sleepTimeout = sleepInicial;
+        Screen.brightness = brilloInicial;
     }
 
 }
