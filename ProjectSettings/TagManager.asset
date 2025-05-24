@@ -18,6 +18,8 @@ TagManager:
   - XR Simulation
   - ControlEscena
   - GestorXR_Pruebas
+  - VentajaVida
+  - VentajaPremio
   layers:
   - Default
   - TransparentFX
