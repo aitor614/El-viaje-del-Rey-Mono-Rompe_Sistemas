@@ -55,6 +55,7 @@ public class ControlHuida : MonoBehaviour
         PlayerPrefs.SetInt("ObjetoHuida", 0);
         PlayerPrefs.Save();
         player.enabled = false;
+
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
@@ -121,13 +122,13 @@ public class ControlHuida : MonoBehaviour
 
         if (tiempoRestante == 0)
         {
-            // Si la la puntuación es mayor a 50, se gana el juego
-            if (puntuacion > puntuacionVictoria)
+            // Si la la puntuación es mayor o igual puntuaciónVictoria, se gana el juego
+            if (puntuacion >= puntuacionVictoria)
             {
                 GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
             }
-            // Si es menor o igual a 50, se pierde el juego
+            // Si es menor, se pierde el juego
             else
             {
                 GuardarPuntos();

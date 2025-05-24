@@ -353,7 +353,7 @@ MonoBehaviour:
   - nombre: premio
     prefabObstaculo: {fileID: 2361812291499471109, guid: d23602b30fea50246bc272201576cac1,
       type: 3}
-    probabilidad: 0.7
+    probabilidad: 0.8
     maxAltura: 3
     minAltura: -3
   velocidadDesplazamiento: 5
