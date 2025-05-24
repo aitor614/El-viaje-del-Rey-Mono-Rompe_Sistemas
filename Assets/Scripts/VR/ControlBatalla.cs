@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Audio;
-using static UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticsUtility;
 
 public class ControlBatalla : MonoBehaviour
 {

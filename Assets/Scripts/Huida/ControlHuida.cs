@@ -11,23 +11,25 @@ public class ControlHuida : MonoBehaviour
     [Header("Sonidos")]
     public AudioClip musica;
     public AudioClip respawn;
+    public AudioClip colision;
+    public AudioClip premio;
+    public AudioClip vidaExtra;
 
     [Header("Elementos de la escena")]
     public AudioSource audioSource;
     public PlayerHuida player;
-    public GeneradorObstaculos genObstaculos;
     public GameObject canvasBotonPlay;
     public GameObject obstaculo;
 
     [Header("Parámetros")]
     public float tiempoRestante;
-    public int objetivoObjetos;
+    public int objetivoOrbes;
     public int puntuacionVictoria;
 
     // Variables
     private int vidas = 3;
     private int puntuacion = 0;
-    private int obstaculosSalvados = 0;
+    private int orbesObtenidos = 0;
 
     private void Awake()
     {
@@ -49,7 +51,7 @@ public class ControlHuida : MonoBehaviour
         controlHud = ControlHud.InstanciaControl;
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("VidasRestantes", vidas);
-        PlayerPrefs.SetInt("ObstaculosSalvados", 0);
+        PlayerPrefs.SetInt("PremiosObtenidos", 0);
         PlayerPrefs.SetInt("ObjetoHuida", 0);
         PlayerPrefs.Save();
         player.enabled = false;
@@ -63,7 +65,8 @@ public class ControlHuida : MonoBehaviour
     private void Update()
     {
         puntuacion = PlayerPrefs.GetInt("PuntuacionPartida");
-        obstaculosSalvados = PlayerPrefs.GetInt("ObstaculosSalvados");
+        orbesObtenidos = PlayerPrefs.GetInt("PremiosObtenidos");
+        vidas = PlayerPrefs.GetInt("VidasRestantes");
 
         RestarTiempo();
         ActualizarPuntos();
@@ -71,11 +74,10 @@ public class ControlHuida : MonoBehaviour
         ComprobarVictoriaObjeto();
     }
 
+    // Comprobar si se ha obtenido el objeto de victoria
     private void ComprobarVictoriaObjeto()
     {
-
-        // Si se han roto todos los bloques, se gana el juego
-        if (obstaculosSalvados == objetivoObjetos)
+        if (orbesObtenidos >= objetivoOrbes)
         {
             PlayerPrefs.SetInt("ObjetoBaston", 1);
             PlayerPrefs.Save();
@@ -86,7 +88,7 @@ public class ControlHuida : MonoBehaviour
 
     private void ActualizarContador()
     {
-        controlHud.ActualizarContador("OBSTáCULOS", obstaculosSalvados);
+        controlHud.ActualizarContador("ORBES", orbesObtenidos);
     }
 
     private void ActualizarPuntos()
@@ -167,34 +169,46 @@ public class ControlHuida : MonoBehaviour
         player.enabled = true;
         audioSource.Play();
 
-        EliminarObstaculos();
-
     }
 
-    // Función para eliminar obstáculos
-    public void EliminarObstaculos()
+    public void ObstaculoSalvado()
     {
-        // Se obtienen todos los obstáculos de la escena
-        GameObject[] obstaculos = GameObject.FindGameObjectsWithTag(obstaculo.tag);
-
-        // Se recorre todos los obstáculos y se destruyen
-        for (int i = 0; i < obstaculos.Length; i++)
-        {
-            Destroy(obstaculos[i].gameObject);
-            PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
-            PlayerPrefs.Save();
-        }
+        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 5);
+        PlayerPrefs.Save();
     }
 
     // Función para gestionar la colisión del jugador con los obstáculos
-    public void Colision()
+    public void ColisionObstaculo()
     {
 
         PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - 1);
         PlayerPrefs.Save();
         canvasBotonPlay.SetActive(true);
+        audioSource.PlayOneShot(colision);
         Pausa();
         CheckVida();
+    }
+
+    public void ColisionPremio()
+    {
+        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 20);
+        PlayerPrefs.SetInt("PremiosObtenidos", PlayerPrefs.GetInt("PremiosObtenidos") + 1);
+        PlayerPrefs.Save();
+        audioSource.PlayOneShot(premio);
+        ActualizarPuntos();
+    }
+
+    public void ColisionVida()
+    {
+        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 1);
+        int vidas = PlayerPrefs.GetInt("VidasRestantes");
+        if (vidas < 3)
+        {
+            PlayerPrefs.SetInt("VidasRestantes", vidas + 1);
+        }
+        PlayerPrefs.Save();
+        audioSource.PlayOneShot(vidaExtra);
+        ActualizarVidas();
     }
 
     // Función para reiniciar objetos de juego
@@ -209,6 +223,7 @@ public class ControlHuida : MonoBehaviour
     {
         PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
         PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") + puntuacion);
+        PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.Save();
     }
 

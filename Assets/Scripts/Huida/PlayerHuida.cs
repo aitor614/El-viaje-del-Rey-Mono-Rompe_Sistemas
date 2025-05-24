@@ -6,16 +6,16 @@ using UnityEngine.UIElements;
 
 public class PlayerHuida : MonoBehaviour
 {
-    public Sprite[] sprites;
+    //public Sprite[] sprites;
+    [Header("Parámetros del jugador")]
     public float strength = 5f;
     public float gravity = -9.81f;
     public float tilt = 5f;
 
-
+    [Header("Puntos premios")]
 
     [Header("Sonidos")]
     public AudioClip salto;
-    public AudioClip colision;
 
     [Header("Componentes")]
     public AudioSource audioSource;
@@ -82,15 +82,23 @@ public class PlayerHuida : MonoBehaviour
         // Si el jugador colisiona con un obstáculo
         if (other.gameObject.CompareTag("Obstacle"))
         {
-            ControlHuida.InstanciaControl.Colision();
-            audioSource.PlayOneShot(colision);
+            ControlHuida.InstanciaControl.ColisionObstaculo();
         }
         // Si el jugador supera el obstáculo
         else if (other.gameObject.CompareTag("Scoring"))
         {
-            PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 5);
-            PlayerPrefs.SetInt("ObstaculosSalvados", PlayerPrefs.GetInt("ObstaculosSalvados") + 1);
-            PlayerPrefs.Save();
+            ControlHuida.InstanciaControl.ObstaculoSalvado();
+
+        }
+        // Si el jugador colisiona con un premio
+        else if (other.gameObject.CompareTag("VentajaPremio"))
+        {
+            ControlHuida.InstanciaControl.ColisionPremio();
+        }
+        // Si el jugador colisiona con una ventaja de vida
+        else if (other.gameObject.CompareTag("VentajaVida"))
+        {
+            ControlHuida.InstanciaControl.ColisionVida();
         }
     }
 
@@ -101,3 +109,4 @@ public class PlayerHuida : MonoBehaviour
         colisionPlayer.linearVelocity = Vector2.zero;
     }
 }
+   

@@ -337,12 +337,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5af368f71381c049a01c99c76b14ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabObstaculo: {fileID: 5142281229426199456, guid: 1ca99e27b51ad564c88e2a1a65ece16f,
-    type: 3}
-  premio: {fileID: 0}
-  spawnRate: 1.2
-  minHeight: -2.5
-  maxHeight: 2.5
+  tiposObstaculo:
+  - nombre: obstaculo
+    prefabObstaculo: {fileID: 5142281229426199456, guid: 1ca99e27b51ad564c88e2a1a65ece16f,
+      type: 3}
+    probabilidad: 1
+    maxAltura: 1
+    minAltura: -1
+  - nombre: vida
+    prefabObstaculo: {fileID: 4249482731838797446, guid: abe8a106e56d906449c0572dfd8248ee,
+      type: 3}
+    probabilidad: 0.4
+    maxAltura: 1
+    minAltura: -1
+  - nombre: premio
+    prefabObstaculo: {fileID: 2361812291499471109, guid: d23602b30fea50246bc272201576cac1,
+      type: 3}
+    probabilidad: 0.7
+    maxAltura: 3
+    minAltura: -3
+  velocidadDesplazamiento: 5
 --- !u!1 &789139111
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +546,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -647,12 +661,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a08c5f4f52e914fb86cbbf6cbf78be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites: []
   strength: 5
   gravity: -9.81
   tilt: 5
   salto: {fileID: 8300000, guid: 64f15a411fde10b408f58d5d3db87ae0, type: 3}
-  colision: {fileID: 8300000, guid: 983dc9cdaf016fc42a638c14916be45f, type: 3}
   audioSource: {fileID: 1171813592}
   colisionPlayer: {fileID: 1171813588}
   imagenPlayer: {fileID: 1171813589}
@@ -906,14 +918,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musica: {fileID: 8300000, guid: dc480b6b703d70d4b8bd8db25312fb9e, type: 3}
   respawn: {fileID: 8300000, guid: e118800ffb5b2044cb0c5de202030bec, type: 3}
+  colision: {fileID: 8300000, guid: 983dc9cdaf016fc42a638c14916be45f, type: 3}
+  premio: {fileID: 8300000, guid: 3a3c7c27aee4cd34c8b4c0700bdac685, type: 3}
+  vidaExtra: {fileID: 8300000, guid: 99e8fbe785941204a924141e6687bb3f, type: 3}
   audioSource: {fileID: 1350638783}
   player: {fileID: 1171813591}
-  genObstaculos: {fileID: 602110131}
   canvasBotonPlay: {fileID: 1601062094}
   obstaculo: {fileID: 5142281229426199456, guid: 1ca99e27b51ad564c88e2a1a65ece16f,
     type: 3}
   tiempoRestante: 30
-  objetivoObjetos: 20
+  objetivoOrbes: 10
   puntuacionVictoria: 50
 --- !u!82 &1350638783
 AudioSource:
@@ -1173,6 +1187,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 960494766579007186, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -4.2580566
+      objectReference: {fileID: 0}
     - target: {fileID: 2644793015569042559, guid: 8f04822a2a1865647a526f5b90f31596,
         type: 3}
       propertyPath: m_Camera
