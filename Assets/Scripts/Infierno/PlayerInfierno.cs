@@ -144,23 +144,20 @@ public class PlayerInfierno : MonoBehaviour
             {
                 if (colisionador.collider.CompareTag("Platform"))
                 {
-                    if (bounceSound != null)
-                        audioSource.PlayOneShot(bounceSound);
+                    if (bounceSound != null) audioSource.PlayOneShot(bounceSound);
                 }
                 else if (colisionador.collider.CompareTag("PlatformBoost"))
                 {
-                    if (boostSound != null)
-                        audioSource.PlayOneShot(boostSound);
+                    if (boostSound != null) audioSource.PlayOneShot(boostSound);
                 }
                 else if (colisionador.collider.CompareTag("FinalPlatform"))
                 {
-                    if (boostSound != null)
-                        audioSource.PlayOneShot(boostSound);
+                    if (boostSound != null) audioSource.PlayOneShot(boostSound);
                     PlayerPrefs.SetInt("ObjetoInfierno", 1);
                     PlayerPrefs.Save();
                 }
 
-                    break; // solo necesita detectar una vez
+                break;
             }
         }
 
@@ -182,25 +179,20 @@ public class PlayerInfierno : MonoBehaviour
         {
             Debug.Log("¡Colisión con enemigo!");
 
-            // 1. Restar una vida
+            // Restar una vida
             PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - 1);
 
-            // 2. Restar puntos (evitar que sea negativo)
+            // Restar puntos (evitar que sea negativo)
             int puntosActuales = PlayerPrefs.GetInt("PuntuacionPartida");
             int puntosARestar = 50;
             puntosActuales = Mathf.Max(0, puntosActuales - puntosARestar);
-            PlayerPrefs.SetInt("PuntuacionPartida", puntosActuales);
+            PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida"));
             PlayerPrefs.Save();
 
-            // 3. Actualizar puntuación en pantalla
-            ControlHud.InstanciaControl.ActualizarPuntos("SCORE", puntosActuales);
-            ControlInfierno.Instancia.puntuacion = puntosActuales;
-            Debug.Log("Puntuación actual tras colisión con enemigo: " + puntosActuales);
-
-            // 4. Destruir el enemigo
+            // Destruir el enemigo
             Destroy(colisionador.gameObject);
 
-            // 5. Resetear al jugador (o animación/muerte)
+            // Resetear al jugador (o animación/muerte)
             ResetPlayer();
         }
     }

@@ -356,7 +356,7 @@ MonoBehaviour:
     probabilidad: 0.8
     maxAltura: 3
     minAltura: -3
-  velocidadDesplazamiento: 5
+  velocidadDesplazamiento: 6
 --- !u!1 &789139111
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,7 +928,7 @@ MonoBehaviour:
     type: 3}
   tiempoRestante: 30
   objetivoOrbes: 10
-  puntuacionVictoria: 50
+  puntuacionVictoria: 250
 --- !u!82 &1350638783
 AudioSource:
   m_ObjectHideFlags: 0

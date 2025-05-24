@@ -53,6 +53,7 @@ public class ControlHuida : MonoBehaviour
         PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.SetInt("PremiosObtenidos", 0);
         PlayerPrefs.SetInt("ObjetoHuida", 0);
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
         player.enabled = false;
 
@@ -72,6 +73,7 @@ public class ControlHuida : MonoBehaviour
         RestarTiempo();
         ActualizarPuntos();
         ActualizarContador();
+        ActualizarVidas();
         ComprobarVictoriaObjeto();
     }
 
@@ -190,26 +192,30 @@ public class ControlHuida : MonoBehaviour
         CheckVida();
     }
 
-    public void ColisionPremio()
+    public void ColisionPremio(Collider2D other)
     {
         PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 20);
         PlayerPrefs.SetInt("PremiosObtenidos", PlayerPrefs.GetInt("PremiosObtenidos") + 1);
         PlayerPrefs.Save();
         audioSource.PlayOneShot(premio);
         ActualizarPuntos();
+        Destroy(other.gameObject);
     }
 
-    public void ColisionVida()
+    public void ColisionVida(Collider2D other)
     {
         PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 1);
         int vidas = PlayerPrefs.GetInt("VidasRestantes");
         if (vidas < 3)
         {
             PlayerPrefs.SetInt("VidasRestantes", vidas + 1);
+            Debug.Log("Vida extra obtenida. Antes " + vidaExtra + ". Ahora: " + PlayerPrefs.GetInt("VidasRestantes"));
         }
         PlayerPrefs.Save();
+        Debug.Log("Vidas Restantes: " + PlayerPrefs.GetInt("VidasRestantes"));
         audioSource.PlayOneShot(vidaExtra);
         ActualizarVidas();
+        Destroy(other.gameObject);
     }
 
     // Función para reiniciar objetos de juego

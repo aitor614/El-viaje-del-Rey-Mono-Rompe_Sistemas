@@ -75,6 +75,7 @@ public class ControlBatalla : MonoBehaviour
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("EnemigosEliminados", 0);
         PlayerPrefs.SetInt("ObjetoBatalla", 0);
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
 
         // Inicializar música

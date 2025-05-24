@@ -67,6 +67,7 @@ public class ControlEspiritus : MonoBehaviour
         PlayerPrefs.SetInt("Espiritus", 0);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("ObjetoEspiritus", 0);
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
 
         // Inicializar música

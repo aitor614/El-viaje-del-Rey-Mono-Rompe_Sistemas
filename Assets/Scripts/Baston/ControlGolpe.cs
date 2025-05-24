@@ -48,6 +48,7 @@ public class ControlGolpe : MonoBehaviour
         PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
         PlayerPrefs.SetInt("Ladrillos", ladrillosRotos);
         PlayerPrefs.SetInt("ObjetoBaston", 0);
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
 
         // Inicializar música

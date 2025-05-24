@@ -14,14 +14,4 @@ public class VentajaVida : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Colisión de vida con: " + collision.gameObject.name);
-        // Si el obstáculo colisiona con un jugador, se destruye
-        if (collision.CompareTag("Player"))
-        {
-            Debug.Log("¡Vida recogida!");
-            Destroy(gameObject);
-        }
-    }
 }

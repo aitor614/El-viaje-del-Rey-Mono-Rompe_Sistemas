@@ -27,6 +27,7 @@ public class PlayerHuida : MonoBehaviour
     private void Start()
     {
         posicionInicial = transform.position;
+        Salto();
     }
 
     private void OnEnable()
@@ -79,26 +80,31 @@ public class PlayerHuida : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Colisión de vida con: " + other.gameObject.name);
         // Si el jugador colisiona con un obstáculo
         if (other.gameObject.CompareTag("Obstacle"))
         {
+            Debug.Log("¡Obstáculo chocado!");
             ControlHuida.InstanciaControl.ColisionObstaculo();
         }
         // Si el jugador supera el obstáculo
-        else if (other.gameObject.CompareTag("Scoring"))
+        if (other.gameObject.CompareTag("Scoring"))
         {
+            Debug.Log("¡Obstáculo evadido!");
             ControlHuida.InstanciaControl.ObstaculoSalvado();
 
         }
         // Si el jugador colisiona con un premio
-        else if (other.gameObject.CompareTag("VentajaPremio"))
+        if (other.gameObject.CompareTag("VentajaPremio"))
         {
-            ControlHuida.InstanciaControl.ColisionPremio();
+            Debug.Log("¡Premio recogido!");
+            ControlHuida.InstanciaControl.ColisionPremio(other);
         }
         // Si el jugador colisiona con una ventaja de vida
-        else if (other.gameObject.CompareTag("VentajaVida"))
+        if (other.gameObject.CompareTag("VentajaVida"))
         {
-            ControlHuida.InstanciaControl.ColisionVida();
+            Debug.Log("¡Vida recogida!");
+            ControlHuida.InstanciaControl.ColisionVida(other);
         }
     }
 
@@ -107,6 +113,7 @@ public class PlayerHuida : MonoBehaviour
     {
         transform.position = posicionInicial;
         colisionPlayer.linearVelocity = Vector2.zero;
+        Salto();
     }
 }
    

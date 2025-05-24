@@ -29,7 +29,7 @@ public class ControlInfierno : MonoBehaviour
 
     // Variables
     private int vidas = 3;
-    public int puntuacion = 0;
+    private int puntuacion = 0;
     private float alturaAlcanzada = 0f;
 
     void Awake()
@@ -46,6 +46,7 @@ public class ControlInfierno : MonoBehaviour
         PlayerPrefs.SetInt("PuntuacionPartida", puntuacion);
         PlayerPrefs.SetFloat("AlturaMaxima", alturaAlcanzada);
         PlayerPrefs.SetInt("ObjetoInfierno", 0);
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
 
         if (audioSource != null && musicaFondo != null)
