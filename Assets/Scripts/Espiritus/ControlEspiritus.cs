@@ -18,7 +18,7 @@ public class ControlEspiritus : MonoBehaviour
     [Header("Parámetros")]
     public int tiempoDeEspera;
     public int puntuacionVictoria;
-    public int espiritusObjeto;
+    public int espiritusObjetivo;
     public float tiempoRestante;
 
     [Header("Sonidos")]
@@ -33,7 +33,7 @@ public class ControlEspiritus : MonoBehaviour
     private int espiritus;
     private int puntuacion;
     private bool arActivado = false;
-    private bool premio = false;
+    private bool objetoPartida = false;
 
     void Start()
     {
@@ -122,7 +122,7 @@ public class ControlEspiritus : MonoBehaviour
             {
                 ComprobarVictoriaObjeto();
 
-                if (!premio)
+                if (!objetoPartida)
                 {
                     GuardarPuntos();
                     DesactivarAR();
@@ -142,22 +142,28 @@ public class ControlEspiritus : MonoBehaviour
     private void ComprobarVictoriaObjeto()
     {
 
-        if (espiritus >= espiritusObjeto)
+        if (espiritus >= espiritusObjetivo)
         {
-            if (SceneManager.sceneCount <= 1 && !premio)
+            PlayerPrefs.SetInt("ObjetoEspiritus", 1);
+            PlayerPrefs.Save();
+
+            if (SceneManager.sceneCount <= 1 && !objetoPartida)
             {
-                Time.timeScale = 0f;
-                premio = true;
-                PlayerPrefs.SetInt("ObjetoEspiritus", 1);
-                PlayerPrefs.Save();
+                objetoPartida = true;
                 GuardarPuntos();
-                Debug.Log("[Premio] Cargando escena premio");
-
-                SceneManager.sceneLoaded += OnPremioSceneLoaded;
-
-                SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
+                CargarPremio();
             }
         }
+    }
+
+    private void CargarPremio()
+    {
+        Time.timeScale = 0f;
+
+        // Cargar la escena de premio
+        Debug.Log("Cargando escena: PremioGolpeBaston");
+        SceneManager.sceneLoaded += OnPremioSceneLoaded;
+        SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
     }
 
     // Función para lanzar espera de la escena de premio cuando se carga
@@ -173,10 +179,10 @@ public class ControlEspiritus : MonoBehaviour
         }
     }
 
-    // Función para esperar 5 segundos antes de descargar la escena de premio
+    // Función para esperar antes de descargar la escena de premio
     IEnumerator EsperarPremio()
     {
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(3f);
         SceneManager.UnloadSceneAsync("Premio");
         yield return null;
         DesactivarAR();

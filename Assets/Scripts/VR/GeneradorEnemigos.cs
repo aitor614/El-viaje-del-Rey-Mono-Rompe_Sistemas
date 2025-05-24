@@ -5,7 +5,7 @@ public class GeneradorEnemigos : MonoBehaviour
 {
     [Header("Componentes")]
     public GameObject enemigo;
-    public Transform posicionJugador;
+    public Camera camaraJugador;
 
     [Header("Parámetros")]
     public float intervaloAparicion;
@@ -24,8 +24,18 @@ public class GeneradorEnemigos : MonoBehaviour
 
     void Start()
     {
-        // Repetir SpawnEnemy cada cierto intervalo
-        InvokeRepeating(nameof(SpawnEnemy), 3f, intervaloAparicion);
+        // Obtener main camera si no se ha asignado
+        if (camaraJugador == null)
+        {
+            camaraJugador = Camera.main;
+            if (camaraJugador == null)
+            {
+                Debug.LogError("No se ha asignado una cámara principal o no se ha encontrado una cámara en la escena.");
+                return;
+            }
+        }
+        // Repetir SpawnEnemy cada cierto intervalo parámetoros: nombre, inicio e intervalo
+        InvokeRepeating(nameof(SpawnEnemy), 1f, intervaloAparicion);
     }
 
     void SpawnEnemy()
@@ -57,7 +67,7 @@ public class GeneradorEnemigos : MonoBehaviour
         Vector3 spawnPos = transform.position + offset;
 
         // Nueva orientación hacia el jugador
-        Quaternion orientacion = Quaternion.LookRotation(posicionJugador.position - spawnPos);
+        Quaternion orientacion = Quaternion.LookRotation(camaraJugador.transform.position - spawnPos);
 
         // Generar instancia del enemigo
         GameObject enemy = Instantiate(enemigo, spawnPos, orientacion);
@@ -65,9 +75,8 @@ public class GeneradorEnemigos : MonoBehaviour
         // Añadir el enemigo a la lista de enemigos generados
         enemigosGenerados.Add(enemy);
 
-        // Definir la posición del jugador en scripts del enemigo
-        if (enemy.TryGetComponent(out RunTowardsPlayer script)) script.objetivo = posicionJugador;
-        if (enemy.TryGetComponent(out Enemigo script2)) script2.player = posicionJugador;
+        // Configurar el objetivo del enemigo para que sea la cámara del jugador
+        if (enemy.TryGetComponent(out RunTowardsPlayer script)) script.objetivo = camaraJugador;
 
     }
 }

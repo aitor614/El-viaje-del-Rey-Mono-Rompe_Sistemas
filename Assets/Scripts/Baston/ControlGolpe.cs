@@ -29,7 +29,7 @@ public class ControlGolpe : MonoBehaviour
     private int vidas = 3;
     private int puntuacion = 0;
     private int ladrillosRotos = 0;
-    private bool premio = false;
+    private bool objetoPartida = false;
 
     // Funcion para inicializar el script
     void Awake()
@@ -92,19 +92,26 @@ public class ControlGolpe : MonoBehaviour
         // Si se han roto todos los bloques, se gana el juego
         if (ladrillosRotos >= objetivoLadrillos)
         {
-            if (SceneManager.sceneCount <= 1 && !premio)
+            PlayerPrefs.SetInt("ObjetoBaston", 1);
+            PlayerPrefs.Save();
+
+            if (SceneManager.sceneCount <= 1 && !objetoPartida)
             {
-                Time.timeScale = 0f;
-
-                PlayerPrefs.SetInt("ObjetoBaston", 1);
-                PlayerPrefs.Save();
+                objetoPartida = true;
                 GuardarPuntos();
-                Debug.Log("Cargando escena: PremioGolpeBaston");
-
-                SceneManager.sceneLoaded += OnPremioSceneLoaded;
-                SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
+                CargarPremio();
             }
         }
+    }
+
+    private void CargarPremio()
+    {
+        Time.timeScale = 0f;
+
+        // Cargar la escena de premio
+        Debug.Log("Cargando escena: PremioGolpeBaston");
+        SceneManager.sceneLoaded += OnPremioSceneLoaded;
+        SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
     }
 
     // Función para lanzar espera de la escena de premio cuando se carga
@@ -123,7 +130,7 @@ public class ControlGolpe : MonoBehaviour
     // Función para esperar 5 segundos antes de descargar la escena de premio
     IEnumerator EsperarPremio()
     {
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(3f);
         SceneManager.UnloadSceneAsync("Premio");
         yield return null;
         Time.timeScale = 1f;

@@ -198,9 +198,39 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1851889539257838289, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 3.1867
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851889539257838289, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 3.1536
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851889539257838289, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00045013
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851889539257838289, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00061035
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881710648258698868, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2881710648258698868, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
       propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881710648258698868, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6364213899292940635, guid: 95479ff83f7294c488551ecdba914560,
@@ -231,22 +261,22 @@ PrefabInstance:
     - target: {fileID: 7547147541480758923, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -0.23999023
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7547147541480758923, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -0.38000488
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7547147541480758923, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00012207031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7547147541480758923, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0006713867
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7777859576433526575, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
@@ -369,5 +399,5 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1210241739}
   - {fileID: 3777200769416820175}
+  - {fileID: 1210241739}

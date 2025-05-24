@@ -18,6 +18,7 @@ public class ControlPremio : MonoBehaviour
 
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         // Obtener la cámara principal
         Camera camara = Camera.main;
         if (camara != null) Debug.Log("[Premio] Cámara principal encontrada: " + camara.name);

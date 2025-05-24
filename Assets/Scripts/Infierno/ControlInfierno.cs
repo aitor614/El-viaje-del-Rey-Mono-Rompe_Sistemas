@@ -31,6 +31,7 @@ public class ControlInfierno : MonoBehaviour
     private int vidas = 3;
     private int puntuacion = 0;
     private float alturaAlcanzada = 0f;
+    private bool objetoPartida = false;
 
     void Awake()
     {
@@ -83,17 +84,46 @@ public class ControlInfierno : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("ObjetoInfierno") == 1)
         {
-            GuardarPuntos();
-
-            if (controlMenuPrincipal != null)
+            if (SceneManager.sceneCount <= 1 && !objetoPartida)
             {
-                controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
-            }
-            else
-            {
-                Debug.LogWarning("controlMenuPrincipal no está asignado en ControlInfierno");
+                objetoPartida = true;
+                GuardarPuntos();
+                CargarPremio();
             }
         }
+    }
+
+    private void CargarPremio()
+    {
+        Time.timeScale = 0f;
+
+        // Cargar la escena de premio
+        Debug.Log("Cargando escena: PremioGolpeBaston");
+        SceneManager.sceneLoaded += OnPremioSceneLoaded;
+        SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
+    }
+
+    // Función para lanzar espera de la escena de premio cuando se carga
+    private void OnPremioSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Premio")
+        {
+            Debug.Log("Escena de premio cargada completamente.");
+            // Desuscribirse del evento de carga de escena
+            SceneManager.sceneLoaded -= OnPremioSceneLoaded;
+            // Desactivar el objeto de la escena actual
+            StartCoroutine(EsperarPremio());
+        }
+    }
+
+    // Función para esperar antes de descargar la escena de premio
+    IEnumerator EsperarPremio()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        SceneManager.UnloadSceneAsync("Premio");
+        yield return null;
+        Time.timeScale = 1f;
+        controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
     }
 
     private void ControlarAltura()

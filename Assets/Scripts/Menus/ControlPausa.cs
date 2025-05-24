@@ -11,14 +11,17 @@ public class ControlPausa : MonoBehaviour
     private GameObject controlEscena;
     private ControlAR_old controlAR_old;
     private ControlAR controlAR;
-    //private ControlCardBoard controlCardboard;
     private ControlOpenXR controlOpenXR;
-    private AudioSource musica;
+    //private ControlCardBoard controlCardboard;
 
+    // Banderas
     private bool menuCargado = false;
-    // Banderas para saber si AR o VR estaban activos al pausar
     private bool arEstabaActivo = false;
     private bool vrEstabaActivo = false;
+
+    private AudioSource musica;
+    private bool musicaOn = false;
+    private float tiempoEscena;
 
     private void Awake()
     {
@@ -40,15 +43,22 @@ public class ControlPausa : MonoBehaviour
             controlAR = FindAnyObjectByType<ControlAR>();
         }
 
-        // Buscar automáticamente el ControlVR en la escena si existe
-        //controlCardboard = FindFirstObjectByType<ControlCardBoard>();
+        // Buscar automáticamente el ControlOpenXR en la escena si existe
         if (FindAnyObjectByType<ControlOpenXR>() != null)
         {
             Debug.Log("ControlOpenXR encontrado en la escena.");
             controlOpenXR = FindFirstObjectByType<ControlOpenXR>();
         }
 
-        controlEscena = GameObject.FindGameObjectWithTag("ControlEscena") ?? null;
+        //if (FindAnyObjectByType<ControlCardBoard>() != null)
+        //{
+        //    Debug.Log("ControlCardBoard encontrado en la escena.");
+        //    //controlCardboard = FindFirstObjectByType<ControlCardBoard>();
+
+        //}
+
+
+        controlEscena = GameObject.FindGameObjectWithTag("ControlEscena");
         if (controlEscena != null)
         {
             musica = controlEscena.GetComponent<AudioSource>();
@@ -72,10 +82,15 @@ public class ControlPausa : MonoBehaviour
             PausarAR();
             PausarVR();
 
-            if (musica != null && musica.isPlaying) musica.Pause();
+            if (musica != null && musica.isPlaying) {
+                musicaOn = true;
+                musica.Pause();
+            }
+
+            tiempoEscena = Time.timeScale;
+            if (tiempoEscena != 0f) Time.timeScale = 0f;
 
             // Pausar tiempo y cargar la escena del menú de pausa
-            Time.timeScale = 0f;
             SceneManager.LoadScene("MenuPausa", LoadSceneMode.Additive);
             menuCargado = true;
 
@@ -93,10 +108,10 @@ public class ControlPausa : MonoBehaviour
     public void ReanudarJuego()
     {
 
-        if (musica != null) musica.Play();
+        if (musica != null && musicaOn == true) musica.Play();
 
         // Reanudar el tiempo y descargar la escena del menú de pausa
-        Time.timeScale = 1f;
+        Time.timeScale = tiempoEscena;
         SceneManager.UnloadSceneAsync("MenuPausa");
         menuCargado = false;
 
@@ -141,11 +156,10 @@ public class ControlPausa : MonoBehaviour
     // Reanudar AR si estaba activo antes de pausar
     private void ReanudarAR()
     {
-        // Reanudar AR o VR si estaban activos antes de pausar
         if (arEstabaActivo && (controlAR_old != null || controlAR != null))
         {
-            if (controlAR != null) controlAR.ActivarAR();
-            else if (controlAR_old != null) controlAR_old.ActivarAR();
+            if (controlAR != null && controlAR.isActiveAndEnabled) controlAR.ActivarAR();
+            else if (controlAR_old != null && controlAR_old.isActiveAndEnabled) controlAR_old.ActivarAR();
             arEstabaActivo = false;
             Debug.Log("[ControlPausa] AR reanudado tras pausa.");
         }
@@ -161,7 +175,7 @@ public class ControlPausa : MonoBehaviour
         //    Debug.Log("VR reanudado tras pausa.");
         //}
 
-        if (vrEstabaActivo && controlOpenXR != null)
+        if (vrEstabaActivo && controlOpenXR != null && controlOpenXR.isActiveAndEnabled)
         {
             controlOpenXR.ActivarOpenXR();
             vrEstabaActivo = false;
@@ -196,7 +210,7 @@ public class ControlPausa : MonoBehaviour
         //    vrEstabaActivo = true;
         //}
 
-        if (controlOpenXR != null)
+        if (controlOpenXR != null && controlOpenXR.isActiveAndEnabled)
         {
             controlOpenXR.DesactivarOpenXR();
             vrEstabaActivo = true;
@@ -208,8 +222,8 @@ public class ControlPausa : MonoBehaviour
     // Desactivar AR reiniciar o volver al menú principal
     private void DesactivarAR()
     {
-        if (controlAR != null) controlAR.DesactivarAR();
-        else if (controlAR_old != null) controlAR_old.DesactivarAR();
+        if (controlAR != null && controlAR.isActiveAndEnabled) controlAR.DesactivarAR();
+        else if (controlAR_old != null && controlAR_old.isActiveAndEnabled) controlAR_old.DesactivarAR();
 
         arEstabaActivo = false;
     }
@@ -218,7 +232,7 @@ public class ControlPausa : MonoBehaviour
     private void DesactivarVR()
     {
         //if (controlCardboard != null) controlCardboard.DesactivarCardBoard();
-        if (controlOpenXR != null) controlOpenXR.DesactivarOpenXR();
+        if (controlOpenXR != null && controlOpenXR.isActiveAndEnabled) controlOpenXR.DesactivarOpenXR();
 
         vrEstabaActivo = false;
     }

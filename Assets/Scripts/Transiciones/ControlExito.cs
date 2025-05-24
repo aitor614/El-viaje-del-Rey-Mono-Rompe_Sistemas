@@ -17,6 +17,7 @@ public class ControlExito : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenu = ControlMenuPrincipal.InstanciaControl;
         TxtScorePartida.text = "SCORE PARTIDA: " + PlayerPrefs.GetInt("PuntuacionPartida");
         TxtScore.text = "SCORE TOTAL: " + PlayerPrefs.GetInt("Puntuacion");

@@ -14,6 +14,7 @@ public class ControlEscenaFinal : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenu = ControlMenuPrincipal.InstanciaControl;
         TxtScore.text = "SCORE " + PlayerPrefs.GetInt("Puntuacion");
         audioSource.clip = musica;

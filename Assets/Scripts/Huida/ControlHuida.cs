@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ControlHuida : MonoBehaviour
@@ -30,6 +32,7 @@ public class ControlHuida : MonoBehaviour
     private int vidas = 3;
     private int puntuacion = 0;
     private int orbesObtenidos = 0;
+    private bool objetoPartida = false;
 
     private void Awake()
     {
@@ -84,9 +87,47 @@ public class ControlHuida : MonoBehaviour
         {
             PlayerPrefs.SetInt("ObjetoBaston", 1);
             PlayerPrefs.Save();
-            GuardarPuntos();
-            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+            if (SceneManager.sceneCount <= 1 && !objetoPartida)
+            {
+                objetoPartida = true;
+                GuardarPuntos();
+                CargarPremio();
+            }
+
         }
+    }
+
+    private void CargarPremio()
+    {
+        Time.timeScale = 0f;
+
+        // Cargar la escena de premio
+        Debug.Log("Cargando escena: PremioGolpeBaston");
+        SceneManager.sceneLoaded += OnPremioSceneLoaded;
+        SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
+    }
+
+    // Función para lanzar espera de la escena de premio cuando se carga
+    private void OnPremioSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Premio")
+        {
+            Debug.Log("Escena de premio cargada completamente.");
+            // Desuscribirse del evento de carga de escena
+            SceneManager.sceneLoaded -= OnPremioSceneLoaded;
+            // Desactivar el objeto de la escena actual
+            StartCoroutine(EsperarPremio());
+        }
+    }
+
+    // Función para esperar antes de descargar la escena de premio
+    IEnumerator EsperarPremio()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        SceneManager.UnloadSceneAsync("Premio");
+        yield return null;
+        Time.timeScale = 1f;
+        controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
     }
 
     private void ActualizarContador()
