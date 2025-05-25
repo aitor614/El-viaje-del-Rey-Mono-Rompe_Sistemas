@@ -178,7 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa619e0a2e9d5547ad51f4799c93c89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   animacion: {fileID: 3559640468732402887}
   velocidad: 1
   vida: 1
@@ -201,7 +200,7 @@ MonoBehaviour:
   objetivo: {fileID: 0}
   animador: {fileID: 3559640468732402887}
   offsetAlturaObjetivo: 0
-  velocidad: 5
+  velocidad: 3
   distanciaAtaque: 3
   fuerzaAtaque: 1
   enfriamientoAtaque: 2

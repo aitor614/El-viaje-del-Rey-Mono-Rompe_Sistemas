@@ -27,7 +27,6 @@ public class PlayerHuida : MonoBehaviour
     private void Start()
     {
         posicionInicial = transform.position;
-        Salto();
     }
 
     private void OnEnable()
@@ -113,7 +112,6 @@ public class PlayerHuida : MonoBehaviour
     {
         transform.position = posicionInicial;
         colisionPlayer.linearVelocity = Vector2.zero;
-        Salto();
     }
 }
    

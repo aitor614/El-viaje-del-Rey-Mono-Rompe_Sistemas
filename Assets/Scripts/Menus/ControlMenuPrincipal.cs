@@ -287,6 +287,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         }
         else if (resultado == ResultadoMinijuego.Menu)
         {
+            ReiniciarPuntuaciones();
             // Volver al menú principal
             escenaActual = "MenuPrincipal";
             SceneManager.LoadScene("MenuPrincipal");

@@ -4,19 +4,23 @@ using UnityEngine.UIElements;
 
 public class UnifiedPlatformSpawner : MonoBehaviour
 {
+    [Header("Prefabs de plataformas")]
     public GameObject Platform;
     public GameObject PlatformBoost;
     public GameObject FinalPlatform;
     public RectTransform fondo;
 
+    [Header("Cantidad de plataformas")]
     public int totalPlataformas;
     public int cantidadBoosts;
 
-    public float minY = 1f;
-    public float maxY = 2f;
-    public float minSeparacion = 2f;
-    public float maxSeparacion = 4.5f;
+    [Header("Parámetros de altura y separación")]
+    public float minAlturaY;
+    public float maxAlturaY;
+    public float minSeparacion;
+    public float maxSeparacion;
 
+    // Variables para calcular los límites del fondo
     private float minX;
     private float maxX;
 
@@ -27,15 +31,20 @@ public class UnifiedPlatformSpawner : MonoBehaviour
 
     void Start()
     {
+        // Generar un número único de índices para los boosts
         HashSet<int> boostIndices = GenerarIndicesBoostsUnicos(totalPlataformas, cantidadBoosts);
 
         CalcularLimitesFondo();
 
         for (int i = 0; i < totalPlataformas; i++)
         {
+            // Determinar si es la última plataforma
             bool esUltima = (i == totalPlataformas - 1);
-            bool duplicar = (i % 2 == 0 && !esUltima); // Alternancia, pero no para la final
 
+            // Alternar entre plataformas dobles y simples
+            bool duplicar = (i % 2 == 0 && !esUltima);
+
+            // Si el índice actual está en los índices de boost, usar la plataforma de boost
             GameObject prefab = boostIndices.Contains(i) ? PlatformBoost : Platform;
 
             if (duplicar)
@@ -49,7 +58,7 @@ public class UnifiedPlatformSpawner : MonoBehaviour
                 ActivarMovimientoSiCorresponde(plataforma);
             }
 
-            spawnY += Random.Range(minY, maxY);
+            spawnY += Random.Range(minAlturaY, maxAlturaY);
 
             if (esUltima)
             {
@@ -59,6 +68,7 @@ public class UnifiedPlatformSpawner : MonoBehaviour
         }
     }
 
+    // Calcular limites fondo para evitar que las plataformas se generen fuera de la pantalla
     void CalcularLimitesFondo()
     {
         Vector3[] esquinas = new Vector3[4];
@@ -67,6 +77,7 @@ public class UnifiedPlatformSpawner : MonoBehaviour
         maxX = esquinas[2].x;
     }
 
+    // Generar una posición aleatoria dentro de los límites del fondo, considerando el ancho de la plataforma
     Vector3 GenerarPosicionAleatoria(GameObject plataforma)
     {
         float ancho = plataforma.GetComponent<SpriteRenderer>().bounds.size.x;
@@ -74,6 +85,7 @@ public class UnifiedPlatformSpawner : MonoBehaviour
         return new Vector3(x, spawnY, 0f);
     }
 
+    // Instanciar una plataforma doble, una móvil y otra normal
     void InstanciarDoblePlataforma(GameObject prefab)
     {
         float ancho = prefab.GetComponent<SpriteRenderer>().bounds.size.x;
@@ -84,8 +96,8 @@ public class UnifiedPlatformSpawner : MonoBehaviour
         float x1 = centro - espacio / 2f;
         float x2 = centro + espacio / 2f;
 
-        Vector3 pos1 = new Vector3(x1, spawnY, 0f);
-        Vector3 pos2 = new Vector3(x2, spawnY, 0f);
+        Vector3 pos1 = new(x1, spawnY, 0f);
+        Vector3 pos2 = new(x2, spawnY, 0f);
 
         GameObject p1 = Instantiate(prefab, pos1, Quaternion.identity);
         GameObject p2 = Instantiate(Platform, pos2, Quaternion.identity); // Siempre normal la segunda
@@ -94,6 +106,7 @@ public class UnifiedPlatformSpawner : MonoBehaviour
         ActivarMovimientoSiCorresponde(p2);
     }
 
+    // Activar el movimiento de la plataforma si corresponde según la probabilidad
     void ActivarMovimientoSiCorresponde(GameObject plataforma)
     {
         if (Random.value < probabilidadPlataformaMovil)
@@ -106,9 +119,12 @@ public class UnifiedPlatformSpawner : MonoBehaviour
         }
     }
 
+    // Generar un conjunto de índices únicos para los boosts
     HashSet<int> GenerarIndicesBoostsUnicos(int max, int cantidad)
     {
-        HashSet<int> indices = new HashSet<int>();
+        HashSet<int> indices = new();
+
+        // Repetir hasta que tengamos la cantidad deseada de índices de boost únicos
         while (indices.Count < cantidad)
         {
             indices.Add(Random.Range(0, max));

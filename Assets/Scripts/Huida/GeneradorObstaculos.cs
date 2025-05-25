@@ -8,7 +8,7 @@ public class GeneradorObstaculos : MonoBehaviour
     {
         public string nombre;
         public GameObject prefabObstaculo;
-        public float probabilidad;
+        public float ratioSpawn;
         public float maxAltura;
         public float minAltura;
     }
@@ -35,25 +35,39 @@ public class GeneradorObstaculos : MonoBehaviour
     // Generación de obstáculos intercalados
     IEnumerator GenerarIntercalados()
     {
+        float probAcumuladaVida = 0f;
+        float probAcumuladaPremio = 0f;
+
         while (true)
         {
             // Generar obstáculo
             Spawn(tiposObstaculo[0]);
 
             // Esperar la mitad del tiempo de spawn del primer obstáculo
-            yield return new WaitForSeconds(tiposObstaculo[0].probabilidad / 2f);
+            yield return new WaitForSeconds(tiposObstaculo[0].ratioSpawn / 2f);
 
-            // Generar premio o vida 
-            int indiceAleatorio = Random.Range(1, tiposObstaculo.Length);
+            probAcumuladaPremio += tiposObstaculo[1].ratioSpawn;
+            probAcumuladaVida += tiposObstaculo[2].ratioSpawn;
 
-            // 
-            if (Random.value <= tiposObstaculo[indiceAleatorio].probabilidad) 
+            bool generado = false;
+
+
+            if (probAcumuladaVida >= 1f)
             {
-                Spawn(tiposObstaculo[indiceAleatorio]);
+                Spawn(tiposObstaculo[2]);
+                probAcumuladaVida -= 1f;
+                generado = true;
             }
 
+            if (!generado && probAcumuladaPremio >= 1f)
+            {
+                Spawn(tiposObstaculo[1]);
+                probAcumuladaPremio -= 1f;
+            }
+
+
             // Esperar la otra mitad
-            yield return new WaitForSeconds(tiposObstaculo[0].probabilidad / 2f);
+            yield return new WaitForSeconds(tiposObstaculo[0].ratioSpawn / 2f);
         }
     }
 

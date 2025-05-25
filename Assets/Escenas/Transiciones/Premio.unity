@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1210241739}
   - component: {fileID: 1210241738}
+  - component: {fileID: 1210241740}
   m_Layer: 0
   m_Name: ControlPremio
   m_TagString: Untagged
@@ -157,6 +158,8 @@ MonoBehaviour:
   premioEspiritus: {fileID: 1426729475, guid: 9066f200847c4f84d94026f3a974fba2, type: 3}
   premioBatalla: {fileID: 11285413, guid: 04107a56e7db04b4f97ef6d184a5f19f, type: 3}
   premioCompleto: {fileID: 1151904307, guid: 843201196b25b6b48a34e54f43e95d29, type: 3}
+  audioSource: {fileID: 1210241740}
+  sonidoPremio: {fileID: 8300000, guid: 9d5cc1b047ee1394a85c0f1684b44c98, type: 3}
 --- !u!4 &1210241739
 Transform:
   m_ObjectHideFlags: 0
@@ -172,6 +175,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1210241740
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210241737}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!223 &792771945686517121 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 2881710648258698868, guid: 95479ff83f7294c488551ecdba914560,
@@ -231,7 +331,7 @@ PrefabInstance:
     - target: {fileID: 2881710648258698868, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6364213899292940635, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}

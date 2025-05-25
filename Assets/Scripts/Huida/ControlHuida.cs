@@ -33,6 +33,7 @@ public class ControlHuida : MonoBehaviour
     private int puntuacion = 0;
     private int orbesObtenidos = 0;
     private bool objetoPartida = false;
+    private bool saltoInicial = false;
 
     private void Awake()
     {
@@ -100,7 +101,7 @@ public class ControlHuida : MonoBehaviour
     private void CargarPremio()
     {
         Time.timeScale = 0f;
-
+        audioSource.Stop();
         // Cargar la escena de premio
         Debug.Log("Cargando escena: PremioGolpeBaston");
         SceneManager.sceneLoaded += OnPremioSceneLoaded;
@@ -212,6 +213,11 @@ public class ControlHuida : MonoBehaviour
         Time.timeScale = 1f;
         player.enabled = true;
         audioSource.Play();
+        if (saltoInicial == false)
+        {
+            player.Salto();
+            saltoInicial = true;
+        }
 
     }
 
@@ -224,27 +230,27 @@ public class ControlHuida : MonoBehaviour
     // Función para gestionar la colisión del jugador con los obstáculos
     public void ColisionObstaculo()
     {
-
+        AudioSource.PlayClipAtPoint(colision, transform.position);
         PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - 1);
         PlayerPrefs.Save();
         canvasBotonPlay.SetActive(true);
-        audioSource.PlayOneShot(colision);
-        Pausa();
         CheckVida();
+        Pausa();
     }
 
     public void ColisionPremio(Collider2D other)
     {
+        AudioSource.PlayClipAtPoint(premio, transform.position);
         PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 20);
         PlayerPrefs.SetInt("PremiosObtenidos", PlayerPrefs.GetInt("PremiosObtenidos") + 1);
         PlayerPrefs.Save();
-        audioSource.PlayOneShot(premio);
         ActualizarPuntos();
         Destroy(other.gameObject);
     }
 
     public void ColisionVida(Collider2D other)
     {
+        AudioSource.PlayClipAtPoint(vidaExtra,transform.position);
         PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 1);
         int vidas = PlayerPrefs.GetInt("VidasRestantes");
         if (vidas < 3)
@@ -254,7 +260,6 @@ public class ControlHuida : MonoBehaviour
         }
         PlayerPrefs.Save();
         Debug.Log("Vidas Restantes: " + PlayerPrefs.GetInt("VidasRestantes"));
-        audioSource.PlayOneShot(vidaExtra);
         ActualizarVidas();
         Destroy(other.gameObject);
     }

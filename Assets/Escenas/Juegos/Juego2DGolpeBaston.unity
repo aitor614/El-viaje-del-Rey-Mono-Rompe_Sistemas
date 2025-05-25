@@ -1468,7 +1468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb2c985a3a76b9b4d9b92275e63564a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musica: {fileID: 8300000, guid: dc480b6b703d70d4b8bd8db25312fb9e, type: 3}
+  musica: {fileID: 8300000, guid: 75bc1f0439b5e5148821434195701b53, type: 3}
   ball: {fileID: 5811522328422731208}
   player: {fileID: 6516110586509998273}
   audioSource: {fileID: 2066103228}
@@ -2632,7 +2632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 94.00003, y: -540.3633}
+  m_AnchoredPosition: {x: 94, y: -540.3633}
   m_SizeDelta: {x: 1, y: -540}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &9166347943077931043

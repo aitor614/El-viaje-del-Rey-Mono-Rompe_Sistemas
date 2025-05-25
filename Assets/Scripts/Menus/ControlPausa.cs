@@ -25,6 +25,11 @@ public class ControlPausa : MonoBehaviour
 
     private void Awake()
     {
+        if (InstanciaControl != null && InstanciaControl != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         InstanciaControl = this;
     }
 
@@ -57,7 +62,6 @@ public class ControlPausa : MonoBehaviour
 
         //}
 
-
         controlEscena = GameObject.FindGameObjectWithTag("ControlEscena");
         if (controlEscena != null)
         {
@@ -75,12 +79,11 @@ public class ControlPausa : MonoBehaviour
     // Pausar el juego y cargar el menú de pausa
     public void PausarJuego()
     {
+
         // Si el menú ya está cargado, no hacemos nada
         if (!menuCargado)
         {
-            // Si hay AR o VR activo, lo pausamos
-            PausarAR();
-            PausarVR();
+
 
             if (musica != null && musica.isPlaying) {
                 musicaOn = true;
@@ -90,18 +93,17 @@ public class ControlPausa : MonoBehaviour
             tiempoEscena = Time.timeScale;
             if (tiempoEscena != 0f) Time.timeScale = 0f;
 
+            Debug.Log("Cargando MenuPausa...");
             // Pausar tiempo y cargar la escena del menú de pausa
             SceneManager.LoadScene("MenuPausa", LoadSceneMode.Additive);
+            // Si hay AR o VR activo, lo pausamos
+            PausarAR();
+            PausarVR();
             menuCargado = true;
+            StartCoroutine(AsignarCamaraAlCanvas());
 
         }
 
-        Debug.Log("[ControlPausa] Pausa activada.");
-
-        // Asignar la cámara principal al canvas del menú de pausa
-        //if (PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados" ||
-        //      PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial")
-            StartCoroutine(AsignarCamaraAlCanvas());
     }
 
     // Reanudar el juego y descargar el menú de pausa
@@ -156,7 +158,7 @@ public class ControlPausa : MonoBehaviour
     // Reanudar AR si estaba activo antes de pausar
     private void ReanudarAR()
     {
-        if (arEstabaActivo && (controlAR_old != null || controlAR != null))
+        if (arEstabaActivo && (controlAR_old != null || controlAR != null) && controlAR.isActiveAndEnabled)
         {
             if (controlAR != null && controlAR.isActiveAndEnabled) controlAR.ActivarAR();
             else if (controlAR_old != null && controlAR_old.isActiveAndEnabled) controlAR_old.ActivarAR();
@@ -186,12 +188,12 @@ public class ControlPausa : MonoBehaviour
     // Desactivar AR con flag si estaba activo al pausar
     private void PausarAR()
     {
-        if (controlAR != null)
+        if (controlAR != null && controlOpenXR.isActiveAndEnabled)
         {
             controlAR.DesactivarAR();
             arEstabaActivo = true;
         }
-        else if (controlAR_old != null) 
+        else if (controlAR_old != null && controlOpenXR.isActiveAndEnabled) 
         {
             controlAR_old.DesactivarAR();
             arEstabaActivo = true;
@@ -258,14 +260,19 @@ public class ControlPausa : MonoBehaviour
         {
             // Busca el canvas en los objetos raíz
             Canvas canvas = rootObj.GetComponentInChildren<Canvas>(true);
-            //if (canvas == null)
-            //{
-            //    Debug.LogError("No se encontró el canvas en la escena del menú de pausa.");
-            //    yield break;
-            //}
+
             // Asigna la cámara principal al canvas si es ScreenSpaceCamera y el canvas no es null
             if (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceCamera)
             {
+                if (Camera.main == null)
+                {
+                    Debug.LogError("[ControlPausa] No se ha encontrado una cámara principal en la escena. Creando una temporal.");
+                    // Si no hay cámara principal, crea una temporal
+                    GameObject tempCamera = new GameObject("MainCamera");
+                    Camera camara = tempCamera.AddComponent<Camera>();
+                    camara.tag = "MainCamera";
+                    yield break;
+                }
                 // Asigna la cámara principal al canvas
                 canvas.worldCamera = Camera.main;
                 Debug.Log("[ControlPausa] Cámara principal asignada al canvas del menú de pausa.");

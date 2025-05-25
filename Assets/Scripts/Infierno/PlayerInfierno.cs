@@ -12,6 +12,8 @@ public class PlayerInfierno : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip bounceSound;
     public AudioClip boostSound;
+    public AudioClip colisionEnemigo;
+    public AudioClip respawn;
 
     [Header("Componentes")]
     public Rigidbody2D rigiBody2D;
@@ -27,6 +29,7 @@ public class PlayerInfierno : MonoBehaviour
     private Vector2 posUltimoToque = Vector2.zero;
     private float moverInput;
     private float alturaMaxima = 0f;
+
     void Start()
     {
         audioSource.volume = volumen;
@@ -42,7 +45,6 @@ public class PlayerInfierno : MonoBehaviour
         MovimientoHorizontal();
         InvertirImagenX();
     }
-
 
     private void MovimientoHorizontal()
     {
@@ -192,7 +194,9 @@ public class PlayerInfierno : MonoBehaviour
             // Destruir el enemigo
             Destroy(colisionador.gameObject);
 
-            // Resetear al jugador (o animación/muerte)
+            audioSource.PlayOneShot(colisionEnemigo);
+
+            // Resetear al jugador
             ResetPlayer();
         }
     }
@@ -205,6 +209,8 @@ public class PlayerInfierno : MonoBehaviour
         transform.position = new Vector3(posicionCamara.x, alturaMaxima, transform.position.z);
 
         rigiBody2D.linearVelocity = Vector2.zero;
+
+        audioSource.PlayOneShot(respawn);
     }
 
 }

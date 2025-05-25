@@ -120,6 +120,7 @@ public class ControlBatalla : MonoBehaviour
     private void CargarPremio()
     {
         Time.timeScale = 0f;
+        audioSource.Stop();
 
         // Cargar la escena de premio
         Debug.Log("Cargando escena: PremioGolpeBaston");
