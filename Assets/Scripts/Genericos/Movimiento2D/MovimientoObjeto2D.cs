@@ -3,7 +3,7 @@ using UnityEngine;
 public class MovimientoObjeto2D : MonoBehaviour
 {
     [Header("Velocidad movimiento")]
-    public float velocidad = 5f;
+    public float velocidad;
     [Header("Direccion movimiento")]
     public DireccionMovimiento direccionMovimiento;
     public enum DireccionMovimiento

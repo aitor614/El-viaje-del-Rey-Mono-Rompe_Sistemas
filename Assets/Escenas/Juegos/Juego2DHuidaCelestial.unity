@@ -341,22 +341,25 @@ MonoBehaviour:
   - nombre: obstaculo
     prefabObstaculo: {fileID: 5142281229426199456, guid: 1ca99e27b51ad564c88e2a1a65ece16f,
       type: 3}
-    probabilidad: 1
+    tiempoSpawn: 1
+    probabilidadSpawn: 1
     maxAltura: 1
     minAltura: -1
   - nombre: vida
     prefabObstaculo: {fileID: 4249482731838797446, guid: abe8a106e56d906449c0572dfd8248ee,
       type: 3}
-    probabilidad: 0.4
+    tiempoSpawn: 0
+    probabilidadSpawn: 0.2
     maxAltura: 1
     minAltura: -1
   - nombre: premio
     prefabObstaculo: {fileID: 2361812291499471109, guid: d23602b30fea50246bc272201576cac1,
       type: 3}
-    probabilidad: 0.7
-    maxAltura: 3
-    minAltura: -3
-  velocidadDesplazamiento: 5
+    tiempoSpawn: 0
+    probabilidadSpawn: 0.8
+    maxAltura: 3.5
+    minAltura: -3.5
+  velocidadDesplazamiento: 6
 --- !u!1 &789139111
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,7 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7526c518ad88040479f2d63330426864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musica: {fileID: 8300000, guid: dc480b6b703d70d4b8bd8db25312fb9e, type: 3}
+  musica: {fileID: 8300000, guid: 71ef32f7732bda5429be27697b884b49, type: 3}
   respawn: {fileID: 8300000, guid: e118800ffb5b2044cb0c5de202030bec, type: 3}
   colision: {fileID: 8300000, guid: 983dc9cdaf016fc42a638c14916be45f, type: 3}
   premio: {fileID: 8300000, guid: 3a3c7c27aee4cd34c8b4c0700bdac685, type: 3}
@@ -928,7 +931,7 @@ MonoBehaviour:
     type: 3}
   tiempoRestante: 30
   objetivoOrbes: 10
-  puntuacionVictoria: 50
+  puntuacionVictoria: 250
 --- !u!82 &1350638783
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1424,6 +1427,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1380034454870843088, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -48.743042
       objectReference: {fileID: 0}
     - target: {fileID: 2857844379552655069, guid: 10167926d0b1e6646ac1e0ba40bb5ac9,
         type: 3}

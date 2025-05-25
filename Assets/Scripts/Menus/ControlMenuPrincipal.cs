@@ -51,6 +51,7 @@ public class ControlMenuPrincipal : MonoBehaviour
     // Inicializar el script
     void Start()
     {
+        PlayerPrefs.SetInt("IndiceMinijuego", 0);
         PlayerPrefs.SetString("EscenaActual", "");
         PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
@@ -236,7 +237,7 @@ public class ControlMenuPrincipal : MonoBehaviour
     {
         // Guardar el modo de juego como continuo
         modoActual = ModoJuego.Continuo;
-        indiceActual = 0;
+        indiceActual = PlayerPrefs.GetInt("IndiceMinijuego");
         ReiniciarPuntuaciones();
 
         audioSource.Stop();
@@ -247,19 +248,22 @@ public class ControlMenuPrincipal : MonoBehaviour
     // Funcion para cargar el siguiente minijuego en modo continuo
     public void SiguienteMinijuego()
     {
+        indiceActual = PlayerPrefs.GetInt("IndiceMinijuego") + 1;
 
         if (indiceActual < escenasMinijuegos.Count)
         {
-            indiceActual++;
             // Cargar la siguiente escena de minijuego
             escenaActual = escenasMinijuegos[indiceActual];
             PlayerPrefs.SetString("EscenaActual", escenaActual);
+            PlayerPrefs.SetInt("IndiceMinijuego", indiceActual);
             PlayerPrefs.Save();
             SceneManager.LoadScene(escenasMinijuegos[indiceActual]);
             Debug.Log("Cargando escena: " + escenasMinijuegos[indiceActual]);
         }
         else
         {
+            PlayerPrefs.SetInt("IndiceMinijuego", 0);
+            PlayerPrefs.Save();
             // Si se han completado todos los minijuegos, cargar la escena final
             SceneManager.LoadScene("EscenaFinal"); 
         }
@@ -287,6 +291,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         }
         else if (resultado == ResultadoMinijuego.Menu)
         {
+            ReiniciarPuntuaciones();
             // Volver al menú principal
             escenaActual = "MenuPrincipal";
             SceneManager.LoadScene("MenuPrincipal");

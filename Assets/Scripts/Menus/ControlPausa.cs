@@ -11,17 +11,25 @@ public class ControlPausa : MonoBehaviour
     private GameObject controlEscena;
     private ControlAR_old controlAR_old;
     private ControlAR controlAR;
-    //private ControlCardBoard controlCardboard;
     private ControlOpenXR controlOpenXR;
-    private AudioSource musica;
+    //private ControlCardBoard controlCardboard;
 
+    // Banderas
     private bool menuCargado = false;
-    // Banderas para saber si AR o VR estaban activos al pausar
     private bool arEstabaActivo = false;
     private bool vrEstabaActivo = false;
 
+    private AudioSource musica;
+    private bool musicaOn = false;
+    private float tiempoEscena;
+
     private void Awake()
     {
+        if (InstanciaControl != null && InstanciaControl != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         InstanciaControl = this;
     }
 
@@ -40,15 +48,21 @@ public class ControlPausa : MonoBehaviour
             controlAR = FindAnyObjectByType<ControlAR>();
         }
 
-        // Buscar automáticamente el ControlVR en la escena si existe
-        //controlCardboard = FindFirstObjectByType<ControlCardBoard>();
+        // Buscar automáticamente el ControlOpenXR en la escena si existe
         if (FindAnyObjectByType<ControlOpenXR>() != null)
         {
             Debug.Log("ControlOpenXR encontrado en la escena.");
             controlOpenXR = FindFirstObjectByType<ControlOpenXR>();
         }
 
-        controlEscena = GameObject.FindGameObjectWithTag("ControlEscena") ?? null;
+        //if (FindAnyObjectByType<ControlCardBoard>() != null)
+        //{
+        //    Debug.Log("ControlCardBoard encontrado en la escena.");
+        //    //controlCardboard = FindFirstObjectByType<ControlCardBoard>();
+
+        //}
+
+        controlEscena = GameObject.FindGameObjectWithTag("ControlEscena");
         if (controlEscena != null)
         {
             musica = controlEscena.GetComponent<AudioSource>();
@@ -65,38 +79,41 @@ public class ControlPausa : MonoBehaviour
     // Pausar el juego y cargar el menú de pausa
     public void PausarJuego()
     {
+
         // Si el menú ya está cargado, no hacemos nada
         if (!menuCargado)
         {
+
+
+            if (musica != null && musica.isPlaying) {
+                musicaOn = true;
+                musica.Pause();
+            }
+
+            tiempoEscena = Time.timeScale;
+            if (tiempoEscena != 0f) Time.timeScale = 0f;
+
+            Debug.Log("Cargando MenuPausa...");
+            // Pausar tiempo y cargar la escena del menú de pausa
+            SceneManager.LoadScene("MenuPausa", LoadSceneMode.Additive);
             // Si hay AR o VR activo, lo pausamos
             PausarAR();
             PausarVR();
-
-            if (musica != null && musica.isPlaying) musica.Pause();
-
-            // Pausar tiempo y cargar la escena del menú de pausa
-            Time.timeScale = 0f;
-            SceneManager.LoadScene("MenuPausa", LoadSceneMode.Additive);
             menuCargado = true;
+            StartCoroutine(AsignarCamaraAlCanvas());
 
         }
 
-        Debug.Log("[ControlPausa] Pausa activada.");
-
-        // Asignar la cámara principal al canvas del menú de pausa
-        //if (PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados" ||
-        //      PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial")
-            StartCoroutine(AsignarCamaraAlCanvas());
     }
 
     // Reanudar el juego y descargar el menú de pausa
     public void ReanudarJuego()
     {
 
-        if (musica != null) musica.Play();
+        if (musica != null && musicaOn == true) musica.Play();
 
         // Reanudar el tiempo y descargar la escena del menú de pausa
-        Time.timeScale = 1f;
+        Time.timeScale = tiempoEscena;
         SceneManager.UnloadSceneAsync("MenuPausa");
         menuCargado = false;
 
@@ -141,11 +158,10 @@ public class ControlPausa : MonoBehaviour
     // Reanudar AR si estaba activo antes de pausar
     private void ReanudarAR()
     {
-        // Reanudar AR o VR si estaban activos antes de pausar
-        if (arEstabaActivo && (controlAR_old != null || controlAR != null))
+        if (arEstabaActivo && (controlAR_old != null || controlAR != null) && controlAR.isActiveAndEnabled)
         {
-            if (controlAR != null) controlAR.ActivarAR();
-            else if (controlAR_old != null) controlAR_old.ActivarAR();
+            if (controlAR != null && controlAR.isActiveAndEnabled) controlAR.ActivarAR();
+            else if (controlAR_old != null && controlAR_old.isActiveAndEnabled) controlAR_old.ActivarAR();
             arEstabaActivo = false;
             Debug.Log("[ControlPausa] AR reanudado tras pausa.");
         }
@@ -161,7 +177,7 @@ public class ControlPausa : MonoBehaviour
         //    Debug.Log("VR reanudado tras pausa.");
         //}
 
-        if (vrEstabaActivo && controlOpenXR != null)
+        if (vrEstabaActivo && controlOpenXR != null && controlOpenXR.isActiveAndEnabled)
         {
             controlOpenXR.ActivarOpenXR();
             vrEstabaActivo = false;
@@ -172,12 +188,12 @@ public class ControlPausa : MonoBehaviour
     // Desactivar AR con flag si estaba activo al pausar
     private void PausarAR()
     {
-        if (controlAR != null)
+        if (controlAR != null && controlOpenXR.isActiveAndEnabled)
         {
             controlAR.DesactivarAR();
             arEstabaActivo = true;
         }
-        else if (controlAR_old != null) 
+        else if (controlAR_old != null && controlOpenXR.isActiveAndEnabled) 
         {
             controlAR_old.DesactivarAR();
             arEstabaActivo = true;
@@ -196,7 +212,7 @@ public class ControlPausa : MonoBehaviour
         //    vrEstabaActivo = true;
         //}
 
-        if (controlOpenXR != null)
+        if (controlOpenXR != null && controlOpenXR.isActiveAndEnabled)
         {
             controlOpenXR.DesactivarOpenXR();
             vrEstabaActivo = true;
@@ -208,8 +224,8 @@ public class ControlPausa : MonoBehaviour
     // Desactivar AR reiniciar o volver al menú principal
     private void DesactivarAR()
     {
-        if (controlAR != null) controlAR.DesactivarAR();
-        else if (controlAR_old != null) controlAR_old.DesactivarAR();
+        if (controlAR != null && controlAR.isActiveAndEnabled) controlAR.DesactivarAR();
+        else if (controlAR_old != null && controlAR_old.isActiveAndEnabled) controlAR_old.DesactivarAR();
 
         arEstabaActivo = false;
     }
@@ -218,7 +234,7 @@ public class ControlPausa : MonoBehaviour
     private void DesactivarVR()
     {
         //if (controlCardboard != null) controlCardboard.DesactivarCardBoard();
-        if (controlOpenXR != null) controlOpenXR.DesactivarOpenXR();
+        if (controlOpenXR != null && controlOpenXR.isActiveAndEnabled) controlOpenXR.DesactivarOpenXR();
 
         vrEstabaActivo = false;
     }
@@ -244,14 +260,19 @@ public class ControlPausa : MonoBehaviour
         {
             // Busca el canvas en los objetos raíz
             Canvas canvas = rootObj.GetComponentInChildren<Canvas>(true);
-            //if (canvas == null)
-            //{
-            //    Debug.LogError("No se encontró el canvas en la escena del menú de pausa.");
-            //    yield break;
-            //}
+
             // Asigna la cámara principal al canvas si es ScreenSpaceCamera y el canvas no es null
             if (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceCamera)
             {
+                if (Camera.main == null)
+                {
+                    Debug.LogError("[ControlPausa] No se ha encontrado una cámara principal en la escena. Creando una temporal.");
+                    // Si no hay cámara principal, crea una temporal
+                    GameObject tempCamera = new GameObject("MainCamera");
+                    Camera camara = tempCamera.AddComponent<Camera>();
+                    camara.tag = "MainCamera";
+                    yield break;
+                }
                 // Asigna la cámara principal al canvas
                 canvas.worldCamera = Camera.main;
                 Debug.Log("[ControlPausa] Cámara principal asignada al canvas del menú de pausa.");

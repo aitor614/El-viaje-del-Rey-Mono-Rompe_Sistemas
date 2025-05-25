@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ControlHuida : MonoBehaviour
@@ -30,6 +32,8 @@ public class ControlHuida : MonoBehaviour
     private int vidas = 3;
     private int puntuacion = 0;
     private int orbesObtenidos = 0;
+    private bool objetoPartida = false;
+    private bool saltoInicial = false;
 
     private void Awake()
     {
@@ -53,8 +57,10 @@ public class ControlHuida : MonoBehaviour
         PlayerPrefs.SetInt("VidasRestantes", vidas);
         PlayerPrefs.SetInt("PremiosObtenidos", 0);
         PlayerPrefs.SetInt("ObjetoHuida", 0);
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
         player.enabled = false;
+
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
@@ -71,6 +77,7 @@ public class ControlHuida : MonoBehaviour
         RestarTiempo();
         ActualizarPuntos();
         ActualizarContador();
+        ActualizarVidas();
         ComprobarVictoriaObjeto();
     }
 
@@ -81,9 +88,47 @@ public class ControlHuida : MonoBehaviour
         {
             PlayerPrefs.SetInt("ObjetoBaston", 1);
             PlayerPrefs.Save();
-            GuardarPuntos();
-            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+            if (SceneManager.sceneCount <= 1 && !objetoPartida)
+            {
+                objetoPartida = true;
+                GuardarPuntos();
+                CargarPremio();
+            }
+
         }
+    }
+
+    private void CargarPremio()
+    {
+        Time.timeScale = 0f;
+        audioSource.Stop();
+        // Cargar la escena de premio
+        Debug.Log("Cargando escena: PremioGolpeBaston");
+        SceneManager.sceneLoaded += OnPremioSceneLoaded;
+        SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
+    }
+
+    // Función para lanzar espera de la escena de premio cuando se carga
+    private void OnPremioSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Premio")
+        {
+            Debug.Log("Escena de premio cargada completamente.");
+            // Desuscribirse del evento de carga de escena
+            SceneManager.sceneLoaded -= OnPremioSceneLoaded;
+            // Desactivar el objeto de la escena actual
+            StartCoroutine(EsperarPremio());
+        }
+    }
+
+    // Función para esperar antes de descargar la escena de premio
+    IEnumerator EsperarPremio()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        SceneManager.UnloadSceneAsync("Premio");
+        yield return null;
+        Time.timeScale = 1f;
+        controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
     }
 
     private void ActualizarContador()
@@ -121,13 +166,13 @@ public class ControlHuida : MonoBehaviour
 
         if (tiempoRestante == 0)
         {
-            // Si la la puntuación es mayor a 50, se gana el juego
-            if (puntuacion > puntuacionVictoria)
+            // Si la la puntuación es mayor o igual puntuaciónVictoria, se gana el juego
+            if (puntuacion >= puntuacionVictoria)
             {
                 GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
             }
-            // Si es menor o igual a 50, se pierde el juego
+            // Si es menor, se pierde el juego
             else
             {
                 GuardarPuntos();
@@ -168,6 +213,11 @@ public class ControlHuida : MonoBehaviour
         Time.timeScale = 1f;
         player.enabled = true;
         audioSource.Play();
+        if (saltoInicial == false)
+        {
+            player.Salto();
+            saltoInicial = true;
+        }
 
     }
 
@@ -180,35 +230,38 @@ public class ControlHuida : MonoBehaviour
     // Función para gestionar la colisión del jugador con los obstáculos
     public void ColisionObstaculo()
     {
-
+        AudioSource.PlayClipAtPoint(colision, transform.position);
         PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - 1);
         PlayerPrefs.Save();
         canvasBotonPlay.SetActive(true);
-        audioSource.PlayOneShot(colision);
-        Pausa();
         CheckVida();
+        Pausa();
     }
 
-    public void ColisionPremio()
+    public void ColisionPremio(Collider2D other)
     {
+        AudioSource.PlayClipAtPoint(premio, transform.position);
         PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 20);
         PlayerPrefs.SetInt("PremiosObtenidos", PlayerPrefs.GetInt("PremiosObtenidos") + 1);
         PlayerPrefs.Save();
-        audioSource.PlayOneShot(premio);
         ActualizarPuntos();
+        Destroy(other.gameObject);
     }
 
-    public void ColisionVida()
+    public void ColisionVida(Collider2D other)
     {
+        AudioSource.PlayClipAtPoint(vidaExtra,transform.position);
         PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 1);
         int vidas = PlayerPrefs.GetInt("VidasRestantes");
         if (vidas < 3)
         {
             PlayerPrefs.SetInt("VidasRestantes", vidas + 1);
+            Debug.Log("Vida extra obtenida. Antes " + vidaExtra + ". Ahora: " + PlayerPrefs.GetInt("VidasRestantes"));
         }
         PlayerPrefs.Save();
-        audioSource.PlayOneShot(vidaExtra);
+        Debug.Log("Vidas Restantes: " + PlayerPrefs.GetInt("VidasRestantes"));
         ActualizarVidas();
+        Destroy(other.gameObject);
     }
 
     // Función para reiniciar objetos de juego

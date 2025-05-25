@@ -3,7 +3,6 @@ using UnityEngine;
 public class Enemigo : MonoBehaviour
 {
     [Header("Componentes")]
-    public Transform player;
     public Animator animacion;
 
     [Header("Parámetros")]
@@ -24,6 +23,7 @@ public class Enemigo : MonoBehaviour
 
     void Update()
     {
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -33,41 +33,18 @@ public class Enemigo : MonoBehaviour
             RestarVida(1);
         }
 
-        /*if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
+        if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
         {
             PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - poderGolpe);
             PlayerPrefs.Save();
             ataqueRealizado = true;
-            //animacion.SetBool("isAttacking", true);
-            Debug.Log("¡El enemigo ataca!");
-            Destroy(gameObject, 1f);
-        }*/
-        if (collision.gameObject.CompareTag("Player") && !ataqueRealizado)
-        {
-            for (int i = 0; i < poderGolpe; i++)
-            {
-                ControlBatalla.Instancia?.PerderVida(); // Llamada centralizada
-            }
-
-            ataqueRealizado = true;
+            animacion.SetBool("isAttacking", true);
             Debug.Log("¡El enemigo ataca!");
             Destroy(gameObject, 1f);
         }
-
 
     }
 
-    /*void RestarVida(int cantidad)
-    {
-        vida -= cantidad;
-        if (vida <= 0)
-        {
-            PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosEliminar);
-            PlayerPrefs.SetInt("EnemigosEliminados", PlayerPrefs.GetInt("EnemigosEliminados") + 1);
-            PlayerPrefs.Save();
-            Destroy(gameObject);
-        }
-    }*/
     void RestarVida(int cantidad)
     {
         vida -= cantidad;
@@ -76,7 +53,9 @@ public class Enemigo : MonoBehaviour
             // Instanciar la explosión en la posición del enemigo
             if (efectoExplosion != null)
             {
-                Instantiate(efectoExplosion, transform.position, Quaternion.identity);
+                var efecto = Instantiate(efectoExplosion, transform.position, Quaternion.identity);
+                Destroy(efecto, 2f);
+
             }
 
             // Actualizar puntuación y eliminar al enemigo

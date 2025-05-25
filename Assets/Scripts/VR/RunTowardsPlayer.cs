@@ -3,11 +3,11 @@ using UnityEngine;
 public class RunTowardsPlayer : MonoBehaviour
 {
     [Header("Componentes")]
-    public Transform objetivo;
+    public Camera objetivo;
     public Animator animador;
 
     [Header("Parámetros")]
-    public float offsetAlturaObjetivo= -5f;
+    public float offsetAlturaObjetivo;
     public float velocidad;
     public float distanciaAtaque;
     public int fuerzaAtaque;
@@ -30,9 +30,9 @@ public class RunTowardsPlayer : MonoBehaviour
 
         // Calcula la posición corregida del objetivo con altura ajustable
         Vector3 posicionObjetivo = new(
-            objetivo.position.x,
-            objetivo.position.y + offsetAlturaObjetivo,
-            objetivo.position.z
+            objetivo.transform.position.x,
+            objetivo.transform.position.y + offsetAlturaObjetivo,
+            objetivo.transform.position.z
         );
 
         float distance = Vector3.Distance(transform.position, posicionObjetivo);
@@ -51,14 +51,18 @@ public class RunTowardsPlayer : MonoBehaviour
             // Atacar si está cerca
             if (!hasAttacked)
             {
-                animador?.SetTrigger("AttackTrigger");
+                if (animador == null)
+                {
+                    Debug.LogWarning("Animator no asignado. No se puede activar el ataque.");
+                    return;
+                }
+                animador.SetTrigger("AttackTrigger");
                 hasAttacked = true;
             }
 
             if (Time.time - lastAttackTime >= enfriamientoAtaque)
             {
-                PlayerHealth playerHealth = objetivo.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
+                if (objetivo.TryGetComponent<PlayerHealth>(out var playerHealth))
                 {
                     playerHealth.TakeDamage(fuerzaAtaque);
                 }

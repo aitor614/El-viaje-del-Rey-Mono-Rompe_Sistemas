@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 public class ControlPremio : MonoBehaviour
 {
+    [Header("Componentes")]
     public Canvas canvas;
     public Image premio;
     public TextMeshProUGUI TxtPremio;
+
+    [Header("Sprites de premios")]
     public Sprite premioEscape;
     public Sprite premioGolpe;
     public Sprite premioHuida;
@@ -16,8 +19,14 @@ public class ControlPremio : MonoBehaviour
     public Sprite premioBatalla;
     public Sprite premioCompleto;
 
+    [Header("Sonido")]
+    public AudioSource audioSource;
+    public AudioClip sonidoPremio;
+
+
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         // Obtener la cámara principal
         Camera camara = Camera.main;
         if (camara != null) Debug.Log("[Premio] Cámara principal encontrada: " + camara.name);
@@ -75,6 +84,9 @@ public class ControlPremio : MonoBehaviour
             premio.sprite = premioCompleto;
             TxtPremio.text = "ARMADURA CELESTIAL";
         }
+
+        audioSource.PlayOneShot(sonidoPremio);
+
     }
 
 }

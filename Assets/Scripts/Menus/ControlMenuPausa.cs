@@ -24,11 +24,23 @@ public class ControlMenuPausa : MonoBehaviour
         // Inicializa el texto de pausa
         textoPausa = FindFirstObjectByType<TextMeshProUGUI>();
 
-        //if (PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial"
-        //    || PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados")
-        //{
+        if (PlayerPrefs.GetString("EscenaActual") == "JuegoVRBatallaCelestial"
+            || PlayerPrefs.GetString("EscenaActual") == "JuegoAREspiritusDesencarnados")
+        {
+            if (Camera.main == null)
+            {
+                Debug.LogError("[ControlMenuPausa] No se ha encontrado la cámara principal.");
+
+                // Añadir nueva cámara si no se encuentra la principal
+                Camera camara = new GameObject("MainCamera").AddComponent<Camera>();
+                camara.tag = "MainCamera";
+                camara.enabled = true;
+
+                return;
+            }
             AdaptarCanvasParaVR();
-        //}
+        }
+     
     }
 
     // Función para reanudar el juego
@@ -75,11 +87,12 @@ public class ControlMenuPausa : MonoBehaviour
         // Poner el menú delante del jugador
         Transform camara = Camera.main.transform;
         canvas.transform.SetParent(camara);
+
         // Ajustar la posición y rotación del canvas
         canvas.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 2f), Quaternion.identity);
         canvas.transform.localScale = Vector3.one * 0.0025f; // Ajusta según tamaño real
 
         // Orden de renderizado alto para estar por delante del HUD
-        canvas.sortingOrder = 50;
+        canvas.sortingOrder = 1000;
     }
 }

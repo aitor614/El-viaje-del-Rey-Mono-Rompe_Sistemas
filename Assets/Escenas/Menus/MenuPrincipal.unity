@@ -774,7 +774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gestorXR: {fileID: 910713073}
-  musica: {fileID: 8300000, guid: 9aedc70ff08367f4f95ebdba79c220f3, type: 3}
+  musica: {fileID: 8300000, guid: 2e009bcf946de9b4d942e0ecccb7174d, type: 3}
   audioSource: {fileID: 2056351792}
   modoActual: 0
   resultadoMinijuego: 3

@@ -18,59 +18,61 @@ public class CameraFollow : MonoBehaviour
     {
         if (camara == null || target == null) return;
 
-        // Buscar la puerta si aún no ha sido encontrada
-        if (puertaFinal == null)
+        float centroCamaraY = transform.position.y;
+        float alturaJugador = target.position.y;
+
+        if (puertaFinal != null)
         {
-            GameObject puertaFinal = FindFirstObjectByType<FinalPlatform>().gameObject;
-            if (puertaFinal != null)
-            {
-                this.puertaFinal = puertaFinal.transform;
-                detenerAlCentrarPuerta = true;
-                Debug.Log("Puerta final detectada por la cámara.");
-            }
-        }
+            float alturaPuerta = puertaFinal.position.y;
 
-        float alturaCamara = camara.orthographicSize;
-        float centroCamaraY = transform.position.y + alturaCamara;
-
-        if (detenerAlCentrarPuerta && puertaFinal != null)
-        {
-            float centroPuertaY = puertaFinal.position.y;
-
-            if (target.position.y > transform.position.y && centroCamaraY < centroPuertaY)
+            // Solo mover la cámara si el jugador sube Y el centro de la cámara aún no ha alcanzado la puerta
+            if (alturaJugador > centroCamaraY && centroCamaraY < alturaPuerta)
             {
                 transform.position = new Vector3(
                     transform.position.x,
-                    target.position.y,
+                    alturaJugador,
                     transform.position.z
                 );
-            }
-
-            if (centroCamaraY >= centroPuertaY)
-            {
-                detenerAlCentrarPuerta = false;
-                Debug.Log("Cámara detenida al centrar la puerta.");
             }
         }
         else
         {
-            // Movimiento normal sin puerta
-            if (target.position.y > transform.position.y)
+            // Comportamiento normal sin puerta
+            if (alturaJugador > centroCamaraY)
             {
                 transform.position = new Vector3(
                     transform.position.x,
-                    target.position.y,
+                    alturaJugador,
                     transform.position.z
                 );
             }
         }
     }
 
+    private void Update()
+    {
+        // Buscar la puerta si aún no ha sido encontrada
+        if (puertaFinal == null)
+        {
+            var puertaObj = FindFirstObjectByType<FinalPlatform>();
+            if (puertaObj != null)
+            {
+                puertaFinal = puertaObj.transform;
+                detenerAlCentrarPuerta = true;
+                Debug.Log("[CameraFollow] Puerta final detectada por la cámara.");
+            }
+        }
+    }
+
+
     public void ResetCameraPosition()
     {
         if (target != null)
         {
             transform.position = new Vector3(transform.position.x, target.position.y, transform.position.z);
+            puertaFinal = null;
+            detenerAlCentrarPuerta = false;
+            Debug.Log("[CameraFollow] Posición de cámara reiniciada.");
         }
     }
 

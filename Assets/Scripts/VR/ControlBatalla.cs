@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ControlBatalla : MonoBehaviour
 {
@@ -34,10 +36,19 @@ public class ControlBatalla : MonoBehaviour
     private int puntuacion = 0;
     private int enemigosEliminados = 0;
     private bool vrActivado = false;
+    private bool objetoPartida = false;
 
     void Awake()
     {
         Instancia = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instancia == this)
+        {
+            Instancia = null;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -75,6 +86,7 @@ public class ControlBatalla : MonoBehaviour
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.SetInt("EnemigosEliminados", 0);
         PlayerPrefs.SetInt("ObjetoBatalla", 0);
+        PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
 
         // Inicializar música
@@ -104,9 +116,48 @@ public class ControlBatalla : MonoBehaviour
         {
             PlayerPrefs.SetInt("ObjetoBatalla", 1);
             PlayerPrefs.Save();
-            GuardarPuntos();
-            controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
+            if (SceneManager.sceneCount <= 1 && !objetoPartida)
+            {
+                objetoPartida = true;
+                GuardarPuntos();
+                CargarPremio();
+            }
         }
+    }
+
+    private void CargarPremio()
+    {
+        Time.timeScale = 0f;
+        audioSource.Stop();
+
+        // Cargar la escena de premio
+        Debug.Log("Cargando escena: PremioGolpeBaston");
+        SceneManager.sceneLoaded += OnPremioSceneLoaded;
+        SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
+    }
+
+    // Función para lanzar espera de la escena de premio cuando se carga
+    private void OnPremioSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Premio")
+        {
+            Debug.Log("[Premio] Escena de premio cargada completamente.");
+            // Desuscribirse del evento de carga de escena
+            SceneManager.sceneLoaded -= OnPremioSceneLoaded;
+            // Desactivar el objeto de la escena actual
+            StartCoroutine(EsperarPremio());
+        }
+    }
+
+    // Función para esperar antes de descargar la escena de premio
+    IEnumerator EsperarPremio()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        SceneManager.UnloadSceneAsync("Premio");
+        yield return null;
+        DesactivarVR();
+        Time.timeScale = 1f;
+        controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
     }
 
     // Función para el control de vidas

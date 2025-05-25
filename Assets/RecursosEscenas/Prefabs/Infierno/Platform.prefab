@@ -10,8 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 629406293777059782}
   - component: {fileID: 381204781586470225}
-  - component: {fileID: 4737127500156902290}
   - component: {fileID: 3163844800373314899}
+  - component: {fileID: 6634945075167358903}
+  - component: {fileID: 7329546987337854308}
+  - component: {fileID: 5521971268362259432}
+  - component: {fileID: 8820061124519177681}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Platform
@@ -29,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.403, y: -3.935, z: 0.08068881}
-  m_LocalScale: {x: 0.2056, y: 0.2247, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.16, y: 0.15600835, z: 0.49535972}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -78,7 +81,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7643996224023478349, guid: faca0520f4fde3146bbf23072cee4e77, type: 3}
+  m_Sprite: {fileID: -7643996224023478349, guid: faca0520f4fde3146bbf23072cee4e77,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -89,8 +93,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &4737127500156902290
-BoxCollider2D:
+--- !u!114 &3163844800373314899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5469117648145094666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b5e5ee886d03243b3c07d64e4f37cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetY: 6
+--- !u!68 &6634945075167358903
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,22 +137,23 @@ BoxCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8.6, y: 1.31}
-    newSize: {x: 8.6, y: 1.31}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 8.6, y: 1.31}
   m_EdgeRadius: 0
---- !u!114 &3163844800373314899
+  m_Points:
+  - {x: -1.9879991, y: 0.12117487}
+  - {x: -1.6475697, y: 0.38722014}
+  - {x: -0.116205044, y: 0.3784595}
+  - {x: -0.08318887, y: 0.3787907}
+  - {x: 1.5084202, y: 0.3947495}
+  - {x: 1.9042563, y: 0.19927943}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
+--- !u!114 &7329546987337854308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,7 +162,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 5469117648145094666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7b5e5ee886d03243b3c07d64e4f37cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 8dec47d42b357e04dbdfd2c10dd75b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 6
+  jumpForce: 10
+--- !u!251 &5521971268362259432
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5469117648145094666}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 1
+  m_SurfaceArc: 20
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
+--- !u!114 &8820061124519177681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5469117648145094666}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8031f1ed327b65468dfaba7a8d933a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
+  fondo: {fileID: 0}

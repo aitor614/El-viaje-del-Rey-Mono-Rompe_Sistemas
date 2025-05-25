@@ -14,14 +14,4 @@ public class Premio : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Colisión de premio con: " + collision.gameObject.name);
-        // Si el obstáculo colisiona con un jugador, se destruye
-        if (collision.CompareTag("Player"))
-        {
-            Debug.Log("¡Premio recogido!");
-            Destroy(gameObject);
-        }
-    }
 }
