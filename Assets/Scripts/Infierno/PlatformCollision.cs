@@ -7,7 +7,9 @@ public class PlatformCollision : MonoBehaviour
     public float jumpForce;
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.relativeVelocity.y<= 0f)
+        if (!collision.collider.CompareTag("Player")) return;
+
+        if (collision.relativeVelocity.y <= 0f)
         {
             if (collision.collider.TryGetComponent<Rigidbody2D>(out var rb))
             {
@@ -16,6 +18,6 @@ public class PlatformCollision : MonoBehaviour
                 rb.linearVelocity = velocity;
             }
         }
-        
+
     }
 }

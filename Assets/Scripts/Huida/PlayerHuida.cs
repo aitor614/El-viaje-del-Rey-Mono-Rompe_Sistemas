@@ -79,7 +79,7 @@ public class PlayerHuida : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Colisión de vida con: " + other.gameObject.name);
+        Debug.Log("Colisión de " + name + "con: " + other.gameObject.name);
         // Si el jugador colisiona con un obstáculo
         if (other.gameObject.CompareTag("Obstacle"))
         {

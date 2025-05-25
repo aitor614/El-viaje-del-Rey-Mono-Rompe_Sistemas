@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,19 +21,29 @@ public class UnifiedPlatformSpawner : MonoBehaviour
     public float minSeparacion;
     public float maxSeparacion;
 
-    // Variables para calcular los límites del fondo
-    private float minX;
-    private float maxX;
-
     [Range(0f, 1f)]
     public float probabilidadPlataformaMovil;
 
     private float spawnY = -2f;
+    private HashSet<int> boostIndices;
+
+    // Variables para calcular los límites del fondo
+    private float minX;
+    private float maxX;
+
 
     void Start()
     {
         // Generar un número único de índices para los boosts
-        HashSet<int> boostIndices = GenerarIndicesBoostsUnicos(totalPlataformas, cantidadBoosts);
+        boostIndices = GenerarIndicesBoostsUnicos(totalPlataformas, cantidadBoosts);
+        StartCoroutine(GenerarPlataformasTrasLayout());
+    }
+
+
+    IEnumerator GenerarPlataformasTrasLayout()
+    {
+        // Espera 1 frame para asegurar que el layout esté aplicado
+        yield return null;
 
         CalcularLimitesFondo();
 
@@ -122,13 +133,20 @@ public class UnifiedPlatformSpawner : MonoBehaviour
     // Generar un conjunto de índices únicos para los boosts
     HashSet<int> GenerarIndicesBoostsUnicos(int max, int cantidad)
     {
-        HashSet<int> indices = new();
+        cantidad = Mathf.Clamp(cantidad, 0, max); // Seguridad: evitar overflow
 
-        // Repetir hasta que tengamos la cantidad deseada de índices de boost únicos
-        while (indices.Count < cantidad)
+        List<int> indices = new();
+        for (int i = 0; i < max; i++) indices.Add(i);
+
+        // Mezclar la lista
+        for (int i = 0; i < indices.Count; i++)
         {
-            indices.Add(Random.Range(0, max));
+            int temp = indices[i];
+            int randomIndex = Random.Range(i, indices.Count);
+            indices[i] = indices[randomIndex];
+            indices[randomIndex] = temp;
         }
-        return indices;
+
+        return new HashSet<int>(indices.GetRange(0, cantidad));
     }
 }

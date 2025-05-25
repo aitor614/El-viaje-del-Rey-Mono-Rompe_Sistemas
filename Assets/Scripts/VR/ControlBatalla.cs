@@ -43,6 +43,14 @@ public class ControlBatalla : MonoBehaviour
         Instancia = this;
     }
 
+    private void OnDestroy()
+    {
+        if (Instancia == this)
+        {
+            Instancia = null;
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -8,7 +8,8 @@ public class GeneradorObstaculos : MonoBehaviour
     {
         public string nombre;
         public GameObject prefabObstaculo;
-        public float ratioSpawn;
+        public float tiempoSpawn;
+        public float probabilidadSpawn;
         public float maxAltura;
         public float minAltura;
     }
@@ -38,16 +39,23 @@ public class GeneradorObstaculos : MonoBehaviour
         float probAcumuladaVida = 0f;
         float probAcumuladaPremio = 0f;
 
+        // Esperar a que el tiempo se reanude si está pausado
+        while (Time.timeScale == 0f) yield return null;
+
+        // Esperar un frame para asegurar que el tiempo se ha reanudado
+        yield return null;
+
+        // Comenzar la generación de obstáculos
         while (true)
         {
             // Generar obstáculo
             Spawn(tiposObstaculo[0]);
 
             // Esperar la mitad del tiempo de spawn del primer obstáculo
-            yield return new WaitForSeconds(tiposObstaculo[0].ratioSpawn / 2f);
+            yield return new WaitForSeconds(tiposObstaculo[0].tiempoSpawn / 2f);
 
-            probAcumuladaPremio += tiposObstaculo[1].ratioSpawn;
-            probAcumuladaVida += tiposObstaculo[2].ratioSpawn;
+            probAcumuladaPremio += tiposObstaculo[1].probabilidadSpawn;
+            probAcumuladaVida += tiposObstaculo[2].probabilidadSpawn;
 
             bool generado = false;
 
@@ -67,7 +75,8 @@ public class GeneradorObstaculos : MonoBehaviour
 
 
             // Esperar la otra mitad
-            yield return new WaitForSeconds(tiposObstaculo[0].ratioSpawn / 2f);
+            yield return new WaitForSeconds(tiposObstaculo[0].tiempoSpawn / 2f);
+            
         }
     }
 

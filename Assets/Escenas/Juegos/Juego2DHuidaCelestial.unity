@@ -341,19 +341,22 @@ MonoBehaviour:
   - nombre: obstaculo
     prefabObstaculo: {fileID: 5142281229426199456, guid: 1ca99e27b51ad564c88e2a1a65ece16f,
       type: 3}
-    ratioSpawn: 0
+    tiempoSpawn: 1
+    probabilidadSpawn: 1
     maxAltura: 1
     minAltura: -1
   - nombre: vida
     prefabObstaculo: {fileID: 4249482731838797446, guid: abe8a106e56d906449c0572dfd8248ee,
       type: 3}
-    ratioSpawn: 0.15
+    tiempoSpawn: 0
+    probabilidadSpawn: 0.2
     maxAltura: 1
     minAltura: -1
   - nombre: premio
     prefabObstaculo: {fileID: 2361812291499471109, guid: d23602b30fea50246bc272201576cac1,
       type: 3}
-    ratioSpawn: 0.9
+    tiempoSpawn: 0
+    probabilidadSpawn: 0.8
     maxAltura: 3.5
     minAltura: -3.5
   velocidadDesplazamiento: 6

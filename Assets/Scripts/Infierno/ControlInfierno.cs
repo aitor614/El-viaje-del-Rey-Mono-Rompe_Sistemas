@@ -38,6 +38,14 @@ public class ControlInfierno : MonoBehaviour
         Instancia = this;
     }
 
+    private void OnDestroy()
+    {
+        if (Instancia == this)
+        {
+            Instancia = null;
+        }
+    }
+
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
@@ -49,6 +57,7 @@ public class ControlInfierno : MonoBehaviour
         PlayerPrefs.SetInt("ObjetoInfierno", 0);
         PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (audioSource != null && musicaFondo != null)
         {
@@ -68,6 +77,11 @@ public class ControlInfierno : MonoBehaviour
             canvasBotonPlay.SetActive(true); // Botón activo al inicio del juego
 
         Pausa();
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Camera.main.GetComponent<CameraFollow>().ResetCameraPosition();
     }
 
     private void Update()

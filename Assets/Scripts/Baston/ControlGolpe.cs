@@ -34,8 +34,15 @@ public class ControlGolpe : MonoBehaviour
     // Funcion para inicializar el script
     void Awake()
     {
-        // Inicializar el singleton (instancia de ControlBreakout)
         InstanciaControl = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (InstanciaControl == this)
+        {
+            InstanciaControl = null;
+        }
     }
 
     // Función para ejecutar al inicio
