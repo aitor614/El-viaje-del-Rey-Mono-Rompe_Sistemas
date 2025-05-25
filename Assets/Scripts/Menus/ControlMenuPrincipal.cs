@@ -37,16 +37,49 @@ public class ControlMenuPrincipal : MonoBehaviour
     public Button BtnPlayEspiritus;
     public Button BtnPlayCelestial;
 
-
     // Lista de escenas de minijuegos
     private readonly List<string> escenasMinijuegos = new()
     {
-        "Juego2DEscapeInfierno", 
-        "Juego2DHuidaCelestial", 
-        "Juego2DGolpeBaston", 
+        "Juego2DEscapeInfierno",
+        "Juego2DHuidaCelestial",
+        "Juego2DGolpeBaston",
         "JuegoAREspiritusDesencarnados",
         "JuegoVRBatallaCelestial"
     };
+
+    private void Awake()
+    {
+        // Comprobar si ya existe una instancia de ControlMenuPrincipal
+        if (InstanciaControl != null && InstanciaControl != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (InstanciaGestorXR == null)
+        {
+            InstanciaGestorXR = gestorXR;
+            if (InstanciaGestorXR == null)
+            {
+                Debug.LogError("[ControlMenuPrincipal] GestorXR no encontrado. Buscando en la escena...");
+                InstanciaGestorXR = FindAnyObjectByType<GestorXR>();
+                if (InstanciaGestorXR == null)
+                {
+                    Debug.LogError("[ControlMenuPrincipal] GestorXR sigue sin encontrarse.");
+                    return;
+                }
+            }
+        }
+
+        // Asignar la instancia de ControlMenuPrincipal
+        InstanciaControl = this;
+
+        // No destruir el objeto al cargar una nueva escena
+        DontDestroyOnLoad(gameObject);
+
+    }
+
+
 
     // Inicializar el script
     void Start()
@@ -104,49 +137,18 @@ public class ControlMenuPrincipal : MonoBehaviour
             BtnPlayCelestial = GameObject.Find("BtnPlayCelestial") != null ? GameObject.Find("BtnPlayCelestial").GetComponent<Button>() : null;
 
             // Asignar funciones a los botones
-            if (BtnSalirJuego != null) BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
-            if (BtnPlayViaje != null) BtnPlayViaje.onClick.AddListener(Click_JuegoInfierno);
+            if (BtnPlayViaje != null) BtnPlayViaje.onClick.AddListener(Click_JugarTodos);
             if (BtnPlayInfierno != null) BtnPlayInfierno.onClick.AddListener(Click_JuegoInfierno);
             if (BtnPlayHuida != null) BtnPlayHuida.onClick.AddListener(Click_JuegoHuida);
             if (BtnPlayBaston != null) BtnPlayBaston.onClick.AddListener(Click_JuegoBaston);
             if (BtnPlayEspiritus != null) BtnPlayEspiritus.onClick.AddListener(Click_JuegoEspiritus);
             if (BtnPlayCelestial != null) BtnPlayCelestial.onClick.AddListener(Click_JuegoVR);
+            if (BtnSalirJuego != null) BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
 
-            if (!audioSource.isPlaying)
+            if (audioSource != null && !audioSource.isPlaying)
                 audioSource.Play();
 
         }
-    }
-
-    // Inicializar el script
-    void Awake()
-    {
-        // Comprobar si ya existe una instancia de ControlMenuPrincipal
-        if (InstanciaControl != null && InstanciaControl != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        if (InstanciaGestorXR == null)
-        {
-            InstanciaGestorXR = gestorXR;
-            if(InstanciaGestorXR == null)
-            {
-                Debug.LogError("[ControlMenuPrincipal] GestorXR no encontrado. Buscando en la escena...");
-                InstanciaGestorXR = FindAnyObjectByType<GestorXR>();
-                if (InstanciaGestorXR == null)
-                {
-                    Debug.LogError("[ControlMenuPrincipal] GestorXR sigue sin encontrarse.");
-                    return;
-                }
-            }
-        }
-
-        // Asignar la instancia de ControlMenuPrincipal
-        InstanciaControl = this;
-        // No destruir el objeto al cargar una nueva escena
-        DontDestroyOnLoad(gameObject);
     }
 
     // Función para ejecutar en cada frame
@@ -241,6 +243,10 @@ public class ControlMenuPrincipal : MonoBehaviour
         ReiniciarPuntuaciones();
 
         audioSource.Stop();
+
+        escenaActual = escenasMinijuegos[indiceActual];
+        PlayerPrefs.SetString("EscenaActual", escenaActual);
+        PlayerPrefs.Save();
 
         SceneManager.LoadScene(escenasMinijuegos[indiceActual]);
     }
