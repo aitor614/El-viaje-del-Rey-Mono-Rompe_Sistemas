@@ -244,11 +244,7 @@ public class ControlMenuPrincipal : MonoBehaviour
 
         audioSource.Stop();
 
-        escenaActual = escenasMinijuegos[indiceActual];
-        PlayerPrefs.SetString("EscenaActual", escenaActual);
-        PlayerPrefs.Save();
-
-        SceneManager.LoadScene(escenasMinijuegos[indiceActual]);
+        JugarMinijuego(escenasMinijuegos[indiceActual]);
     }
 
     // Funcion para cargar el siguiente minijuego en modo continuo
