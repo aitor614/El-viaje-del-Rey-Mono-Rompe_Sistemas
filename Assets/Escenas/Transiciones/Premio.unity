@@ -333,6 +333,16 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 3151627591505721559, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3151627591505721559, guid: 95479ff83f7294c488551ecdba914560,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 6364213899292940635, guid: 95479ff83f7294c488551ecdba914560,
         type: 3}
       propertyPath: m_Name
