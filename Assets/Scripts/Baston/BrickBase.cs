@@ -10,6 +10,7 @@ public class BrickBase : MonoBehaviour
     public int puntosPorDestruir;
     public AudioClip sonidoDestruccion;
     public AudioClip sonidoToque;
+    public GameObject vidaExtra;
 
     [Header("Sprites")]
     public Sprite[] spritesPorEstado;
@@ -53,6 +54,13 @@ public class BrickBase : MonoBehaviour
             PlayerPrefs.SetInt("Ladrillos", PlayerPrefs.GetInt("Ladrillos") + 1);
             PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosPorDestruir);
             PlayerPrefs.Save();
+
+            // --- Probabilidad de soltar vida extra ---
+            float probabilidadVida = 0.2f; // 20%
+            if (vidaExtra != null && Random.value < probabilidadVida)
+            {
+                Instantiate(vidaExtra, transform.position, Quaternion.identity);
+            }
 
             Destroy(gameObject); // Destruir tras reproducir sonido
         }

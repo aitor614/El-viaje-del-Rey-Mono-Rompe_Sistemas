@@ -124,10 +124,15 @@ public class ControlHuida : MonoBehaviour
     // Función para esperar antes de descargar la escena de premio
     IEnumerator EsperarPremio()
     {
+
+        Debug.Log("Esperando 3 segundos de premio...");
         yield return new WaitForSecondsRealtime(3f);
+        Debug.Log("Descargando escena Premio");
         SceneManager.UnloadSceneAsync("Premio");
         yield return null;
+        Debug.Log("Reanudando juego con Time.timeScale = 1");
         Time.timeScale = 1f;
+        Debug.Log("Procesando resultado EXITO");
         controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Exito);
     }
 

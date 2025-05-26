@@ -84,6 +84,9 @@ public class ControlMenuPrincipal : MonoBehaviour
     // Inicializar el script
     void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 300;
+
         PlayerPrefs.SetInt("IndiceMinijuego", 0);
         PlayerPrefs.SetString("EscenaActual", "");
         PlayerPrefs.Save();

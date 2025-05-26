@@ -1163,6 +1163,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 960494766579007186, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -4.2580566
+      objectReference: {fileID: 0}
     - target: {fileID: 2644793015569042559, guid: 8f04822a2a1865647a526f5b90f31596,
         type: 3}
       propertyPath: m_Camera
@@ -1469,6 +1474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musica: {fileID: 8300000, guid: 75bc1f0439b5e5148821434195701b53, type: 3}
+  vidaExtraCaida: {fileID: 8300000, guid: 99e8fbe785941204a924141e6687bb3f, type: 3}
   ball: {fileID: 5811522328422731208}
   player: {fileID: 6516110586509998273}
   audioSource: {fileID: 2066103228}
@@ -1476,6 +1482,8 @@ MonoBehaviour:
   tiempoRestante: 60
   objetivoLadrillos: 20
   puntuacionVictoria: 100
+  vidaExtraPrefab: {fileID: 4249482731838797446, guid: 63969ccc7f243ce4ba7de696996ab629,
+    type: 3}
 --- !u!82 &2066103228
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2546,6 +2554,11 @@ PrefabInstance:
         type: 3}
       propertyPath: velocidadMovimiento
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6726006445535218620, guid: fc44590b0582e2447bddbdbd04fe9777,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

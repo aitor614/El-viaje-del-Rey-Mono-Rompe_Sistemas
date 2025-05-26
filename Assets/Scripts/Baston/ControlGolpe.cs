@@ -12,6 +12,7 @@ public class ControlGolpe : MonoBehaviour
 
     [Header("Sonidos")]
     public AudioClip musica;
+    public AudioClip vidaExtraCaida;
 
 
     [Header("Elementos de la escena")]
@@ -24,6 +25,9 @@ public class ControlGolpe : MonoBehaviour
     public float tiempoRestante;
     public int objetivoLadrillos;
     public int puntuacionVictoria;
+
+    [Header("Prefabs")]
+    public GameObject vidaExtraPrefab;
 
     // Variables
     private int vidas = 3;
@@ -76,6 +80,7 @@ public class ControlGolpe : MonoBehaviour
         RestarTiempo();
         ActualizarPuntos();
         ActualizarContador();
+        ActualizarVidas();
         CheckVida();
         ComprobarVictoriaObjeto();
         ComprobarInput();
@@ -196,9 +201,9 @@ public class ControlGolpe : MonoBehaviour
         }
 
     }
-
-    // Función para el control de vidas
-    public void CheckVida()
+    /*
+     
+     public void CheckVida()
     {
         
         if (vidas != PlayerPrefs.GetInt("VidasRestantes"))
@@ -225,6 +230,42 @@ public class ControlGolpe : MonoBehaviour
 
     }
 
+     
+     */
+    // Función para el control de vidas
+    public void CheckVida()
+    {
+        int vidasPrevias = vidas;
+        int vidasActuales = PlayerPrefs.GetInt("VidasRestantes");
+
+        if (vidasActuales != vidasPrevias)
+        {
+            vidas = vidasActuales;
+            ActualizarVidas();
+
+            // SOLO pausar si las vidas han disminuido
+            if (vidas < vidasPrevias)
+            {
+                if (vidas <= 0)
+                {
+                    ball.gameObject.SetActive(false);
+                    GuardarPuntos();
+                    controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
+                }
+                else
+                {
+                    Pausa();
+                    if (canvasBotonPlay != null)
+                        canvasBotonPlay.SetActive(true);
+                    Debug.Log("Reiniciando objetos.");
+                    ResetObjetos();
+                }
+            }
+        }
+    }
+
+
+
     public void Pausa()
     {
         Time.timeScale = 0f;
@@ -242,6 +283,22 @@ public class ControlGolpe : MonoBehaviour
         ball.enabled = true;
         player.enabled = true;
         audioSource.Play();
+    }
+
+    public void ColisionVida(Collider2D other)
+    {
+        AudioSource.PlayClipAtPoint(vidaExtraCaida, transform.position);
+        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 1);
+        int vidas = PlayerPrefs.GetInt("VidasRestantes");
+        if (vidas < 3)
+        {
+            PlayerPrefs.SetInt("VidasRestantes", vidas + 1);
+            Debug.Log("Vida extra obtenida. Antes " + vidaExtraCaida + ". Ahora: " + PlayerPrefs.GetInt("VidasRestantes"));
+        }
+        PlayerPrefs.Save();
+        Debug.Log("Vidas Restantes: " + PlayerPrefs.GetInt("VidasRestantes"));
+        ActualizarVidas();
+        Destroy(other.gameObject);
     }
 
 
