@@ -57,7 +57,7 @@ public class ControlInfierno : MonoBehaviour
         PlayerPrefs.SetInt("ObjetoInfierno", 0);
         PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
         PlayerPrefs.Save();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (audioSource != null && musicaFondo != null)
         {
@@ -79,10 +79,14 @@ public class ControlInfierno : MonoBehaviour
         Pausa();
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+
+    /*
+      void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Camera.main.GetComponent<CameraFollow>().ResetCameraPosition();
     }
+     */
+   
 
     private void Update()
     {

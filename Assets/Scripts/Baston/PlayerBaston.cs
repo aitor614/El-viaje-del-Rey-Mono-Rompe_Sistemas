@@ -127,12 +127,28 @@ public class PlayerBaston : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+        
         if (collision.gameObject.CompareTag("Ball"))
         {
             audioSource.PlayOneShot(lanzarBola);
         }
+        
 
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Colisión de " + name + "con: " + other.gameObject.name);
+        // Si el jugador colisiona con una ventaja de vida
+        if (other.gameObject.CompareTag("VentajaVidaCaida"))
+        {
+            Debug.Log("¡Vida recogida!");
+            ControlGolpe.InstanciaControl.ColisionVida(other);
+        }
+
+    }
+
 
     // Reinicia la posición del jugador
     public void ResetPlayer()
