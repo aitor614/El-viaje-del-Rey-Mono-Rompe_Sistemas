@@ -70,7 +70,7 @@ public class ControlPausa : MonoBehaviour
         }
         else
         {
-            Debug.Log("Control de la escena no encontrado.");
+            Debug.LogError("Control de la escena no encontrado.");
         }
 
 

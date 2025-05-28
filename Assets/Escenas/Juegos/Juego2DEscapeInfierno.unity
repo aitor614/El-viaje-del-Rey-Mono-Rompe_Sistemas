@@ -964,7 +964,6 @@ MonoBehaviour:
   bounceSound: {fileID: 8300000, guid: 7bfc9218cdb9cfa4ea2d1a98bfc3738b, type: 3}
   boostSound: {fileID: 8300000, guid: 18511b36cfbc54546be41f77dba6234b, type: 3}
   colisionEnemigo: {fileID: 8300000, guid: 983dc9cdaf016fc42a638c14916be45f, type: 3}
-  respawn: {fileID: 8300000, guid: d41007c67b16c6149a9a5e2f1b434571, type: 3}
   rigiBody2D: {fileID: 1385795040}
   spritePlayer: {fileID: 1385795041}
   volumen: 0.5
@@ -1284,7 +1283,7 @@ GameObject:
   - component: {fileID: 1863697501}
   m_Layer: 0
   m_Name: ControlInfierno
-  m_TagString: Untagged
+  m_TagString: ControlEscena
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1323,6 +1322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlHud: {fileID: 1651452924}
   musicaFondo: {fileID: 8300000, guid: e67eec96df0446b41848808c8de9d29b, type: 3}
+  respawn: {fileID: 8300000, guid: d41007c67b16c6149a9a5e2f1b434571, type: 3}
   player: {fileID: 1385795038}
   canvasBotonPlay: {fileID: 2103804987}
   audioSource: {fileID: 1863697501}

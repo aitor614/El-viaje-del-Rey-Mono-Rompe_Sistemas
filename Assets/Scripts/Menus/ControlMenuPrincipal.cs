@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,9 +13,10 @@ public class ControlMenuPrincipal : MonoBehaviour
 
     [Header("Sonidos")]
     public AudioClip musica;
-
-    [Header("Elementos de la escena")]
+    public AudioClip sonidoJuego;
     public AudioSource audioSource;
+    [SerializeField] [Range(0f, 1f)]
+    public float volumenMusica;
 
     public static ControlMenuPrincipal InstanciaControl { get; private set; }
     public static GestorXR InstanciaGestorXR { get; private set; }
@@ -26,6 +28,7 @@ public class ControlMenuPrincipal : MonoBehaviour
     public ResultadoMinijuego resultadoMinijuego;
 
     private string escenaActual = "";
+    private bool reproduciendo = false;
 
     public int indiceActual = 0;
 
@@ -79,35 +82,41 @@ public class ControlMenuPrincipal : MonoBehaviour
 
     }
 
-
-
     // Inicializar el script
     void Start()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 300;
 
-        PlayerPrefs.SetInt("IndiceMinijuego", 0);
-        PlayerPrefs.SetString("EscenaActual", "");
-        PlayerPrefs.Save();
-        Screen.orientation = ScreenOrientation.Portrait;
-        resultadoMinijuego = ResultadoMinijuego.Menu;
+        InicializarMenu();
+    }
 
-        // Asignar funciones a los botones
-        BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
-        BtnPlayViaje.onClick.AddListener(Click_JugarTodos);
-        BtnPlayInfierno.onClick.AddListener(Click_JuegoInfierno);
-        BtnPlayHuida.onClick.AddListener(Click_JuegoHuida);
-        BtnPlayBaston.onClick.AddListener(Click_JuegoBaston);
-        BtnPlayEspiritus.onClick.AddListener(Click_JuegoEspiritus);
-        BtnPlayCelestial.onClick.AddListener(Click_JuegoVR);
+    private void InicializarMenu()
+    {
+
+        Screen.orientation = ScreenOrientation.Portrait;
+        modoActual = ModoJuego.Individual;
+        resultadoMinijuego = ResultadoMinijuego.Menu;
+        PlayerPrefs.SetString("EscenaActual", "MenuPrincipal");
+        PlayerPrefs.SetInt("IndiceMinijuego", 0);
+        PlayerPrefs.Save();
+
+        escenaActual = "MenuPrincipal";
+        indiceActual = 0;
+
+        ReiniciarRegistros();
+
+        // Asignar botones y funciones
+        AsignarBotones();
+        ActivarBotones();
+        AsignarFuncionesBotones();
 
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
-        audioSource.Play();
+        audioSource.volume = volumenMusica;
+        if (audioSource != null && !audioSource.isPlaying) audioSource.Play();
 
-        ReiniciarPuntuaciones();
     }
 
     // Cuando el objeto se activa
@@ -130,31 +139,79 @@ public class ControlMenuPrincipal : MonoBehaviour
         if (scene.name == "MenuPrincipal")
         {
             Screen.orientation = ScreenOrientation.Portrait;
-            // Asignar los botones al script
-            BtnSalirJuego = GameObject.Find("BtnSalirJuego") != null ? GameObject.Find("BtnSalirJuego").GetComponent<Button>() : null;
-            BtnPlayViaje = GameObject.Find("BtnPlayViaje") != null ? GameObject.Find("BtnPlayViaje").GetComponent<Button>() : null;
-            BtnPlayInfierno = GameObject.Find("BtnPlayInfierno") != null ? GameObject.Find("BtnPlayInfierno").GetComponent<Button>() : null;
-            BtnPlayHuida = GameObject.Find("BtnPlayHuida") != null ? GameObject.Find("BtnPlayHuida").GetComponent<Button>() : null;
-            BtnPlayBaston = GameObject.Find("BtnPlayBaston") != null ? GameObject.Find("BtnPlayBaston").GetComponent<Button>() : null;
-            BtnPlayEspiritus = GameObject.Find("BtnPlayEspiritus") != null ? GameObject.Find("BtnPlayEspiritus").GetComponent<Button>() : null;
-            BtnPlayCelestial = GameObject.Find("BtnPlayCelestial") != null ? GameObject.Find("BtnPlayCelestial").GetComponent<Button>() : null;
 
-            // Asignar funciones a los botones
-            if (BtnPlayViaje != null) BtnPlayViaje.onClick.AddListener(Click_JugarTodos);
-            if (BtnPlayInfierno != null) BtnPlayInfierno.onClick.AddListener(Click_JuegoInfierno);
-            if (BtnPlayHuida != null) BtnPlayHuida.onClick.AddListener(Click_JuegoHuida);
-            if (BtnPlayBaston != null) BtnPlayBaston.onClick.AddListener(Click_JuegoBaston);
-            if (BtnPlayEspiritus != null) BtnPlayEspiritus.onClick.AddListener(Click_JuegoEspiritus);
-            if (BtnPlayCelestial != null) BtnPlayCelestial.onClick.AddListener(Click_JuegoVR);
-            if (BtnSalirJuego != null) BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
-
-            if (audioSource != null && !audioSource.isPlaying)
-                audioSource.Play();
-
+            StartCoroutine(ReinicializarMenu());
         }
     }
 
-    // Función para ejecutar en cada frame
+    private IEnumerator ReinicializarMenu()
+    {
+        // Esperar un frame para asegurarse de que la escena se ha cargado completamente
+        yield return null;
+
+        AsignarBotones();
+        AsignarFuncionesBotones();
+
+        if (audioSource != null && !audioSource.isPlaying) audioSource.Play();
+    }
+
+
+    private void AsignarBotones()
+    {
+        // Asignar los botones al script
+        BtnSalirJuego = BuscarBoton("BtnSalirJuego");
+        BtnPlayViaje = BuscarBoton("BtnPlayViaje");
+        BtnPlayInfierno = BuscarBoton("BtnPlayInfierno");
+        BtnPlayHuida = BuscarBoton("BtnPlayHuida");
+        BtnPlayBaston = BuscarBoton("BtnPlayBaston");
+        BtnPlayEspiritus = BuscarBoton("BtnPlayEspiritus");
+        BtnPlayCelestial = BuscarBoton("BtnPlayCelestial");
+    }
+
+    // FunciÃ³n para buscar un botï¿½n por su nombre
+    private Button BuscarBoton(string nombre)
+    {
+        var boton = GameObject.Find(nombre);
+        return boton != null ? boton.GetComponent<Button>() : null;
+    }
+
+    // Asignar funciones a los botones
+    private void AsignarFuncionesBotones()
+    {
+        if (BtnPlayViaje != null) BtnPlayViaje.onClick.AddListener(Click_JugarTodos);
+        if (BtnPlayInfierno != null) BtnPlayInfierno.onClick.AddListener(Click_JuegoInfierno);
+        if (BtnPlayHuida != null) BtnPlayHuida.onClick.AddListener(Click_JuegoHuida);
+        if (BtnPlayBaston != null) BtnPlayBaston.onClick.AddListener(Click_JuegoBaston);
+        if (BtnPlayEspiritus != null) BtnPlayEspiritus.onClick.AddListener(Click_JuegoEspiritus);
+        if (BtnPlayCelestial != null) BtnPlayCelestial.onClick.AddListener(Click_JuegoVR);
+        if (BtnSalirJuego != null) BtnSalirJuego.onClick.AddListener(Click_SalirJuego);
+    }
+
+    // FunciÃ³n para desactivar los botones
+    private void DesactivarBotones()
+    {
+        if (BtnPlayViaje != null) BtnPlayViaje.interactable = false;
+        if (BtnPlayInfierno != null) BtnPlayInfierno.interactable = false;
+        if (BtnPlayHuida != null) BtnPlayHuida.interactable = false;
+        if (BtnPlayBaston != null) BtnPlayBaston.interactable = false;
+        if (BtnPlayEspiritus != null) BtnPlayEspiritus.interactable = false;
+        if (BtnPlayCelestial != null) BtnPlayCelestial.interactable = false;
+        if (BtnSalirJuego != null) BtnSalirJuego.interactable = false;
+    }
+
+    // FunciÃ³n para activar los botones
+    private void ActivarBotones()
+    {
+        if (BtnPlayViaje != null) BtnPlayViaje.interactable = true;
+        if (BtnPlayInfierno != null) BtnPlayInfierno.interactable = true;
+        if (BtnPlayHuida != null) BtnPlayHuida.interactable = true;
+        if (BtnPlayBaston != null) BtnPlayBaston.interactable = true;
+        if (BtnPlayEspiritus != null) BtnPlayEspiritus.interactable = true;
+        if (BtnPlayCelestial != null) BtnPlayCelestial.interactable = true;
+        if (BtnSalirJuego != null) BtnSalirJuego.interactable = true;
+    }
+
+    // Funciï¿½n para ejecutar en cada frame
     private void Update()
     {
         // Si el jugador presiona la tecla Escape sale del juego
@@ -167,67 +224,57 @@ public class ControlMenuPrincipal : MonoBehaviour
     }
 
     // Funcion para cargar la escena del minijuego
-    public void JugarMinijuego(string nombreEscena)
+    public IEnumerator JugarMinijuego(string nombreEscena)
     {
         escenaActual = nombreEscena;
+
+        ReiniciarRegistros();
+        audioSource.Stop();
+        DesactivarBotones();
+
         PlayerPrefs.SetString("EscenaActual", nombreEscena);
         PlayerPrefs.Save();
+        if(!reproduciendo) {
+            AudioSource.PlayClipAtPoint(sonidoJuego, Camera.main.transform.position, 0.5f);
+            reproduciendo = true;
+        }
+        yield return new WaitForSeconds(sonidoJuego.length);
         SceneManager.LoadScene(nombreEscena);
     }
 
     public void Click_JuegoInfierno()
     {       
-        ReiniciarPuntuaciones();
-
-        audioSource.Stop();
-
         // Cargar la escena del minijuego de Escape del Infierno
         modoActual = ModoJuego.Individual;
-        JugarMinijuego("Juego2DEscapeInfierno");
+        StartCoroutine(JugarMinijuego("Juego2DEscapeInfierno"));
     }
 
     public void Click_JuegoHuida()
     {
-        ReiniciarPuntuaciones();
-
-        audioSource.Stop();
-
         // Cargar la escena del minijuego de Huida Celestial
         modoActual = ModoJuego.Individual;
-        JugarMinijuego("Juego2DHuidaCelestial");
+        StartCoroutine(JugarMinijuego("Juego2DHuidaCelestial"));
     }
 
     public void Click_JuegoBaston()
     {
-        ReiniciarPuntuaciones();
-        
-        audioSource.Stop();
-
-        // Cargar la escena del minijuego de Golpe Bastón
+        // Cargar la escena del minijuego de Golpe Bastï¿½n
         modoActual = ModoJuego.Individual;
-        JugarMinijuego("Juego2DGolpeBaston");
+        StartCoroutine(JugarMinijuego("Juego2DGolpeBaston"));
     }
 
     public void Click_JuegoEspiritus()
     {
-        ReiniciarPuntuaciones();
-
-        audioSource.Stop();
-
-        // Cargar la escena del minijuego de Espíritus Desencarnados
+        // Cargar la escena del minijuego de Espï¿½ritus Desencarnados
         modoActual = ModoJuego.Individual;
-        JugarMinijuego("JuegoAREspiritusDesencarnados");
+        StartCoroutine(JugarMinijuego("JuegoAREspiritusDesencarnados"));
     }
 
     public void Click_JuegoVR()
     {
-        ReiniciarPuntuaciones();
-
-        audioSource.Stop();
-
         // Cargar la escena del minijuego de Batalla Celestial
         modoActual = ModoJuego.Individual;
-        JugarMinijuego("JuegoVRBatallaCelestial");
+        StartCoroutine(JugarMinijuego("JuegoVRBatallaCelestial"));
     }
 
     public void Click_SalirJuego()
@@ -243,11 +290,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         // Guardar el modo de juego como continuo
         modoActual = ModoJuego.Continuo;
         indiceActual = PlayerPrefs.GetInt("IndiceMinijuego");
-        ReiniciarPuntuaciones();
-
-        audioSource.Stop();
-
-        JugarMinijuego(escenasMinijuegos[indiceActual]);
+        StartCoroutine(JugarMinijuego(escenasMinijuegos[indiceActual]));
     }
 
     // Funcion para cargar el siguiente minijuego en modo continuo
@@ -263,7 +306,9 @@ public class ControlMenuPrincipal : MonoBehaviour
             PlayerPrefs.SetInt("IndiceMinijuego", indiceActual);
             PlayerPrefs.Save();
             SceneManager.LoadScene(escenasMinijuegos[indiceActual]);
-            Debug.Log("Cargando escena: " + escenasMinijuegos[indiceActual]);
+            Debug.Log("[MenuPrincipal] Cargando escena: " + escenasMinijuegos[indiceActual]);
+            Debug.Log("[MenuPrincipal] Indice actual: " + indiceActual);
+            Debug.Log("[MenuPrincipal] Escena actual: " + escenaActual);
         }
         else
         {
@@ -281,7 +326,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         resultadoMinijuego = resultado;
         if (resultado == ResultadoMinijuego.Exito)
         {
-            // Cargar la escena de éxito
+            // Cargar la escena de ï¿½xito
             SceneManager.LoadScene("YouWin");
         }
         else if (resultado == ResultadoMinijuego.Derrota)
@@ -292,13 +337,12 @@ public class ControlMenuPrincipal : MonoBehaviour
         else if (resultado == ResultadoMinijuego.Reiniciar)
         {
             // Reiniciar el minijuego actual
-            JugarMinijuego(escenaActual);
+            StartCoroutine(JugarMinijuego(escenaActual));
         }
         else if (resultado == ResultadoMinijuego.Menu)
         {
-            ReiniciarPuntuaciones();
-            // Volver al menú principal
-            escenaActual = "MenuPrincipal";
+            ReiniciarRegistros();
+            InicializarMenu();
             SceneManager.LoadScene("MenuPrincipal");
         }
         else if (resultado == ResultadoMinijuego.Salir)
@@ -308,12 +352,24 @@ public class ControlMenuPrincipal : MonoBehaviour
         }
     }
 
-    private void ReiniciarPuntuaciones()
+    // Reiniciar registros de PlayerPrefs
+    private void ReiniciarRegistros()
     {
-        // Reiniciar las puntuaciones
         PlayerPrefs.SetInt("Puntuacion", 0);
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
+        PlayerPrefs.SetInt("ObjetoInfierno", 0);
+        PlayerPrefs.SetInt("ObjetoHuida", 0);
+        PlayerPrefs.SetInt("ObjetoBaston", 0);
+        PlayerPrefs.SetInt("ObjetoEspiritus", 0);
+        PlayerPrefs.SetInt("ObjetoBatalla", 0);
         PlayerPrefs.Save();
+
+        reproduciendo = false;
+
+        Debug.Log("[MenuPrincipal] Registros reiniciados.");
+        Debug.Log("[MenuPrincipal] Escena actual: " + PlayerPrefs.GetString("EscenaActual"));
+        Debug.Log("[MenuPrincipal] PuntuaciÃ³nn: " + PlayerPrefs.GetInt("Puntuacion"));
+        Debug.Log("[MenuPrincipal] PuntuaciÃ³nn de partida: " + PlayerPrefs.GetInt("PuntuacionPartida"));
     }
 
 }

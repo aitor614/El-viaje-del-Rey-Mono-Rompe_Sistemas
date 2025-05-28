@@ -64,6 +64,7 @@ public class ControlHuida : MonoBehaviour
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
+        if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
         Pausa();
 
     }

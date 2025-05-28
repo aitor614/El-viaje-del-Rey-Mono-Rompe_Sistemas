@@ -74,6 +74,7 @@ public class ControlEspiritus : MonoBehaviour
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
+        if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
         audioSource.Play();
         Pausa();
     }

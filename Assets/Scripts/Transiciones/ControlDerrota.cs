@@ -17,12 +17,18 @@ public class ControlDerrota : MonoBehaviour
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
+        if (controlMenuPrincipal == null)
+        {
+            Debug.LogError("ControlMenuPrincipal no encontrado.");
+            return;
+        }
         TxtScorePartida.text = "SCORE PARTIDA: " + PlayerPrefs.GetInt("PuntuacionPartida");
         TxtScore.text = "SCORE TOTAL: " + PlayerPrefs.GetInt("Puntuacion");
 
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
+        if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
         audioSource.Play();
     }
 

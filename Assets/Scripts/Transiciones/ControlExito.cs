@@ -13,18 +13,19 @@ public class ControlExito : MonoBehaviour
     public AudioClip musica;
     public AudioSource audioSource;
 
-    private ControlMenuPrincipal controlMenu;
+    private ControlMenuPrincipal controlMenuPrincipal;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
-        controlMenu = ControlMenuPrincipal.InstanciaControl;
+        controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         TxtScorePartida.text = "SCORE PARTIDA: " + PlayerPrefs.GetInt("PuntuacionPartida");
         TxtScore.text = "SCORE TOTAL: " + PlayerPrefs.GetInt("Puntuacion");
 
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
+        if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
         audioSource.Play();
     }
 
@@ -32,10 +33,10 @@ public class ControlExito : MonoBehaviour
     public void Click_BtnContinuar()
     {
 
-        if (controlMenu.modoActual == ControlMenuPrincipal.ModoJuego.Continuo &&
-            controlMenu.resultadoMinijuego == ControlMenuPrincipal.ResultadoMinijuego.Exito)
+        if (controlMenuPrincipal.modoActual == ControlMenuPrincipal.ModoJuego.Continuo &&
+            controlMenuPrincipal.resultadoMinijuego == ControlMenuPrincipal.ResultadoMinijuego.Exito)
         {
-            controlMenu.SiguienteMinijuego();
+            controlMenuPrincipal.SiguienteMinijuego();
         }
         else
         {
