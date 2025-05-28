@@ -740,7 +740,7 @@ MonoBehaviour:
   maxAlturaY: 2
   minSeparacion: 2
   maxSeparacion: 4.5
-  probabilidadPlataformaMovil: 0.2
+  probabilidadPlataformaMovil: 0.3
 --- !u!4 &784611430
 Transform:
   m_ObjectHideFlags: 0
@@ -1698,7 +1698,17 @@ PrefabInstance:
     - target: {fileID: 960494766579007186, guid: 8f04822a2a1865647a526f5b90f31596,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.2581787
+      value: -4.258087
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093868979274465171, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_text
+      value: ESCAPE DEL INFIERNO 45''
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093868979274465171, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 11.85
       objectReference: {fileID: 0}
     - target: {fileID: 2644793015569042559, guid: 8f04822a2a1865647a526f5b90f31596,
         type: 3}
@@ -1755,6 +1765,28 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250452792592723080, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_text
+      value: "Despu\xE9s de  borrar su nombre del Libro del M\xE1s All\xE1, los Guardianes
+        del Infierno intentan capturar de nuevo a Sun Wukong. \nEscapa antes de que
+        los demonios te atrapen y te encierren para siempre en el Inframundo.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250452792592723080, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 6.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250452792592723080, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_isRightToLeft
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250452792592723080, guid: 8f04822a2a1865647a526f5b90f31596,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4567993222278983865, guid: 8f04822a2a1865647a526f5b90f31596,
         type: 3}
@@ -2067,6 +2099,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6433699049861237953, guid: ca052d65e0be4d547afc26a5654a94d3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 7344406330530043223, guid: ca052d65e0be4d547afc26a5654a94d3,
         type: 3}
