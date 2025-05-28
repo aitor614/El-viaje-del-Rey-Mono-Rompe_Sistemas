@@ -13,7 +13,6 @@ public class PlayerInfierno : MonoBehaviour
     public AudioClip bounceSound;
     public AudioClip boostSound;
     public AudioClip colisionEnemigo;
-    public AudioClip respawn;
 
     [Header("Componentes")]
     public Rigidbody2D rigiBody2D;
@@ -210,7 +209,6 @@ public class PlayerInfierno : MonoBehaviour
 
         rigiBody2D.linearVelocity = Vector2.zero;
 
-        audioSource.PlayOneShot(respawn);
     }
 
 }

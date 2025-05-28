@@ -15,6 +15,7 @@ public class ControlInfierno : MonoBehaviour
 
     [Header("Sonidos")]
     public AudioClip musicaFondo;
+    public AudioClip respawn;
 
     [Header("Elementos de la escena")]
     public PlayerInfierno player;
@@ -64,6 +65,7 @@ public class ControlInfierno : MonoBehaviour
             audioSource.clip = musicaFondo;
             audioSource.loop = true;
             audioSource.playOnAwake = false;
+            if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
             audioSource.Play();
         }
 
@@ -79,14 +81,10 @@ public class ControlInfierno : MonoBehaviour
         Pausa();
     }
 
-
-    /*
-      void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Camera.main.GetComponent<CameraFollow>().ResetCameraPosition();
-    }
-     */
-   
+    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    Camera.main.GetComponent<CameraFollow>().ResetCameraPosition();
+    //}
 
     private void Update()
     {
@@ -277,6 +275,8 @@ public class ControlInfierno : MonoBehaviour
     private void RespawnPlayer()
     {
         player.ResetPlayer();
+        audioSource.PlayOneShot(respawn);
+
     }
 
 }

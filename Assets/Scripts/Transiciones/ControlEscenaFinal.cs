@@ -5,7 +5,7 @@ public class ControlEscenaFinal : MonoBehaviour
 {
     [Header("Elementos de la escena")]
     public TextMeshProUGUI TxtScore;
-    private ControlMenuPrincipal controlMenu;
+    private ControlMenuPrincipal controlMenuPrincipal;
 
     [Header("Sonidos")]
     public AudioClip musica;
@@ -15,16 +15,17 @@ public class ControlEscenaFinal : MonoBehaviour
     void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
-        controlMenu = ControlMenuPrincipal.InstanciaControl;
+        controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         TxtScore.text = "SCORE " + PlayerPrefs.GetInt("Puntuacion");
         audioSource.clip = musica;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
+        if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
         audioSource.Play();
     }
 
     public void Click_BtnContinuar()
     {
-        controlMenu.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Menu);
+        controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Menu);
     }
 }
