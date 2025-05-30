@@ -27,6 +27,9 @@ public class ControlHuida : MonoBehaviour
     public float tiempoRestante;
     public int objetivoOrbes;
     public int puntuacionVictoria;
+    public int puntosObstaculo;
+    public int puntosOrbe;
+    public int puntosVida;
 
     // Variables
     private int vidas = 3;
@@ -229,7 +232,7 @@ public class ControlHuida : MonoBehaviour
 
     public void ObstaculoSalvado()
     {
-        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 5);
+        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosObstaculo);
         PlayerPrefs.Save();
     }
 
@@ -247,7 +250,7 @@ public class ControlHuida : MonoBehaviour
     public void ColisionPremio(Collider2D other)
     {
         AudioSource.PlayClipAtPoint(premio, transform.position);
-        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 20);
+        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosOrbe);
         PlayerPrefs.SetInt("PremiosObtenidos", PlayerPrefs.GetInt("PremiosObtenidos") + 1);
         PlayerPrefs.Save();
         ActualizarPuntos();
@@ -257,7 +260,7 @@ public class ControlHuida : MonoBehaviour
     public void ColisionVida(Collider2D other)
     {
         AudioSource.PlayClipAtPoint(vidaExtra,transform.position);
-        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + 1);
+        PlayerPrefs.SetInt("PuntuacionPartida", PlayerPrefs.GetInt("PuntuacionPartida") + puntosVida);
         int vidas = PlayerPrefs.GetInt("VidasRestantes");
         if (vidas < 3)
         {
@@ -274,7 +277,7 @@ public class ControlHuida : MonoBehaviour
     public void ResetObjetos()
     {
         player.ResetPlayer();
-        audioSource.PlayOneShot(respawn);
+        audioSource.PlayOneShot(respawn, 1.5f);
     }
 
     // Función para guardar los puntos

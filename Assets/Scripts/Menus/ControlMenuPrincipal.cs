@@ -149,8 +149,7 @@ public class ControlMenuPrincipal : MonoBehaviour
         // Esperar un frame para asegurarse de que la escena se ha cargado completamente
         yield return null;
 
-        AsignarBotones();
-        AsignarFuncionesBotones();
+        InicializarMenu();
 
         if (audioSource != null && !audioSource.isPlaying) audioSource.Play();
     }
@@ -341,8 +340,8 @@ public class ControlMenuPrincipal : MonoBehaviour
         }
         else if (resultado == ResultadoMinijuego.Menu)
         {
-            ReiniciarRegistros();
-            InicializarMenu();
+            //ReiniciarRegistros();
+            //InicializarMenu();
             SceneManager.LoadScene("MenuPrincipal");
         }
         else if (resultado == ResultadoMinijuego.Salir)

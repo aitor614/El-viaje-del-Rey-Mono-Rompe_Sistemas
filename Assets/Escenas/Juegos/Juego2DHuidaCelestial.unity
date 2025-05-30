@@ -932,6 +932,9 @@ MonoBehaviour:
   tiempoRestante: 30
   objetivoOrbes: 10
   puntuacionVictoria: 250
+  puntosObstaculo: 5
+  puntosOrbe: 20
+  puntosVida: 1
 --- !u!82 &1350638783
 AudioSource:
   m_ObjectHideFlags: 0

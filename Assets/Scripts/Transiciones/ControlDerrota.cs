@@ -29,7 +29,7 @@ public class ControlDerrota : MonoBehaviour
         audioSource.loop = true;
         audioSource.playOnAwake = false;
         if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
-        audioSource.Play();
+        if (audioSource != null && !audioSource.isPlaying) audioSource.Play();
     }
 
     // Click en el botón de reset

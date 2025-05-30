@@ -29,6 +29,7 @@ public class ControlBatalla : MonoBehaviour
     public GestorXR gestorXR_pruebas;
 
     public enum ModoXR { OpenXR, Cardboard, ARCore }
+    [Header("Modo XR")]
     public ModoXR modoSeleccionado;
 
     // Variables
