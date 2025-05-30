@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7995787078143343871}
+  - component: {fileID: 8654285318000831764}
   - component: {fileID: 7926561423219283749}
-  - component: {fileID: 8624070456673164377}
   - component: {fileID: 565815084056754104}
   - component: {fileID: 4572709452088056368}
   - component: {fileID: 2024700453022736030}
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.5514618, y: -31.194735, z: 40.20732}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3688391328099321361}
@@ -40,6 +40,31 @@ Transform:
   - {fileID: 5957484516772310327}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8654285318000831764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656497746230880433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c94c17b78c30c14a9ebef9c85907078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vida: 3
+  puntosEspiritu: 60
+  velocidadOrbital: 5
+  velocidadRotacionVisual: 5
+  cambioDireccionCada: 7
+  distanciaMinima: 2
+  distanciaMaxima: 5
+  alturaMinima: -2
+  alturaMaxima: 2
+  audioSource: {fileID: 2024700453022736030}
+  clipTocado: {fileID: 8300000, guid: 649c53a2f2ab53140a0cd97b7ff03e8c, type: 3}
+  clipDesvanecer: {fileID: 8300000, guid: 56ff708b5bd518a4484fcbbead55c5e4, type: 3}
+  sistemaParticulas: {fileID: 565815084056754104}
 --- !u!199 &7926561423219283749
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -117,32 +142,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8624070456673164377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656497746230880433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5072d044d9d72a24ba557617a56e30bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocidadAngular: 15
-  radio: 1.8
-  vida: 3
-  puntosEspiritu: 60
-  velocidad: 0.5
-  cambioDireccionCada: 7
-  distanciaMinima: 5
-  distanciaMaxima: 10
-  alturaMinima: -2
-  alturaMaxima: 2
-  audioSource: {fileID: 2024700453022736030}
-  clipTocado: {fileID: 8300000, guid: 649c53a2f2ab53140a0cd97b7ff03e8c, type: 3}
-  clipDesvanecer: {fileID: 8300000, guid: 56ff708b5bd518a4484fcbbead55c5e4, type: 3}
-  sistemaParticulas: {fileID: 565815084056754104}
 --- !u!198 &565815084056754104
 ParticleSystem:
   m_ObjectHideFlags: 0

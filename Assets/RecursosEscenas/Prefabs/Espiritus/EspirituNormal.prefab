@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.5514618, y: -31.194735, z: 32.82732}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7454616430880042707}
@@ -129,14 +129,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178875b8bb936e444b51f373124e70ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadAngular: 30
-  radio: 2.5
   vida: 2
   puntosEspiritu: 10
-  velocidad: 0.5
+  velocidadOrbital: 10
+  velocidadRotacionVisual: 5
   cambioDireccionCada: 5
-  distanciaMinima: 5
-  distanciaMaxima: 10
+  distanciaMinima: 2
+  distanciaMaxima: 5
   alturaMinima: -1
   alturaMaxima: 1
   audioSource: {fileID: 5311779640360029756}

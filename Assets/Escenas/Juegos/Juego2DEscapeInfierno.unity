@@ -463,7 +463,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.010009766, y: -0.0024414062}
+  m_AnchoredPosition: {x: 0.009765625, y: -0.0024414062}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &540297846
@@ -739,8 +739,9 @@ MonoBehaviour:
   minAlturaY: 1
   maxAlturaY: 2
   minSeparacion: 2
-  maxSeparacion: 4.5
+  maxSeparacion: 4.3
   probabilidadPlataformaMovil: 0.2
+  autoGenerarAlIniciar: 0
 --- !u!4 &784611430
 Transform:
   m_ObjectHideFlags: 0
@@ -1321,6 +1322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlHud: {fileID: 1651452924}
+  generadorPlataformas: {fileID: 784611429}
   musicaFondo: {fileID: 8300000, guid: e67eec96df0446b41848808c8de9d29b, type: 3}
   respawn: {fileID: 8300000, guid: d41007c67b16c6149a9a5e2f1b434571, type: 3}
   player: {fileID: 1385795038}

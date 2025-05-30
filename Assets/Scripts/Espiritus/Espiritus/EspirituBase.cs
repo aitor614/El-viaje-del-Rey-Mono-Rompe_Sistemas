@@ -4,13 +4,12 @@ using UnityEngine;
 public class EspirituBase : MonoBehaviour
 {
     [Header("Atributos")]
-    public float velocidadAngular;
-    public float radio;
     public int vida;
     public int puntosEspiritu;
 
     [Header("Movimiento & Posición")]
-    public float velocidad;
+    public float velocidadOrbital;
+    public float velocidadRotacionVisual;
     public float cambioDireccionCada;
     public float distanciaMinima;
     public float distanciaMaxima;
@@ -26,11 +25,10 @@ public class EspirituBase : MonoBehaviour
     public ParticleSystem sistemaParticulas;
 
     // Variables
-    private Vector3 objetivoActual;
     private Transform jugador;
+    private Vector3 direccionActual;
+    private float alturaActual;
     private float tiempoCambio;
-    private Transform objetivoJugador;
-    private float anguloInicial;
 
     protected virtual void Start()
     {
@@ -40,59 +38,66 @@ public class EspirituBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (jugador == null) return;
+        // Movimiento constante en el espacio
+        transform.position += Time.deltaTime * velocidadOrbital * direccionActual;
 
-        // Moverse suavemente hacia el punto objetivo
-        transform.position = Vector3.Lerp(transform.position, objetivoActual, velocidad * Time.deltaTime);
+        // Mantener altura limitada
+        Vector3 pos = transform.position;
+        pos.y = Mathf.Clamp(pos.y, alturaMinima, alturaMaxima);
+        pos.x = Mathf.Clamp(pos.x, -distanciaMaxima, distanciaMaxima);
+        transform.position = pos;
 
-        // Si está cerca o ha pasado un tiempo, cambiar objetivo
+        // Rotación visual sobre sí mismo
+        transform.Rotate(Vector3.up, velocidadRotacionVisual * Time.deltaTime);
+
+        // Si ha pasado un tiempo, cambiar objetivo
         tiempoCambio -= Time.deltaTime;
-        if (Vector3.Distance(transform.position, objetivoActual) < 0.2f || tiempoCambio <= 0f)
+        if (tiempoCambio <= 0f)
         {
             NuevoRumbo();
         }
     }
 
-    //protected virtual void NuevoRumbo()
+    // private void void NuevoRumbo()
     //{
+    //    if (jugador == null) return;
+
     //    Vector3 centro = jugador.position;
 
-    //    // Elegir dirección horizontal aleatoria
+    //    // Elegir dirección horizontal aleatoria normalizada
     //    Vector2 plano = Random.insideUnitCircle.normalized;
-    //    float distancia = Random.Range(distanciaMinima, distanciaMaxima);
 
+    //    // Elegir distancia garantizando un anillo entre mínima y máxima
+    //    float distancia = Random.Range(distanciaMinima, distanciaMaxima);
     //    Vector3 offset = new Vector3(plano.x, 0, plano.y) * distancia;
 
-    //    // Añadir altura aleatoria
+    //    // Altura aleatoria
     //    float altura = Random.Range(alturaMinima, alturaMaxima);
     //    offset.y = altura;
 
+    //    // Posición final: centro + offset
     //    objetivoActual = centro + offset;
+
     //    tiempoCambio = Random.Range(cambioDireccionCada * 0.7f, cambioDireccionCada * 1.3f);
     //}
 
-    protected virtual void NuevoRumbo()
+
+
+    private void NuevoRumbo()
     {
-        if (jugador == null) return;
+        // Dirección 3D aleatoria y normalizada
+        direccionActual = Random.onUnitSphere;
 
-        Vector3 centro = jugador.position;
+        // Evita direcciones demasiado verticales
+        direccionActual.y = Mathf.Clamp(direccionActual.y, -0.2f, 0.4f); 
 
-        // Elegir dirección horizontal aleatoria normalizada
-        Vector2 plano = Random.insideUnitCircle.normalized;
+        // Altura objetivo
+        alturaActual = Random.Range(alturaMinima, alturaMaxima);
 
-        // Elegir distancia garantizando un anillo entre mínima y máxima
-        float distancia = Random.Range(distanciaMinima, distanciaMaxima);
-        Vector3 offset = new Vector3(plano.x, 0, plano.y) * distancia;
-
-        // Altura aleatoria
-        float altura = Random.Range(alturaMinima, alturaMaxima);
-        offset.y = altura;
-
-        // Posición final: centro + offset
-        objetivoActual = centro + offset;
-
+        // Tiempo para el próximo cambio
         tiempoCambio = Random.Range(cambioDireccionCada * 0.7f, cambioDireccionCada * 1.3f);
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -115,14 +120,16 @@ public class EspirituBase : MonoBehaviour
 
     public virtual void RecibirToque()
     {
+        // Restar vida
         vida--;
 
         // Sonido
-        audioSource.PlayOneShot(clipTocado);
+        AudioSource.PlayClipAtPoint(clipTocado, transform.position);
 
         // Cambiar color
         StartCoroutine(FlashParticulas(Color.red, 0.05f));
 
+        // Si la vida llega a 0, destruir el espíritu
         if (vida <= 0)
         {
             Destruir();

@@ -14584,7 +14584,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.5514618, y: -31.194735, z: 47.59732}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6323504003601248084}
@@ -14681,20 +14681,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072d044d9d72a24ba557617a56e30bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadAngular: 25
-  radio: 2.5
   vida: 2
   puntosEspiritu: 30
-  velocidad: 0.7
+  velocidadOrbital: 5
+  velocidadRotacionVisual: 5
   cambioDireccionCada: 2.5
-  distanciaMinima: 5
-  distanciaMaxima: 10
+  distanciaMinima: 2
+  distanciaMaxima: 5
   alturaMinima: -1
   alturaMaxima: 1
   audioSource: {fileID: 7065199413600397720}
   clipTocado: {fileID: 8300000, guid: 649c53a2f2ab53140a0cd97b7ff03e8c, type: 3}
   clipDesvanecer: {fileID: 8300000, guid: 56ff708b5bd518a4484fcbbead55c5e4, type: 3}
   sistemaParticulas: {fileID: 4508448782024229350}
+  escalaMinima: 0
+  escalaMaxima: 0.3
+  velocidadOscilacion: 0.2
 --- !u!198 &4508448782024229350
 ParticleSystem:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class ControlInfierno : MonoBehaviour
     public static ControlInfierno Instancia { get; private set; }
     public ControlHud controlHud;
     private ControlMenuPrincipal controlMenuPrincipal;
+    public UnifiedPlatformSpawner generadorPlataformas;
 
     [Header("Sonidos")]
     public AudioClip musicaFondo;
@@ -77,6 +78,15 @@ public class ControlInfierno : MonoBehaviour
 
         if (canvasBotonPlay != null)
             canvasBotonPlay.SetActive(true); // Botón activo al inicio del juego
+
+        // Iniciar el generador de plataformas
+        if (generadorPlataformas != null)
+        {
+            generadorPlataformas.ResetearPlataformas();
+            generadorPlataformas.GenerarPlataformas();
+        }
+        else Debug.LogError("Generador de plataformas no asignado en ControlInfierno.");
+
 
         Pausa();
     }
