@@ -83,18 +83,41 @@ public class EspirituBase : MonoBehaviour
 
 
 
+    //private void NuevoRumbo()
+    //{
+    //    // Dirección 3D aleatoria y normalizada
+    //    direccionActual = Random.onUnitSphere;
+
+    //    // Evita direcciones demasiado verticales
+    //    direccionActual.y = Mathf.Clamp(direccionActual.y, -0.2f, 0.4f); 
+
+    //    // Altura objetivo
+    //    alturaActual = Random.Range(alturaMinima, alturaMaxima);
+
+    //    // Tiempo para el próximo cambio
+    //    tiempoCambio = Random.Range(cambioDireccionCada * 0.7f, cambioDireccionCada * 1.3f);
+    //}
+
+
     private void NuevoRumbo()
     {
-        // Dirección 3D aleatoria y normalizada
-        direccionActual = Random.onUnitSphere;
+        if (jugador == null) return;
 
-        // Evita direcciones demasiado verticales
-        direccionActual.y = Mathf.Clamp(direccionActual.y, -0.2f, 0.4f); 
+        // Obtener un punto aleatorio en un anillo alrededor del jugador
+        Vector2 plano = Random.insideUnitCircle.normalized;
+        float distancia = Random.Range(distanciaMinima, distanciaMaxima);
+        float altura = Random.Range(alturaMinima, alturaMaxima);
 
-        // Altura objetivo
-        alturaActual = Random.Range(alturaMinima, alturaMaxima);
+        // Convertrr a 3D y aplicar altura
+        Vector3 offset = new Vector3(plano.x, 0, plano.y) * distancia;
+        offset.y = altura;
 
-        // Tiempo para el próximo cambio
+        Vector3 destino = jugador.position + offset;
+
+        // Calcular dirección normalizada
+        direccionActual = (destino - transform.position).normalized;
+
+        // Establecer tiempo de cambio no constante
         tiempoCambio = Random.Range(cambioDireccionCada * 0.7f, cambioDireccionCada * 1.3f);
     }
 

@@ -227,17 +227,23 @@ public class ControlMenuPrincipal : MonoBehaviour
     {
         escenaActual = nombreEscena;
 
-        ReiniciarRegistros();
+        //ReiniciarRegistros();
         audioSource.Stop();
-        DesactivarBotones();
 
+        if (PlayerPrefs.GetString("EscenaActual") == "MenuPrincipal")
+        {
+            DesactivarBotones();
+            if (!reproduciendo)
+            {
+                AudioSource.PlayClipAtPoint(sonidoJuego, Camera.main.transform.position, 0.5f);
+                reproduciendo = true;
+            }
+            yield return new WaitForSeconds(sonidoJuego.length);
+        }
         PlayerPrefs.SetString("EscenaActual", nombreEscena);
         PlayerPrefs.Save();
-        if(!reproduciendo) {
-            AudioSource.PlayClipAtPoint(sonidoJuego, Camera.main.transform.position, 0.5f);
-            reproduciendo = true;
-        }
-        yield return new WaitForSeconds(sonidoJuego.length);
+
+        Debug.Log("[MenuPrincipal] Cargando escena: " + nombreEscena);
         SceneManager.LoadScene(nombreEscena);
     }
 
@@ -326,27 +332,32 @@ public class ControlMenuPrincipal : MonoBehaviour
         if (resultado == ResultadoMinijuego.Exito)
         {
             // Cargar la escena de �xito
+            Debug.Log("[MenuPrincipal] Resultado: Exito. Cargando escena de éxito.");
             SceneManager.LoadScene("YouWin");
         }
         else if (resultado == ResultadoMinijuego.Derrota)
         {
             // Cargar la escena de Game Over
+            Debug.Log("[MenuPrincipal] Resultado: Derrota. Cargando escena de derrota.");
             SceneManager.LoadScene("GameOver");
         }
         else if (resultado == ResultadoMinijuego.Reiniciar)
         {
             // Reiniciar el minijuego actual
+            Debug.Log("[MenuPrincipal] Resultado: Reiniciar. Reiniciando minijuego actual.");
             StartCoroutine(JugarMinijuego(escenaActual));
         }
         else if (resultado == ResultadoMinijuego.Menu)
         {
             //ReiniciarRegistros();
             //InicializarMenu();
+            Debug.Log("[MenuPrincipal] Resultado: Menu. Volviendo al menú principal.");
             SceneManager.LoadScene("MenuPrincipal");
         }
         else if (resultado == ResultadoMinijuego.Salir)
         {
             // Salir del juego
+            Debug.Log("[MenuPrincipal] Resultado: Salir. Saliendo del juego.");
             Application.Quit();
         }
     }
