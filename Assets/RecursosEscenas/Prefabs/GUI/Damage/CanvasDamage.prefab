@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 9209876447461942566}
   - component: {fileID: 5805979361905771731}
   - component: {fileID: 2370446291187599608}
-  - component: {fileID: 9110524623096026338}
   m_Layer: 5
   m_Name: CanvasDamage
   m_TagString: Untagged
@@ -178,18 +177,3 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &9110524623096026338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4722077829714888713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f758a3df48ff1e42a2891c759886088, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  "imagenDa\xF1o": {fileID: 6749660867367313578}
-  duracion: 0.5
-  "sonidoDa\xF1o": {fileID: 8300000, guid: 5d72ee7fecf3d4c479e4f2b39d511f96, type: 3}

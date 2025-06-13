@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ControlBatalla : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class ControlBatalla : MonoBehaviour
 
     [Header("Elementos de la escena")]
     public GameObject canvasBotonPlay;
+    public GameObject canvasDamage;
 
     [Header("Parámetros")]
     public float tiempoRestante;
@@ -22,6 +24,7 @@ public class ControlBatalla : MonoBehaviour
 
     [Header("Sonidos")]
     public AudioClip musica;
+    public AudioClip sonidoDamage;
     public AudioSource audioSource;
 
     [Header("XR")]
@@ -80,6 +83,8 @@ public class ControlBatalla : MonoBehaviour
         {
             ActivarVR();
         }
+
+        canvasDamage.SetActive(false);
 
         // Inicializamos los valores de PlayerPrefs
         PlayerPrefs.SetInt("TiempoPartida", (int)tiempoRestante);
@@ -168,13 +173,13 @@ public class ControlBatalla : MonoBehaviour
         //dDebug.Log("Comprobando vidas...");
         if (vidas != PlayerPrefs.GetInt("VidasRestantes"))
         {
-            Debug.Log("Vidas cambiadas. Actualizando...");
+            Debug.Log("[ControlBatalla] Vidas cambiadas. Actualizando...");
             vidas = PlayerPrefs.GetInt("VidasRestantes");
             ActualizarVidas();
             // Si el jugador pierde todas las vidas, el juego termina con derrota
             if (vidas <= 0)
             {
-                Debug.Log("Jugador sin vidas. Fin del juego.");
+                Debug.Log("[ControlBatalla] Jugador sin vidas. Fin del juego.");
                 GuardarPuntos();
                 controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
             }
@@ -182,19 +187,40 @@ public class ControlBatalla : MonoBehaviour
     }
 
     // Función para el control de vidas
-    public void PerderVida()
+    public void PerderVida(int cantidad)
     {
-        Debug.Log("Perdiendo vida...");
-        vidas--;
-        ActualizarVidas();
+        Debug.Log($"[ControlBatalla] Perdiendo {cantidad} vidas...");
+        PlayerPrefs.SetInt("VidasRestantes", PlayerPrefs.GetInt("VidasRestantes") - cantidad);
+        PlayerPrefs.Save();
+        CheckVida();
+        Debug.Log($"[ControlBatalla] Vidas restantes: {vidas}");
+        StartCoroutine(EfectoDamage());
+
         // Si el jugador pierde todas las vidas, el juego termina con derrota
         if (vidas <= 0)
         {
-            Debug.Log("No quedan vidas. Fin del juego.");
+            canvasDamage.SetActive(false);
+            Debug.Log("[ControlBatalla] No quedan vidas. Fin del juego.");
             GuardarPuntos();
             controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Derrota);
         }
 
+    }
+
+    IEnumerator EfectoDamage()
+    {
+        // Activa el canvas de daño
+        if (canvasDamage != null)
+        {
+            Debug.Log("[ControlBatalla] Activando canvas de daño...");
+            if (sonidoDamage != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(sonidoDamage);
+            }
+            canvasDamage.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            canvasDamage.SetActive(false);
+        }
     }
 
     // Actualiza el contador de saltos

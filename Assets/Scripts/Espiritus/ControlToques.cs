@@ -16,7 +16,7 @@ public class ControlToques : MonoBehaviour
     {
         // Click izquierdo del ratón en editor
 #if UNITY_EDITOR
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             ProcesarToque(Mouse.current.position.ReadValue());
         }

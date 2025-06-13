@@ -35,6 +35,7 @@ public class ControlDerrota : MonoBehaviour
     // Click en el botón de reset
     public void Click_BtnReset()
     {
+        Debug.Log($"Reiniciando minijuego {PlayerPrefs.GetString("EscenaActual")} ...");
         PlayerPrefs.SetInt("Puntuacion", PlayerPrefs.GetInt("Puntuacion") - PlayerPrefs.GetInt("PuntuacionPartida"));
         PlayerPrefs.SetInt("PuntuacionPartida", 0);
         PlayerPrefs.Save();
@@ -44,6 +45,7 @@ public class ControlDerrota : MonoBehaviour
     // Click en el botón de salir
     public void Click_BtnMenu()
     {
+        Debug.Log("Volviendo al menú principal...");
         controlMenuPrincipal.ProcesarResultado(ControlMenuPrincipal.ResultadoMinijuego.Menu);
     }
 }
