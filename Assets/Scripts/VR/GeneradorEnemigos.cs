@@ -128,7 +128,7 @@ public class GeneradorEnemigos : MonoBehaviour
         Debug.Log($"[GeneradorEnemigos] Enemigo generado: {enemy.name} en la posición {spawnPos}");
 
         // Configurar el objetivo del enemigo para que sea la cámara del jugador
-        if (enemy.TryGetComponent(out RunTowardsPlayer script))
+        if (enemy.TryGetComponent(out Enemigo script))
         {
             script.objetivo = camaraJugador;
             Debug.Log($"[GeneradorEnemigos] Enemigo {enemy.name} configurado para seguir a la cámara del jugador.");

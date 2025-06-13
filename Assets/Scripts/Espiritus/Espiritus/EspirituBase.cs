@@ -58,47 +58,6 @@ public class EspirituBase : MonoBehaviour
         }
     }
 
-    // private void void NuevoRumbo()
-    //{
-    //    if (jugador == null) return;
-
-    //    Vector3 centro = jugador.position;
-
-    //    // Elegir dirección horizontal aleatoria normalizada
-    //    Vector2 plano = Random.insideUnitCircle.normalized;
-
-    //    // Elegir distancia garantizando un anillo entre mínima y máxima
-    //    float distancia = Random.Range(distanciaMinima, distanciaMaxima);
-    //    Vector3 offset = new Vector3(plano.x, 0, plano.y) * distancia;
-
-    //    // Altura aleatoria
-    //    float altura = Random.Range(alturaMinima, alturaMaxima);
-    //    offset.y = altura;
-
-    //    // Posición final: centro + offset
-    //    objetivoActual = centro + offset;
-
-    //    tiempoCambio = Random.Range(cambioDireccionCada * 0.7f, cambioDireccionCada * 1.3f);
-    //}
-
-
-
-    //private void NuevoRumbo()
-    //{
-    //    // Dirección 3D aleatoria y normalizada
-    //    direccionActual = Random.onUnitSphere;
-
-    //    // Evita direcciones demasiado verticales
-    //    direccionActual.y = Mathf.Clamp(direccionActual.y, -0.2f, 0.4f); 
-
-    //    // Altura objetivo
-    //    alturaActual = Random.Range(alturaMinima, alturaMaxima);
-
-    //    // Tiempo para el próximo cambio
-    //    tiempoCambio = Random.Range(cambioDireccionCada * 0.7f, cambioDireccionCada * 1.3f);
-    //}
-
-
     private void NuevoRumbo()
     {
         if (jugador == null) return;
@@ -149,34 +108,11 @@ public class EspirituBase : MonoBehaviour
         // Sonido
         AudioSource.PlayClipAtPoint(clipTocado, transform.position);
 
-        // Cambiar color
-        StartCoroutine(FlashParticulas(Color.red, 0.05f));
-
         // Si la vida llega a 0, destruir el espíritu
         if (vida <= 0)
         {
             Destruir();
         }
-    }
-
-    IEnumerator FlashParticulas(Color colorTemporal, float duracion)
-    {
-        var main = sistemaParticulas.main;
-
-        // Guardar color original
-        Color colorOriginal = main.startColor.color;
-
-        // Aplicar color temporal
-        main.startColor = colorTemporal;
-        sistemaParticulas.Clear();
-        sistemaParticulas.Play();
-
-        yield return new WaitForSeconds(duracion);
-
-        // Restaurar color original
-        main.startColor = colorOriginal;
-        sistemaParticulas.Clear();
-        sistemaParticulas.Play();
     }
 
     protected virtual void Destruir()

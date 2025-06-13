@@ -65,6 +65,8 @@ MonoBehaviour:
   clipTocado: {fileID: 8300000, guid: 649c53a2f2ab53140a0cd97b7ff03e8c, type: 3}
   clipDesvanecer: {fileID: 8300000, guid: 56ff708b5bd518a4484fcbbead55c5e4, type: 3}
   sistemaParticulas: {fileID: 565815084056754104}
+  puntosRobo: 10
+  tiempoRobo: 3
 --- !u!199 &7926561423219283749
 ParticleSystemRenderer:
   serializedVersion: 6
