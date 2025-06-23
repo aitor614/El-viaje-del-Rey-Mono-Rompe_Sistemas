@@ -1323,6 +1323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlHud: {fileID: 1651452924}
   generadorPlataformas: {fileID: 784611429}
+  generadorEnemigos: {fileID: 119511294}
   musicaFondo: {fileID: 8300000, guid: e67eec96df0446b41848808c8de9d29b, type: 3}
   respawn: {fileID: 8300000, guid: d41007c67b16c6149a9a5e2f1b434571, type: 3}
   player: {fileID: 1385795038}

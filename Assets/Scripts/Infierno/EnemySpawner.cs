@@ -15,9 +15,15 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+
+
+    }
+
+    public void GenerarEnemigos()
+    {
         float camHeight = Camera.main.orthographicSize * 2f;
         levelWidth = camHeight * Camera.main.aspect;
-        
+
         // Separación del spawn de los enemigos para que no se solapen y sea imposible cruzar.
 
         int enemigosGenerados = 0;
@@ -54,7 +60,6 @@ public class EnemySpawner : MonoBehaviour
 
             intentosMaximos--;
         }
-
     }
 
     // Gizmos para ver el rango de aparición en la Scene View
@@ -65,8 +70,8 @@ public class EnemySpawner : MonoBehaviour
         float camHeight = Camera.main.orthographicSize * 2f;
         float width = camHeight * Camera.main.aspect;
 
-        Vector3 center = new Vector3(0f, (minY + maxY) / 2f, 0f);
-        Vector3 size = new Vector3(width - 2 * horizontalMargin, maxY - minY, 0.1f);
+        Vector3 center = new(0f, (minY + maxY) / 2f, 0f);
+        Vector3 size = new(width - 2 * horizontalMargin, maxY - minY, 0.1f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(center, size);

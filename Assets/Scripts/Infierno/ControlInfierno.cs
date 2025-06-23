@@ -13,6 +13,7 @@ public class ControlInfierno : MonoBehaviour
     public ControlHud controlHud;
     private ControlMenuPrincipal controlMenuPrincipal;
     public UnifiedPlatformSpawner generadorPlataformas;
+    public EnemySpawner generadorEnemigos;
 
     [Header("Sonidos")]
     public AudioClip musicaFondo;
@@ -34,6 +35,8 @@ public class ControlInfierno : MonoBehaviour
     private int puntuacion = 0;
     private float alturaAlcanzada = 0f;
     private bool objetoPartida = false;
+    private bool vertical = false;
+    private bool elementosGenerados = false;
 
     void Awake()
     {
@@ -50,7 +53,7 @@ public class ControlInfierno : MonoBehaviour
 
     void Start()
     {
-        Screen.orientation = ScreenOrientation.Portrait;
+        if (!vertical) OrientacionVertical();
         controlMenuPrincipal = ControlMenuPrincipal.InstanciaControl;
         controlHud = ControlHud.InstanciaControl;
         PlayerPrefs.SetInt("VidasRestantes", vidas);
@@ -69,35 +72,62 @@ public class ControlInfierno : MonoBehaviour
             if (controlMenuPrincipal != null) audioSource.volume = controlMenuPrincipal.volumenMusica;
             audioSource.Play();
         }
+        else Debug.LogError("[ControlInfierno] AudioSource o clip de música no asignado en ControlInfierno.");
 
         if (player != null)
         {
             startPosition = player.transform.position;
             alturaAlcanzada = player.transform.position.y;
         }
+        else Debug.LogError("[ControlInfierno] PlayerInfierno no asignado en ControlInfierno.");
 
-        if (canvasBotonPlay != null)
-            canvasBotonPlay.SetActive(true); // Botón activo al inicio del juego
+        if (canvasBotonPlay != null) canvasBotonPlay.SetActive(true);
+        else Debug.LogError("[ControlInfierno] Canvas Boton Play no asignado en ControlInfierno.");
 
-        // Iniciar el generador de plataformas
-        if (generadorPlataformas != null)
-        {
-            generadorPlataformas.ResetearPlataformas();
-            generadorPlataformas.GenerarPlataformas();
-        }
-        else Debug.LogError("Generador de plataformas no asignado en ControlInfierno.");
-
-
+        if (vertical) GenerarElementos();
+        
         Pausa();
     }
 
-    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    Camera.main.GetComponent<CameraFollow>().ResetCameraPosition();
-    //}
+    private void GenerarElementos()
+    {
+        // Iniciar el generador de plataformas
+        if (generadorPlataformas != null && generadorEnemigos != null)
+        {
+            generadorEnemigos.GenerarEnemigos();
+            generadorPlataformas.ResetearPlataformas();
+            generadorPlataformas.GenerarPlataformas();
+            elementosGenerados = true;
+        }
+        else
+        {
+            if (generadorPlataformas == null) Debug.LogError("[ControlInfierno] Generador de plataformas no asignado en ControlInfierno.");
+            if (generadorEnemigos == null) Debug.LogError("[ControlInfierno] Generador de enemigos no asignado en ControlInfierno.");
+            elementosGenerados = false;
+        }
+    }
+
+
+    private void OrientacionVertical()
+    {
+        if (Screen.orientation == ScreenOrientation.Portrait) vertical = true;
+        else
+        {
+            Debug.Log("[ControlInfierno] Orientación de pantalla no es vertical, se cambiará a vertical.");
+            vertical = false;
+        }
+
+        if (!vertical) Screen.orientation = ScreenOrientation.Portrait;
+    }
 
     private void Update()
     {
+        if (!elementosGenerados)
+        {
+            if (!vertical) OrientacionVertical();
+            else GenerarElementos();
+        }
+
         CheckVida();
         ControlarAltura();
         RestarTiempo();
@@ -125,7 +155,7 @@ public class ControlInfierno : MonoBehaviour
         audioSource.Stop();
 
         // Cargar la escena de premio
-        Debug.Log("Cargando escena: PremioGolpeBaston");
+        Debug.Log("[ControlInfierno] Cargando escena: PremioGolpeBaston");
         SceneManager.sceneLoaded += OnPremioSceneLoaded;
         SceneManager.LoadScene("Premio", LoadSceneMode.Additive);
     }
@@ -135,7 +165,7 @@ public class ControlInfierno : MonoBehaviour
     {
         if (scene.name == "Premio")
         {
-            Debug.Log("Escena de premio cargada completamente.");
+            Debug.Log("[ControlInfierno] Escena de premio cargada completamente.");
             // Desuscribirse del evento de carga de escena
             SceneManager.sceneLoaded -= OnPremioSceneLoaded;
             // Desactivar el objeto de la escena actual
@@ -197,7 +227,7 @@ public class ControlInfierno : MonoBehaviour
                 Pausa(); // Pausa del juego automáticamente
                 if (canvasBotonPlay != null)
                     canvasBotonPlay.SetActive(true); // Se activa el botón para que el jugador continúe manualmente
-                Debug.Log("Reiniciando jugador...");
+                Debug.Log("[ControlInfierno] Reiniciando jugador...");
                 RespawnPlayer();
             }
         }
